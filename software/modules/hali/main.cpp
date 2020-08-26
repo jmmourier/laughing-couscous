@@ -123,8 +123,26 @@ int testParser(){
     return 0;
 }
 
+int testParseSerial(){
+
+    MessageParser myParser;
+    Serial serial("/dev/ttyACM0",9600);
+    while(true){
+        try
+        {
+    myParser.addCharToBuffer(serial.readChar());
+    myParser.analyseBuffer().print();
+        }
+        catch(boost::system::system_error& e)
+        {
+            //std::cout<<"Error: "<<e.what()<<std::endl;
+        }
+    }
+    return 0;
+}
+
 int main(int argc, char* argv[])
 {
-   return testParser();
+   return testParseSerial();
 }
 

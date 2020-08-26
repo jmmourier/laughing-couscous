@@ -76,5 +76,23 @@ void MessageParser::setEndChar(char end_char){
 }
 
 bool MessageParser::isCharAllowed(char testedChar){
-    //TODO
+    //we only keep ascii value, point, endChar and splitChar
+    std::string allowedLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
+    std::string allowedNumbers = "0123456789";
+    std::string allowedPonctuation = ".";
+
+    return (allowedLetters.find(testedChar,0) != std::string::npos ||
+            allowedNumbers.find(testedChar,0) != std::string::npos ||
+            allowedPonctuation.find(testedChar,0) != std::string::npos ||
+            testedChar == endChar_ ||
+            testedChar == splitChar_);
+}
+
+std::string MessageParser::createMessage(CommandData dataToSend){
+    std::string messageToSend;
+    messageToSend += dataToSend.command;
+    messageToSend += splitChar_;
+    messageToSend += (!dataToSend.arguments.empty()) ? dataToSend.arguments.at(0) : "";
+    messageToSend += endChar_;
+    return messageToSend;
 }
