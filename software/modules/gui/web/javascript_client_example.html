@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>WebSocket Test</title>
+</head>
+<body>
+
+  <button id="btn1">rtkON</button>
+  <p id="p1">Hello World!</p>
+  <p id="txt2"> not clicked</p>
+  <p id="demo">Click me.</p>
+
+<script>
+function myFunction() {
+  document.getElementById("txt2").innerHTML = "YOU CLICKED ME!";
+}
+
+document.getElementById("demo").addEventListener("click", myFunction);
+function myFunction() {
+  document.getElementById("demo").innerHTML = "YOU CLICKED ME!";
+}
+
+
+var ws;
+window.onload=function(){
+  ws=new WebSocket("ws://localhost:8080/echo");
+  ws.onmessage=function(evt){
+    console.log(evt.data);
+    document.getElementById("p1").innerHTML = evt.data;
+    };
+  ws.onopen=function(evt){
+    ws.send("Hello from web");
+    document.getElementById("txt2").innerHTML = "connexion ok";
+  }
+  ws.onerror=function(evt){
+    document.getElementById("txt2").innerHTML = "connection error";
+  }
+  
+}
+window.onclose=function(){
+  ws.close();
+}  
+</script>
+
+
+
+
+</body>
+</html>
