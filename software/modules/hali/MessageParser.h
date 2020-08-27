@@ -4,24 +4,12 @@
 
 struct CommandData{
     void print(){
-        std::cout<< "cmd: ";
-        if(!command.empty())
-        {
-            std::cout << command;
-        } else
-        {
-            std::cout << "no command";
-        }
-        std::cout <<  " , args ";
-        if(!arguments.empty())
-        {
-            std::cout << arguments.at(0);
-        }
-        else
-        {
-            std::cout << "no args";
-        }
-        std::cout << std::endl;
+        std::string printMsg;
+        printMsg += "cmd: ";
+        printMsg += (command.empty()) ? "no command" : command; 
+        printMsg += " , args ";
+        printMsg += (arguments.empty()) ? "no args" : arguments.at(0);
+        std::cout << printMsg << std::endl;
     }
 
     std::string command;
@@ -44,6 +32,8 @@ public:
     void setEndChar(char endChar);
 
     void printBuffer() {std::cout << "buffer : " << buffer_ << std::endl;}
+
+    std::string createMessage(CommandData);
 
 private:
     bool isCharAllowed(char testedChar);
