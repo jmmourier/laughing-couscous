@@ -3,8 +3,8 @@
 #include <thread>
 #include "webInterface/messages_handler.h"
 int main() {
-
-    std::thread websockServer(start_server);
+    messages_handler mh;
+    std::thread websockServer(start_server, mh);
     websockServer.join();
     return 0;
 }

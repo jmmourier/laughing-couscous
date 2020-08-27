@@ -1,13 +1,11 @@
 #include "messages_handler.h"
 #include <iostream>
 #include <ctime>
-#include <sstream>
-#include <boost/lexical_cast.hpp>
-#include <chrono>
 
-messages_handler::messages_handler(void) {
 
-}
+//messages_handler::messages_handler(void) {
+//
+//}
 
 void messages_handler::handle_message(const std::string msg_str, std::string &ret){
     std::cout << "event receive "<<msg_str<<std::endl;
@@ -18,9 +16,9 @@ void messages_handler::handle_message(const std::string msg_str, std::string &re
     } else if (msg_str.compare("get_avr_status")==0) {
         ret = "avr_status:false";
     } else if (msg_str.compare("mvfw")==0){
-        ret = "mv:f";
+        ret = "mv:fw";
     } else if (msg_str.compare("mvbw")== 0){
-        ret = "mv:b";
+        ret = "mv:bw";
     } else if (msg_str.compare("mvl") == 0){
         ret = "mv:l";
     } else if (msg_str.compare("mvr")==0){
@@ -30,7 +28,7 @@ void messages_handler::handle_message(const std::string msg_str, std::string &re
     } else if (msg_str.compare("get_time")==0){
         time_t now = time(0);
         tm *ltm = localtime(&now);
-        std::string timehms = "time:" + std::to_string(ltm->tm_hour) +"h"+std::to_string(ltm->tm_min)+","+std::to_string(ltm->tm_sec);
+        std::string timehms = "time:" + std::to_string(ltm->tm_hour) +"h"+std::to_string(ltm->tm_min)+"."+std::to_string(ltm->tm_sec);
         ret = timehms;
     }
     else{
