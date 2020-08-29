@@ -6,7 +6,7 @@
 class messages_handler {
 
 public:
-    messages_handler(void);
+ //   messages_handler(void);
     void handle_message(const std::string msg_str, std::string &ret);
 
 };
