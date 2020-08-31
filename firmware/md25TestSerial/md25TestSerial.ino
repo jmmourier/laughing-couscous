@@ -101,7 +101,7 @@ void readVolts(){                                                 // Function re
 
   Serial.print("Mot1 I:");
   Serial.print(mot1_current,DEC);
-  Serial.println(";")
+  Serial.println(";");
 
   Serial.print("Mot2 I:");
   Serial.print(mot2_current,DEC);
