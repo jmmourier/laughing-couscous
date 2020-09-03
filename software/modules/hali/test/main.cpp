@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "Serial.h"
-#include "MessageParser.h"
+#include "../src/Serial.h"
+#include "../src/MessageParser.h"
 
 int serialReaderByLine(){
     try {

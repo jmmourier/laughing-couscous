@@ -13,9 +13,9 @@ find_package(Boost
             )
 
 list(APPEND SOURCES 
-    main.cpp
-    Serial.cpp
-    MessageParser.cpp)
+    test/main.cpp
+    src/Serial.cpp
+    src/MessageParser.cpp)
 
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS} .) 
