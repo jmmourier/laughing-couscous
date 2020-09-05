@@ -1,148 +1,163 @@
 #include <iostream>
+#include <exception>
+#include <thread>
 
-#include "../src/Serial.h"
-#include "../src/MessageParser.h"
+#include "Hali.h"
 
-int serialReaderByLine(){
-    try {
+// #include "../src/Serial.h"
+// #include "../src/MessageParser.h"
 
-        Serial serial("/dev/ttyACM0",9600);
+// int serialReaderByLine(){
+//     try {
 
-        serial.writeString("Hello world\n");
-        while(true){
-        std::cout<<serial.readLine()<<std::endl;
-        }
+//         Serial serial("/dev/ttyACM0",9600);
 
-    } catch(boost::system::system_error& e)
-    {
-        std::cout<<"Error: "<<e.what()<<std::endl;
-        return 1;
-    }
-}
+//         serial.writeString("Hello world\n");
+//         while(true){
+//         std::cout<<serial.readLine()<<std::endl;
+//         }
 
-int serialReaderByChar(){
+//     } catch(boost::system::system_error& e)
+//     {
+//         std::cout<<"Error: "<<e.what()<<std::endl;
+//         return 1;
+//     }
+// }
 
-    try {
+// int serialReaderByChar(){
 
-        Serial serial("/dev/ttyACM0",9600);
+//     try {
 
-        while(true){
-        std::cout<<serial.readChar();
-        }
+//         Serial serial("/dev/ttyACM0",9600);
 
-    } catch(boost::system::system_error& e)
-    {
-        std::cout<<"Error: "<<e.what()<<std::endl;
-        return 1;
-    }
-}
+//         while(true){
+//         std::cout<<serial.readChar();
+//         }
 
-int testParser(){
-    MessageParser myParser;
-    myParser.addCharToBuffer('a');
-    myParser.addCharToBuffer(':');
-    myParser.addCharToBuffer(':');
-    myParser.addCharToBuffer('b');
-    myParser.addCharToBuffer('c');
-    myParser.addCharToBuffer(';');
+//     } catch(boost::system::system_error& e)
+//     {
+//         std::cout<<"Error: "<<e.what()<<std::endl;
+//         return 1;
+//     }
+// }
 
-    myParser.addCharToBuffer('a');
-    myParser.addCharToBuffer(';');
+// int testParser(){
+//     MessageParser myParser;
+//     myParser.addCharToBuffer('a');
+//     myParser.addCharToBuffer(':');
+//     myParser.addCharToBuffer(':');
+//     myParser.addCharToBuffer('b');
+//     myParser.addCharToBuffer('c');
+//     myParser.addCharToBuffer(';');
 
-    myParser.addCharToBuffer(';');
+//     myParser.addCharToBuffer('a');
+//     myParser.addCharToBuffer(';');
 
-    myParser.addCharToBuffer('a');
-    myParser.addCharToBuffer('b');
-    myParser.addCharToBuffer(':');
-    myParser.addCharToBuffer(':');
-    myParser.addCharToBuffer(';');
+//     myParser.addCharToBuffer(';');
 
-    myParser.addCharToBuffer(':');
-    myParser.addCharToBuffer('a');
-    myParser.addCharToBuffer(';');
+//     myParser.addCharToBuffer('a');
+//     myParser.addCharToBuffer('b');
+//     myParser.addCharToBuffer(':');
+//     myParser.addCharToBuffer(':');
+//     myParser.addCharToBuffer(';');
 
-    myParser.addCharToBuffer('a');
-    myParser.addCharToBuffer(';');
+//     myParser.addCharToBuffer(':');
+//     myParser.addCharToBuffer('a');
+//     myParser.addCharToBuffer(';');
 
-    myParser.addCharToBuffer('a');
-    myParser.addCharToBuffer(':');
-    myParser.addCharToBuffer('b');
-    myParser.addCharToBuffer(';');
+//     myParser.addCharToBuffer('a');
+//     myParser.addCharToBuffer(';');
 
-    myParser.addCharToBuffer('a');
-    myParser.addCharToBuffer(':');
-    myParser.addCharToBuffer('b');
-    myParser.addCharToBuffer(':');
-    myParser.addCharToBuffer('c');
-    myParser.addCharToBuffer(';');
+//     myParser.addCharToBuffer('a');
+//     myParser.addCharToBuffer(':');
+//     myParser.addCharToBuffer('b');
+//     myParser.addCharToBuffer(';');
+
+//     myParser.addCharToBuffer('a');
+//     myParser.addCharToBuffer(':');
+//     myParser.addCharToBuffer('b');
+//     myParser.addCharToBuffer(':');
+//     myParser.addCharToBuffer('c');
+//     myParser.addCharToBuffer(';');
     
-    myParser.addCharToBuffer(':');
-    myParser.addCharToBuffer('b');
-    myParser.addCharToBuffer(':');
-    myParser.addCharToBuffer('c');
-    myParser.addCharToBuffer(';');
+//     myParser.addCharToBuffer(':');
+//     myParser.addCharToBuffer('b');
+//     myParser.addCharToBuffer(':');
+//     myParser.addCharToBuffer('c');
+//     myParser.addCharToBuffer(';');
 
-    myParser.addCharToBuffer('a');
-    myParser.addCharToBuffer(':');
-    myParser.addCharToBuffer(';');
-    myParser.addCharToBuffer('a');
-    myParser.addCharToBuffer(':');
-    myParser.addCharToBuffer(':');
-    myParser.addCharToBuffer(';');
+//     myParser.addCharToBuffer('a');
+//     myParser.addCharToBuffer(':');
+//     myParser.addCharToBuffer(';');
+//     myParser.addCharToBuffer('a');
+//     myParser.addCharToBuffer(':');
+//     myParser.addCharToBuffer(':');
+//     myParser.addCharToBuffer(';');
 
-    myParser.addCharToBuffer('a');
-    myParser.addCharToBuffer(':');
-    myParser.addCharToBuffer(':');
-    myParser.addCharToBuffer('b');
-    myParser.addCharToBuffer(';');
+//     myParser.addCharToBuffer('a');
+//     myParser.addCharToBuffer(':');
+//     myParser.addCharToBuffer(':');
+//     myParser.addCharToBuffer('b');
+//     myParser.addCharToBuffer(';');
 
-    myParser.printBuffer();
-    myParser.analyseBuffer().print();
-    myParser.printBuffer();
-    myParser.analyseBuffer().print();
-    myParser.printBuffer();
-    myParser.analyseBuffer().print();
-    myParser.printBuffer();
-    myParser.analyseBuffer().print();
-    myParser.printBuffer();
-    myParser.analyseBuffer().print();
-    myParser.printBuffer();
-    myParser.analyseBuffer().print();
-    myParser.printBuffer();
-    myParser.analyseBuffer().print();
-    myParser.printBuffer();
-    myParser.analyseBuffer().print();
-    myParser.printBuffer();
-    myParser.analyseBuffer().print();
-    myParser.printBuffer();
-    myParser.analyseBuffer().print();
-    myParser.printBuffer();
-    myParser.analyseBuffer().print();
-    myParser.printBuffer();
-    myParser.analyseBuffer().print();
-    return 0;
-}
+//     myParser.printBuffer();
+//     myParser.analyseBuffer().print();
+//     myParser.printBuffer();
+//     myParser.analyseBuffer().print();
+//     myParser.printBuffer();
+//     myParser.analyseBuffer().print();
+//     myParser.printBuffer();
+//     myParser.analyseBuffer().print();
+//     myParser.printBuffer();
+//     myParser.analyseBuffer().print();
+//     myParser.printBuffer();
+//     myParser.analyseBuffer().print();
+//     myParser.printBuffer();
+//     myParser.analyseBuffer().print();
+//     myParser.printBuffer();
+//     myParser.analyseBuffer().print();
+//     myParser.printBuffer();
+//     myParser.analyseBuffer().print();
+//     myParser.printBuffer();
+//     myParser.analyseBuffer().print();
+//     myParser.printBuffer();
+//     myParser.analyseBuffer().print();
+//     myParser.printBuffer();
+//     myParser.analyseBuffer().print();
+//     return 0;
+// }
 
-int testParseSerial(){
+// int testParseSerial(){
 
-    MessageParser myParser;
-    Serial serial("/dev/ttyACM0",9600);
-    while(true){
-        try
-        {
-    myParser.addCharToBuffer(serial.readChar());
-    myParser.analyseBuffer().print();
-        }
-        catch(boost::system::system_error& e)
-        {
-            //std::cout<<"Error: "<<e.what()<<std::endl;
-        }
-    }
-    return 0;
-}
+//     MessageParser myParser;
+//     Serial serial("/dev/ttyACM0",9600);
+//     while(true){
+//         try
+//         {
+//     myParser.addCharToBuffer(serial.readChar());
+//     CommandData command_data = myParser.analyseBuffer(); 
+//     std::cout << command_data << std::endl;
+//         }
+//         catch(boost::system::system_error& e)
+//         {
+//             //std::cout<<"Error: "<<e.what()<<std::endl;
+//         }
+//     }
+//     return 0;
+// }
 
 int main(int argc, char* argv[])
 {
-   return testParseSerial();
+    try{
+    Hali* hali = new Hali();
+    std::thread updater_thread(&Hali::updater,hali);
+    while(true){
+
+    }
+    }
+    catch (std::exception e)
+    {
+        std::cout << e.what() << std::endl;
+    }
 }
 

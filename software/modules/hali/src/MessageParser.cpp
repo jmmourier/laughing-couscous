@@ -43,14 +43,14 @@ CommandData MessageParser::analyseBuffer(){
         else if(position_of_first_split_char == std::string::npos || 
             position_of_first_split_char > position_of_end_char) {
             std::cout << "[MessageParser] no split char found during analyse" << std::endl;
-            returned_command_data.command = buffer_.substr(0,position_of_end_char);
+            returned_command_data.command_ = buffer_.substr(0,position_of_end_char);
             buffer_.erase(0,position_of_end_char+1);
         }
         else {
-            returned_command_data.command = buffer_.substr(0,position_of_first_split_char);
+            returned_command_data.command_ = buffer_.substr(0,position_of_first_split_char);
 
             if(position_of_end_char > position_of_first_split_char + 1){
-                returned_command_data.arguments.emplace_back(buffer_.substr(position_of_first_split_char + 1 , position_of_end_char - position_of_first_split_char - 1));
+                returned_command_data.arguments_.emplace_back(buffer_.substr(position_of_first_split_char + 1 , position_of_end_char - position_of_first_split_char - 1));
             }
 
             buffer_.erase(0,position_of_end_char + 1);
@@ -90,9 +90,9 @@ bool MessageParser::isCharAllowed(char testedChar){
 
 std::string MessageParser::createMessage(CommandData dataToSend){
     std::string messageToSend;
-    messageToSend += dataToSend.command;
+    messageToSend += dataToSend.command_;
     messageToSend += splitChar_;
-    messageToSend += (!dataToSend.arguments.empty()) ? dataToSend.arguments.at(0) : "";
+    messageToSend += (!dataToSend.arguments_.empty()) ? dataToSend.arguments_.at(0) : "";
     messageToSend += endChar_;
     return messageToSend;
 }

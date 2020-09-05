@@ -1,14 +1,16 @@
+#ifndef HALI_H
+#define HALI_H
+
 #include "MessageParser.h"
 #include "Serial.h"
 #include "CommandInterpreter.h"
 
-class hali{
+class Hali{
 public :    
-    hali();
+    Hali();
 
-    void startUpdaterThread();
-    void stopUpdaterThread();
-
+    void updater();
+    
     int getMd25Revision();
     int getBatteryVoltage();
 
@@ -16,12 +18,15 @@ public :
 
 
 private : 
-    void updater();
-    void readFirmware();
-    void writeFirmware();
+
+    void sendFirmware();
 
     Serial serial_;
     MessageParser message_parser_;
     CommandInterpreter command_interpreter_;    
-
+    
+    int md25Revision_ = 0;
+    int md25Voltage_ = 0; 
 };
+
+#endif // HALI_H

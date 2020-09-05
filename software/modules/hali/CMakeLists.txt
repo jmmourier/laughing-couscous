@@ -1,4 +1,4 @@
-project(couscous_hali 
+project(couscous_module_hali 
         VERSION 1.0
         LANGUAGES CXX
         )
@@ -17,7 +17,7 @@ list(APPEND SOURCES
     src/Serial.cpp
     src/MessageParser.cpp
     src/CommandInterpreter.cpp
-    #src/hali.cpp
+    src/Hali.cpp
     )
 
 list(APPEND TESTS
@@ -45,5 +45,4 @@ target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
 # Tests Binaries
 add_executable(hali_example_exe ${TESTS})
 target_link_libraries(hali_example_exe ${PROJECT_NAME})
-
 

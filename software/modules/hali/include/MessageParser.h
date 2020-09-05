@@ -1,20 +1,11 @@
+#ifndef HALI_MESSAGE_PARSER_H
+#define HALI_MESSAGE_PARSER_H
+
 #include <string>
 #include <vector>
 #include <iostream>
 
-struct CommandData{
-    void print(){
-        std::string printMsg;
-        printMsg += "cmd: ";
-        printMsg += (command.empty()) ? "no command" : command; 
-        printMsg += " , args ";
-        printMsg += (arguments.empty()) ? "no args" : arguments.at(0);
-        std::cout << printMsg << std::endl;
-    }
-
-    std::string command;
-    std::vector<std::string> arguments;
-};
+#include "CommandData.h"
 
 class MessageParser
 {
@@ -42,3 +33,5 @@ private:
     char splitChar_ = ':';
     char endChar_ = ';';
 };
+
+#endif // HALI_MESSAGE_PARSER_H

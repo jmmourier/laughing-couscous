@@ -1,3 +1,6 @@
+#ifndef HALI_SERIAL_H
+#define HALI_SERIAL_H
+
 #include <boost/asio.hpp>
 
 class Serial
@@ -39,3 +42,5 @@ private:
     boost::asio::io_service io;
     boost::asio::serial_port serial;
 };
+
+#endif // HALI_SERIAL_H
