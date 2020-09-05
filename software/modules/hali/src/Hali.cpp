@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Hali.h"
 
 Hali::Hali():
@@ -13,6 +14,7 @@ void Hali::updater(){
         message_parser_.addCharToBuffer(serial_.readChar());
         CommandData command_data = message_parser_.analyseBuffer();
         if(!command_data.command_.empty()){
+            std::cout << "data received : " << command_data << std::endl; 
             //command_interpreter_.analyse(command_data);
         }
     }
