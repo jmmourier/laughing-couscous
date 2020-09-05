@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.10)
-
 project(couscous_hali 
         VERSION 1.0
         )
@@ -11,6 +9,8 @@ find_package(Boost
             REQUIRED #crash if not found 
             COMPONENTS system
             )
+
+file(GLOB_RECURSE HEADERS include/**.h src/**.h test/**.h)
 
 list(APPEND SOURCES 
     test/main.cpp
