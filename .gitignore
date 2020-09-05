@@ -1,2 +1,10 @@
+#build folders
 **/build/
+**/cmake-build-debug/
+
+#editors configs
 **/.vscode/
+**/.idea/
+
+#binaries folders
+**/bin/
