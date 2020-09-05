@@ -1,3 +1,6 @@
+#ifndef MD25_H
+#define MD25_H
+
 #include "Arduino.h"
 
 enum motorId {
@@ -37,3 +40,5 @@ private:
     unsigned int timeout_duration_ = 1000;
     bool timeout_arose = false;
 };
+
+#endif //MD25_H
