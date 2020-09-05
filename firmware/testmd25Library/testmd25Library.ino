@@ -11,6 +11,8 @@ void setup(){
 void loop(){
     md25_.updateElectricalData();
     delay(10);
-    Serial.println(md25_.getVoltage());
+    Serial.print("md25voltage:");
+    Serial.print(md25_.getVoltage());
+    Serial.println(";");
     delay(1000);
 }
