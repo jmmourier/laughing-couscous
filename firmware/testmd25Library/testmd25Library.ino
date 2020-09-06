@@ -23,4 +23,11 @@ void loop(){
     Serial.print(md25_.getEncoder(motor2));
     Serial.println(";");
     delay(1000);
+    if(Serial.available()){
+        Serial.print("Received:");
+        while(Serial.available()){
+            Serial.print(Serial.read());
+        }
+        Serial.print(";");
+    }
 }
