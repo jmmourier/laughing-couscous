@@ -6,6 +6,19 @@
 #include <iostream>
 
 struct CommandData{
+
+    CommandData(){}
+
+    CommandData(std::string command, std::vector<std::string> arguments):
+    command_(command),
+    arguments_(arguments)
+    {}
+    
+    CommandData(std::string command, std::string arguments):
+    command_(command),
+    arguments_{arguments}
+    {}
+
     void print(){
         std::string printMsg;
         printMsg += "cmd: ";
