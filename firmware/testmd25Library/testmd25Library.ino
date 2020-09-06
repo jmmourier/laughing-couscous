@@ -28,6 +28,6 @@ void loop(){
         while(Serial.available()){
             Serial.print(Serial.read());
         }
-        Serial.print(";");
+        Serial.println(";");
     }
 }
