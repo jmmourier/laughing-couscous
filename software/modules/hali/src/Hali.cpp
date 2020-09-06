@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+
 #include "Hali.h"
 
 Hali::Hali():
@@ -42,9 +44,9 @@ int Hali::getBatteryVoltage(){
     return md25Voltage_;
 }
 
-
 void Hali::setMd25Speed(int speed1, int speed2){
-
+    serial_.writeString(message_parser_.createMessage(CommandData("spd1",std::to_string(speed1))));
+    serial_.writeString(message_parser_.createMessage(CommandData("spd2",std::to_string(speed2))));
 }
 
 void Hali::sendFirmware(){

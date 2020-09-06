@@ -28,6 +28,7 @@ public:
 
 private:
     bool isCharAllowed(char testedChar);
+
     std::string buffer_;
     const int buffer_allocation_size_;
     char splitChar_ = ':';
