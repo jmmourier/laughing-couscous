@@ -1,6 +1,7 @@
 #include <iostream>
 #include <exception>
 #include <thread>
+#include <chrono>
 
 #include "Hali.h"
 
@@ -151,8 +152,11 @@ int main(int argc, char* argv[])
     try{
     Hali* hali = new Hali();
     std::thread updater_thread(&Hali::updater,hali);
+    std::chrono::milliseconds timespan(500); // or whatever
     while(true){
+        std::cout << "md25 voltage : " << hali->getBatteryVoltage() << std::endl;
 
+        std::this_thread::sleep_for(timespan);
     }
     }
     catch (std::exception e)
