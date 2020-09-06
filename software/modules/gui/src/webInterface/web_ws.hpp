@@ -5,7 +5,7 @@
 #include "messages_handler.h"
 
 int start_server(messages_handler mh);
-
+void test_send(void);
 
 #endif /* WEB_WS_HPP */
 

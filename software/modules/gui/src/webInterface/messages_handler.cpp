@@ -3,9 +3,9 @@
 #include <ctime>
 
 
-//messages_handler::messages_handler(void) {
-//
-//}
+messages_handler::messages_handler(registry r) {
+
+}
 
 void messages_handler::handle_message(const std::string msg_str, std::string &ret){
     std::cout << "event receive "<<msg_str<<std::endl;
@@ -28,7 +28,7 @@ void messages_handler::handle_message(const std::string msg_str, std::string &re
     } else if (msg_str.compare("get_time")==0){
         time_t now = time(0);
         tm *ltm = localtime(&now);
-        std::string timehms = "time:" + std::to_string(ltm->tm_hour) +"h"+std::to_string(ltm->tm_min)+"."+std::to_string(ltm->tm_sec);
+        std::string timehms = "time:" + std::to_string(ltm->tm_hour) +"h "+std::to_string(ltm->tm_min)+"m "+std::to_string(ltm->tm_sec)+"s";
         ret = timehms;
     }
     else{
