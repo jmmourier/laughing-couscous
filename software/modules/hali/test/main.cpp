@@ -153,10 +153,30 @@ int main(int argc, char* argv[])
     Hali* hali = new Hali();
     std::thread updater_thread(&Hali::updater,hali);
     std::chrono::milliseconds timespan(500); // or whatever
+    bool further = true;
     while(true){
         std::cout << "md25 voltage  : " << hali->getBatteryVoltage() << std::endl;
         std::cout << "md25 encoder1 : " << hali->getEncoder(MotorIdEnum::motor1) << std::endl;
         std::cout << "md25 encoder2 : " << hali->getEncoder(MotorIdEnum::motor2) << std::endl;
+
+        if(further){
+            if(hali->getEncoder(motor1)<1000){
+                hali->setMd25Speed(127+30,127+30);
+            }
+            else
+            {
+                further = false;
+            }
+        }
+        else{
+            if(hali->getEncoder(motor1)>0){
+                hali->setMd25Speed(127-30,127-30);
+            }
+            else
+            {
+                further = true;
+            }
+        }
 
         std::this_thread::sleep_for(timespan);
     }

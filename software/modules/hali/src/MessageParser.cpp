@@ -15,7 +15,7 @@ void MessageParser::addCharToBuffer(char char_to_add){
     }
     else
     {
-        std::cout << "[MessageParser] forbidden char received" << std::endl;
+        //std::cout << "[MessageParser] forbidden char received" << std::endl;
     }
 }
 
@@ -25,24 +25,24 @@ CommandData MessageParser::analyseBuffer(){
     std::size_t position_of_end_char = buffer_.find_first_of(endChar_);
     
     if(position_of_end_char == std::string::npos){
-        std::cout << "[MessageParser] no end char found during analyse" << std::endl;
+        //std::cout << "[MessageParser] no end char found during analyse" << std::endl;
     }
     else
     {   
-        std::cout << "[MessageParser] end char found during analyse" << std::endl;    
+        //std::cout << "[MessageParser] end char found during analyse" << std::endl;    
         std::size_t position_of_first_split_char = buffer_.find_first_of(splitChar_);
 
         if(position_of_end_char == 0){
-            std::cout << "[MessageParser] message is empty" << std::endl;
+            //std::cout << "[MessageParser] message is empty" << std::endl;
             buffer_.erase(0,1);
         }
         else if(position_of_first_split_char == 0) {
-            std::cout << "[MessageParser] no command in message" << std::endl;
+            //std::cout << "[MessageParser] no command in message" << std::endl;
             buffer_.erase(0,position_of_end_char+1);
         }
         else if(position_of_first_split_char == std::string::npos || 
             position_of_first_split_char > position_of_end_char) {
-            std::cout << "[MessageParser] no split char found during analyse" << std::endl;
+            //std::cout << "[MessageParser] no split char found during analyse" << std::endl;
             returned_command_data.command_ = buffer_.substr(0,position_of_end_char);
             buffer_.erase(0,position_of_end_char+1);
         }

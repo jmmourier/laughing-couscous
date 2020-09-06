@@ -1,4 +1,5 @@
 #include <boost/asio.hpp>
+#include <iostream>
 #include "Serial.h"
 
 Serial::Serial(std::string port, unsigned int baud_rate)
@@ -9,6 +10,7 @@ Serial::Serial(std::string port, unsigned int baud_rate)
 
 void Serial::writeString(std::string s)
 {
+    std::cout << "writing : " << s << std::endl;
     boost::asio::write(serial,boost::asio::buffer(s.c_str(),s.size()));
 }
 
