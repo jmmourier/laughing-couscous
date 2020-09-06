@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 
-enum motorId {
+enum MotorIdEnum {
     motor1,
     motor2
 };
@@ -17,7 +17,7 @@ public :
     void updateRevision();
 
     void setMode(char mode);
-    void setSpeed(motorId id_motor_requested, int speed);
+    void setSpeed(MotorIdEnum id_motor_requested, int speed);
     void setAcceleration(char acceleration);
 
     void resetEncoder();
@@ -25,9 +25,9 @@ public :
     bool hasTimeOutArise();
     void clearTimeout();
     
-    long getEncoder(motorId id_motor_requested);
+    long getEncoder(MotorIdEnum id_motor_requested);
     int getVoltage();
-    int getCurrent(motorId id_motor_requested);
+    int getCurrent(MotorIdEnum id_motor_requested);
 
 private:
     HardwareSerial* serial_port_;

@@ -91,7 +91,7 @@ void md25::setMode(char mode){
     serial_port_->write(mode);
 }
 
-void md25::setSpeed(motorId id_motor_requested, int speed){
+void md25::setSpeed(MotorIdEnum id_motor_requested, int speed){
     serial_port_->write(CMD);
     if (id_motor_requested ==  motor1)
     {
@@ -127,7 +127,7 @@ void md25::clearTimeout(){
     timeout_arose = false;
 }
 
-long md25::getEncoder(motorId id_motor_requested){
+long md25::getEncoder(MotorIdEnum id_motor_requested){
     if (id_motor_requested ==  motor1)
     {
         return encoder_motor1_;
@@ -142,7 +142,7 @@ int md25::getVoltage(){
     return voltage_;
 }
 
-int md25::getCurrent(motorId id_motor_requested){
+int md25::getCurrent(MotorIdEnum id_motor_requested){
     if (id_motor_requested ==  motor1)
     {
         return current_motor1_;
