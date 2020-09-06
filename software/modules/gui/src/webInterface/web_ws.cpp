@@ -5,6 +5,20 @@ using namespace std;
 //messages_handler mh;
 using WsServer = SimpleWeb::SocketServer<SimpleWeb::WS>;
 
+void test_send(void){
+    auto send_stream = make_shared<WsServer::SendStream>();
+    *send_stream << "salut";
+    shared_ptr<WsServer::Connection> connection;
+    connection->send(send_stream, [](const SimpleWeb::error_code &ec) {
+        if(ec) {
+            cout << "Server: Error sending message. " <<
+                 // See http://www.boost.org/doc/libs/1_55_0/doc/html/boost_asio/reference.html, Error Codes for error code meanings
+                 "Error: " << ec << ", error message: " << ec.message() << endl;
+        }
+    });
+    cout << "Server: Sending message \"" <<  "\" to " << connection.get() << endl;
+}
+
 int start_server(messages_handler mh) {
     // WebSocket (WS)-server at port 8080 using 1 thread
     WsServer server;
@@ -16,7 +30,6 @@ int start_server(messages_handler mh) {
         cout << "Server: Message received: \"" << message_str << "\" from " << connection.get() << endl;
         std::string ret;
         mh.handle_message(message_str, ret);
-
         auto send_stream = make_shared<WsServer::SendStream>();
         *send_stream << ret;
         // connection->send is an asynchronous function
