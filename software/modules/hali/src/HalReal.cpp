@@ -74,7 +74,7 @@ int HalReal::getEncoder(MotorIdEnum id_motor){
     }
 }
 
-void HalReal::setMd25Speed(int speed1, int speed2){
+void HalReal::setMd25Speed(int speed_1, int speed_2){
     serial_.writeString(message_parser_.createMessage(CommandData("md25speed1",std::to_string(speed1))));
     serial_.writeString(message_parser_.createMessage(CommandData("md25speed2",std::to_string(speed2))));
 }

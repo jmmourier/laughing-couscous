@@ -16,7 +16,7 @@ public :
     virtual int getBatteryVoltage() {};
     virtual int getEncoder(MotorIdEnum id_motor) = 0;
 
-    virtual void setMd25Speed(int speed1, int speed2) = 0;
+    virtual void setMd25Speed(int speed_1, int speed_2) = 0;
 
 private : 
 

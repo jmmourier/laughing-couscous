@@ -25,6 +25,12 @@ int HalSimu::getEncoder(MotorIdEnum id_motor){
     return 0;
 }
 
-void HalSimu::setMd25Speed(int speed1, int speed2){
-    // todo
+void HalSimu::setMd25Speed(int speed_1, int speed_2){
+    updateEncoder(); 
+    saved_speed_1_ = speed_1;
+    saved_speed_2_ = speed_2;
+}
+
+void HalSimu::updateEncoder(){
+
 }
