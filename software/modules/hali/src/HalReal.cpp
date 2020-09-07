@@ -38,16 +38,16 @@ void HalReal::updater(){
             switch (hash(command_data.command_.c_str()))
             {
             case hash("md25revision"):
-                md25Revision_ = argument_received;
+                md25_revision_ = argument_received;
                 break;
             case hash("md25voltage"):
-                md25Voltage_ = argument_received;
+                md25_voltage_ = argument_received;
                 break;
             case hash("md25encoder1"):
-                md25Encoder1_ = argument_received;
+                md25_encoder_1_ = argument_received;
                 break;
             case hash("md25encoder2"):
-                md25Encoder2_ = argument_received;
+                md25_encoder_2_ = argument_received;
                 break;
             default:
                 break;
@@ -58,23 +58,23 @@ void HalReal::updater(){
 }
 
 int HalReal::getMd25Revision(){
-    return md25Revision_;
+    return md25_revision_;
 }
 
 int HalReal::getBatteryVoltage(){
-    return md25Voltage_;
+    return md25_voltage_;
 }
 
 int HalReal::getEncoder(MotorIdEnum id_motor){
     if(id_motor == motor1){
-        return md25Encoder1_;
+        return md25_encoder_1_;
     }
     else {
-        return md25Encoder2_;
+        return md25_encoder_2_;
     }
 }
 
 void HalReal::setMd25Speed(int speed_1, int speed_2){
-    serial_.writeString(message_parser_.createMessage(CommandData("md25speed1",std::to_string(speed1))));
-    serial_.writeString(message_parser_.createMessage(CommandData("md25speed2",std::to_string(speed2))));
+    serial_.writeString(message_parser_.createMessage(CommandData("md25speed1",std::to_string(speed_1))));
+    serial_.writeString(message_parser_.createMessage(CommandData("md25speed2",std::to_string(speed_2))));
 }
