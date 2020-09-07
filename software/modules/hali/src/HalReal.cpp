@@ -1,9 +1,9 @@
 #include <iostream>
 #include <string>
 
-#include "Hali.h"
+#include "HalReal.h"
 
-Hali::Hali():
+HalReal::HalReal():
     serial_("/dev/ttyACM0",9600),
     message_parser_(),
     command_interpreter_()
@@ -16,7 +16,7 @@ constexpr unsigned int hash(const char* str, int h = 0)
     return !str[h] ? 5381 : (hash(str, h+1)*33) ^ str[h];
 }
 
-void Hali::updater(){
+void HalReal::updater(){
     while(true){
         message_parser_.addCharToBuffer(serial_.readChar());
         CommandData command_data = message_parser_.analyseBuffer();
@@ -57,15 +57,15 @@ void Hali::updater(){
     }
 }
 
-int Hali::getMd25Revision(){
+int HalReal::getMd25Revision(){
     return md25Revision_;
 }
 
-int Hali::getBatteryVoltage(){
+int HalReal::getBatteryVoltage(){
     return md25Voltage_;
 }
 
-int Hali::getEncoder(MotorIdEnum id_motor){
+int HalReal::getEncoder(MotorIdEnum id_motor){
     if(id_motor == motor1){
         return md25Encoder1_;
     }
@@ -74,11 +74,7 @@ int Hali::getEncoder(MotorIdEnum id_motor){
     }
 }
 
-void Hali::setMd25Speed(int speed1, int speed2){
+void HalReal::setMd25Speed(int speed1, int speed2){
     serial_.writeString(message_parser_.createMessage(CommandData("md25speed1",std::to_string(speed1))));
     serial_.writeString(message_parser_.createMessage(CommandData("md25speed2",std::to_string(speed2))));
-}
-
-void Hali::sendFirmware(){
-
 }

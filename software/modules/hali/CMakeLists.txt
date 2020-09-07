@@ -17,7 +17,8 @@ list(APPEND SOURCES
     src/Serial.cpp
     src/MessageParser.cpp
     src/CommandInterpreter.cpp
-    src/Hali.cpp
+    src/HalReal.cpp
+    src/HalSimu.cpp
     )
 
 list(APPEND TESTS

@@ -4,6 +4,8 @@
 #include <chrono>
 
 #include "Hali.h"
+#include "HalReal.h"
+#include "HalSimu.h"
 
 // #include "../src/Serial.h"
 // #include "../src/MessageParser.h"
@@ -150,7 +152,23 @@
 int main(int argc, char* argv[])
 {
     try{
-    Hali* hali = new Hali();
+    Hali* hali;
+    if(argc > 1){
+        if(std::string(argv[1]) == "-r"){
+            auto realhali = new HalReal();
+            hali = realhali;
+        }
+        else{
+            auto realhali = new HalSimu();
+            hali = realhali;
+        }
+    }
+    else
+    {
+        auto realhali = new HalSimu();
+        hali = realhali;
+    }
+    
     std::thread updater_thread(&Hali::updater,hali);
     std::chrono::milliseconds timespan(500); // or whatever
     bool further = true;
