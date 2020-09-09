@@ -27,7 +27,7 @@ int start_server(messages_handler mh) {
     cout << "server started @"<<server.config.port <<endl;
     echo.on_message = [&mh](shared_ptr<WsServer::Connection> connection, shared_ptr<WsServer::Message> message) {
         auto message_str = message->string();
-        cout << "Server: Message received: \"" << message_str << "\" from " << connection.get() << endl;
+        //cout << "Server: Message received: \"" << message_str << "\" from " << connection.get() << endl;
         std::string ret;
         mh.handle_message(message_str, ret);
         auto send_stream = make_shared<WsServer::SendStream>();
@@ -40,7 +40,7 @@ int start_server(messages_handler mh) {
                      "Error: " << ec << ", error message: " << ec.message() << endl;
             }
         });
-        cout << "Server: Sending message \"" << ret << "\" to " << connection.get() << endl;
+        //cout << "Server: Sending message \"" << ret << "\" to " << connection.get() << endl;
     };
 
     echo.on_open = [](shared_ptr<WsServer::Connection> connection) {

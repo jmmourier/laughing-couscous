@@ -3,12 +3,9 @@
 #include <ctime>
 
 
-messages_handler::messages_handler(registry r) {
-
-}
 
 void messages_handler::handle_message(const std::string msg_str, std::string &ret){
-    std::cout << "event receive "<<msg_str<<std::endl;
+    //std::cout << "event receive "<<msg_str<<std::endl;
     if(msg_str.compare("get_bat_voltage")==0){
         ret = "bat_voltage:12.3 fake";
     } else if (msg_str.compare("get_status")==0) {
@@ -32,7 +29,7 @@ void messages_handler::handle_message(const std::string msg_str, std::string &re
         ret = timehms;
     }
     else{
-        ret = "unknown command";
+        ret = "messages handler: unknown command";
     }
 }
 
