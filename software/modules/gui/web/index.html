@@ -95,7 +95,7 @@
 
   window.setInterval(function(){
     ws.send("get_bat_voltage");
-    ws.send("get_status");
+    ws.send("get_robot_status");
     ws.send("get_time");
     ws.send("get_avr_status");
   }, 1000);
