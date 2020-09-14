@@ -9,6 +9,7 @@ void MessageParser::addCharToBuffer(char char_to_add){
         if(buffer_.size() >= buffer_allocation_size_)
         {
             std::cout << "[MessageParser] buffer overflow" << std::endl;
+            std::cout << "[MessageParser] buffer : " << buffer_ << std::endl;
             buffer_ = "";
         }
         buffer_.push_back(char_to_add);
