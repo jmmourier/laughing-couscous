@@ -34,7 +34,8 @@ void loop() {
             Serial.print("parsed command id : ");
             Serial.print(command_data.command_);
             Serial.print(" argument : ");
-            Serial.println(command_data.argument_,DEC);
+            Serial.print(command_data.argument_,DEC);
+            Serial.println(";");
         }
     }
 
