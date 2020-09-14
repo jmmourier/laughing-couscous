@@ -38,7 +38,7 @@ void loop() {
         }
     }
 
-    if(millis() - md25_update_time > md25_update_time){
+    if(millis() - md25_update_time > md25_delay_update){
         md25_.updateElectricalData();
         delay(10);
         md25_.updateEncorder();
