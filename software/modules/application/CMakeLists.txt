@@ -26,7 +26,7 @@ add_library(
  #add_subdirectory(../gui)
 #find_package(robotwebui)
 target_link_libraries (${PROJECT_NAME} LINK_PUBLIC robotwebui)
-
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC couscous_module_hali)
 
 target_include_directories(
         ${PROJECT_NAME}
