@@ -2,14 +2,14 @@
 
 #include "MessageParser.h"
 
-MessageParser::MessageParser():buffer_allocation_size_(50){}
+MessageParser::MessageParser():buffer_allocation_size_(150){}
 
 void MessageParser::addCharToBuffer(char char_to_add){
     if(isCharAllowed(char_to_add)){
         if(buffer_.size() >= buffer_allocation_size_)
         {
-            std::cout << "[MessageParser] buffer overflow" << std::endl;    
-            buffer_.erase(buffer_.begin());
+            std::cout << "[MessageParser] buffer overflow" << std::endl;
+            buffer_ = "";
         }
         buffer_.push_back(char_to_add);
     }
