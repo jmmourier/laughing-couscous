@@ -1,4 +1,4 @@
-#include "md25.h"
+#include "Md25.h"
 
 // Values of 0 being sent using serial.write() have to be cast as a byte to stop them being misinterpereted as NULL
 // This is a bug with arduino 1

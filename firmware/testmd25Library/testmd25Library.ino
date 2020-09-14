@@ -1,4 +1,4 @@
-#include "md25/md25.cpp"
+#include "Md25/Md25.cpp"
 
 md25 md25_(Serial1);
 
