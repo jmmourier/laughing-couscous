@@ -5,37 +5,41 @@ project(application1
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
-find_package(Boost 
-            1.65.1 #version
-            REQUIRED #crash if not found 
-            COMPONENTS system
-            )
+find_package(Boost
+        1.65.1 #version
+        REQUIRED #crash if not found
+        COMPONENTS system
+        )
 
 file(GLOB_RECURSE HEADERS include/**.h src/**.h)
 
 list(APPEND SOURCES
         src/main.cpp
-    )
+        )
 
 # Library
 add_library(
-    ${PROJECT_NAME}
-    STATIC ${SOURCES}
+        ${PROJECT_NAME}
+        STATIC ${SOURCES}
 )
+
+ #add_subdirectory(../gui)
+#find_package(robotwebui)
+target_link_libraries (${PROJECT_NAME} LINK_PUBLIC robotwebui)
+
 
 target_include_directories(
-    ${PROJECT_NAME}
-    PUBLIC 
-    include
-    PRIVATE
-    src
-    ${Boost_INCLUDE_DIRS}
+        ${PROJECT_NAME}
+        PUBLIC
+        #include
+        #PRIVATE
+        src
+        ${Boost_INCLUDE_DIRS}
 )
 
-target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
-
+#target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
 
 # Tests Binaries
 add_executable(application1_exe  ${SOURCES})
 target_link_libraries(application1_exe ${PROJECT_NAME})
-
+#target_link_libraries(application1_exe robotwebui)

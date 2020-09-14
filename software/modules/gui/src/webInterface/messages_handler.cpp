@@ -2,8 +2,6 @@
 #include <iostream>
 #include <ctime>
 
-
-
 void messages_handler::handle_message(const std::string msg_str, std::string &ret){
     //std::cout << "event receive "<<msg_str<<std::endl;
     if(msg_str.compare("get_bat_voltage")==0){
