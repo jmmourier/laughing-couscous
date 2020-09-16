@@ -8,3 +8,4 @@ project(couscous
         )
 
 add_subdirectory(modules)
+add_subdirectory(application)

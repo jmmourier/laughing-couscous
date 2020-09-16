@@ -28,16 +28,12 @@ set(SRCS
         src/main.cpp
         src/webInterface/web_ws.cpp
         src/webInterface/messages_handler.cpp
-        src/hw_sim/hw_simulator.cpp
         )
 
 set(HEADERS
         src/webInterface/messages_handler.h
-        src/hw_sim/hw_simulator.h
         )
 
-#add_executable(robotwebui src/main.cpp src/webInterface/web_ws.cpp src/webInterface/messages_handler.cpp src/webInterface/messages_handler.h src/hw_sim/hw_simulator.cpp src/hw_sim/hw_simulator.h)
-#add_executable( robotwebui ${SRCS} ${HEADERS})
 add_library(robotwebui ${SRCS} ${HEADERS})
 target_include_directories(robotwebui  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

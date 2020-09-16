@@ -1,6 +1,13 @@
 #include "messages_handler.h"
+
 #include <iostream>
 #include <ctime>
+
+
+//void messages_handler::cbtest(void  (*f)(void){
+void messages_handler::cbtest( void (*f)(int)){
+    (*f)(123);
+}
 
 void messages_handler::handle_message(const std::string msg_str, std::string &ret){
     //std::cout << "event receive "<<msg_str<<std::endl;
