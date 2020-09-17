@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  laughing-couscous-dev:
+    image: laughing-couscous-img
+    container_name: laughing-couscous
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+    security_opt:
+      - seccomp:unconfined
+    cap_add:
+      - SYS_PTRACE
+    stdin_open: true
+    privileged: true
+    tty: true
+    volumes:
+      - ../..:/root/laughing-couscous-dev:delegated
+      - ccache:/var/ccache
+      - vscode-server:/root/.vscode-server
+volumes:
+  ccache:
+    external: false
+  vscode-server:
+    external: false
