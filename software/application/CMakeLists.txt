@@ -1,3 +1,4 @@
+cmake_minimum_required (VERSION 3.0)
 project(application1
         VERSION 1.0
         LANGUAGES CXX
@@ -23,23 +24,16 @@ add_library(
         STATIC ${SOURCES}
 )
 
- #add_subdirectory(../gui)
-#find_package(robotwebui)
 target_link_libraries (${PROJECT_NAME} LINK_PUBLIC robotwebui)
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC couscous_module_hali)
+target_link_libraries (${PROJECT_NAME} LINK_PUBLIC couscous_module_hali)
 
 target_include_directories(
         ${PROJECT_NAME}
         PUBLIC
-        #include
-        #PRIVATE
         src
         ${Boost_INCLUDE_DIRS}
 )
 
-#target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
-
 # Tests Binaries
 add_executable(application1_exe  ${SOURCES})
 target_link_libraries(application1_exe ${PROJECT_NAME})
-#target_link_libraries(application1_exe robotwebui)
