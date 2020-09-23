@@ -8,3 +8,6 @@
 
 #binaries folders
 **/bin/
+
+#external libs folder
+software/external
