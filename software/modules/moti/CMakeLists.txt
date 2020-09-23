@@ -17,12 +17,12 @@ list(APPEND TESTS
 
 # Library
 add_library(
-    ${PROJECT_NAME}
+    ${PROJECT_NAME}_lib
     STATIC ${SOURCES}
 )
 
 target_include_directories(
-    ${PROJECT_NAME}
+    ${PROJECT_NAME}_lib
     PUBLIC 
     include
     PRIVATE
@@ -31,5 +31,5 @@ target_include_directories(
 
 # Tests Binaries
 add_executable(moti_example_exe ${TESTS})
-target_link_libraries(moti_example_exe ${PROJECT_NAME})
+target_link_libraries(moti_example_exe ${PROJECT_NAME}_lib)
 
