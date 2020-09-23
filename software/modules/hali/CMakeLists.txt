@@ -44,6 +44,6 @@ target_link_libraries(${PROJECT_NAME}_lib ${Boost_LIBRARIES})
 
 
 # Tests Binaries
-add_executable(hali_example_exe ${TESTS})
-target_link_libraries(hali_example_exe ${PROJECT_NAME}_lib)
+add_executable(hali_test ${TESTS})
+target_link_libraries(hali_test ${PROJECT_NAME}_lib)
 
