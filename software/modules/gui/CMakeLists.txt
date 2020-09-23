@@ -55,7 +55,7 @@ add_library(robotwebui ${SRCS} ${HEADERS})
 target_include_directories(robotwebui  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(robotwebui simple-websocket-server)
-target_link_libraries(robotwebui couscous_module_hali)
+target_link_libraries(robotwebui hali_lib)
 
 find_package(Boost 1.54.0 COMPONENTS system thread filesystem REQUIRED)
 target_link_libraries(robotwebui ${Boost_LIBRARIES})
