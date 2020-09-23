@@ -53,5 +53,11 @@ jobs:
  
       # Finally, we compile the sketch, using the FQBN that was set
       # in the build matrix.
-      - name: Compile Sketch
+      - name: Compile md25 lib test
+        run: arduino-cli compile --fqbn ${{ matrix.fqbn }} ./firmware/testmd25Library
+
+      - name: Compile parser lib test
+        run: arduino-cli compile --fqbn ${{ matrix.fqbn }} ./firmware/testMessageParserLibrary
+
+      - name: Compile main sketch
         run: arduino-cli compile --fqbn ${{ matrix.fqbn }} ./firmware/main
