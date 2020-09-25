@@ -21,13 +21,15 @@ RUN apt-get update \
     libssl-dev \ 
     libboost-all-dev
 
+### Install NodeJS
+RUN wget -qO- https://deb.nodesource.com/setup_12.x | bash
+RUN apt-get -y install nodejs
+
 RUN wget -O /usr/bin/protoc-gen-grpc-web \
     https://github.com/grpc/grpc-web/releases/download/1.0.7/protoc-gen-grpc-web-1.0.7-linux-x86_64 --no-check-certificate
-
 RUN chmod +x /usr/bin/protoc-gen-grpc-web
 
 WORKDIR /usr
-
 RUN wget https://github.com/clangd/clangd/releases/download/11.0.0-rc1/clangd-linux-11.0.0-rc1.zip --no-check-certificate
 RUN unzip clangd-linux-11.0.0-rc1.zip \
     && cp -r clangd_11.0.0-rc1/* . \
