@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+// option objc_class_prefix = "HLW";
+
+package web_service;
+
+service MotionService {
+  rpc startMove (SpeedRequest) returns (SpeedResponse) {}
+  rpc stopMove (Empty) returns (SpeedResponse) {}
+}
+
+message Empty{}
+
+message SpeedRequest {
+  double speed = 1;
+}
+
+message SpeedResponse {
+  double speed = 1;
+}
