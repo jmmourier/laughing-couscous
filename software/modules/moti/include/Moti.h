@@ -15,8 +15,8 @@ struct BaseSpeed
     BaseSpeed(float v_x_mps,float v_y_mps,float omega_radps) :
         v_x_mps_(v_x_mps),
         v_y_mps_(v_y_mps),
-        omega_radps(omega_radps) {};
-    float v_x_mps_, v_y_mps_, omega_radps;
+        omega_radps_(omega_radps) {};
+    float v_x_mps_, v_y_mps_, omega_radps_;
 };
 
 class Moti
