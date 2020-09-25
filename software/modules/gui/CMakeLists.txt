@@ -65,9 +65,9 @@ target_include_directories(robotwebui PRIVATE ${Boost_INCLUDE_DIR})
 set(_REFLECTION grpc++_reflection)
 set(_PROTOBUF_PROTOC $<TARGET_FILE:protobuf::protoc>)
 set(_GRPC_CPP_PLUGIN_EXECUTABLE $<TARGET_FILE:grpc_cpp_plugin>)
-set(GENERATED_GRPC_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/gens")
+set(GENERATED_GRPC_BACKEND_SOURCE_PATH "${CMAKE_CURRENT_BINARY_DIR}/generated")
 
-file(MAKE_DIRECTORY ${GENERATED_GRPC_SOURCES})
+file(MAKE_DIRECTORY ${GENERATED_GRPC_BACKEND_SOURCE_PATH})
 
 get_filename_component(robot_proto "src/protos/robot.proto" ABSOLUTE)
 get_filename_component(robot_proto_path "${robot_proto}" PATH)
@@ -82,15 +82,13 @@ function(protobuf_generate_grpc_cpp)
       get_filename_component(ABS_FIL ${FIL} ABSOLUTE)
       get_filename_component(FIL_WE ${FIL} NAME_WE)
       add_custom_command(
-        OUTPUT "${GENERATED_GRPC_SOURCES}/${FIL_WE}.grpc.pb.cc"
-              "${GENERATED_GRPC_SOURCES}/${FIL_WE}.grpc.pb.h"
-              "${GENERATED_GRPC_SOURCES}/${FIL_WE}.pb.cc"
-              "${GENERATED_GRPC_SOURCES}/${FIL_WE}.pb.h"
+        OUTPUT "${GENERATED_GRPC_BACKEND_SOURCE_PATH}/${FIL_WE}.grpc.pb.cc"
+              "${GENERATED_GRPC_BACKEND_SOURCE_PATH}/${FIL_WE}.grpc.pb.h"
+              "${GENERATED_GRPC_BACKEND_SOURCE_PATH}/${FIL_WE}.pb.cc"
+              "${GENERATED_GRPC_BACKEND_SOURCE_PATH}/${FIL_WE}.pb.h"
         COMMAND ${_PROTOBUF_PROTOC}
-        ARGS --grpc_out "${GENERATED_GRPC_SOURCES}"
-             --cpp_out "${GENERATED_GRPC_SOURCES}"
-        #      --js_out=import_style=commonjs:"${CMAKE_CURRENT_SOURCE_DIR}/src/app/src/gen"
-        #      --grpc-web_out=import_style=commonjs+dts,mode=grpcwebtext:"${CMAKE_CURRENT_SOURCE_DIR}/src/app/src/gen"
+        ARGS --grpc_out "${GENERATED_GRPC_BACKEND_SOURCE_PATH}"
+             --cpp_out "${GENERATED_GRPC_BACKEND_SOURCE_PATH}"
              -I "${robot_proto_path}"
              --plugin=protoc-gen-grpc="${_GRPC_CPP_PLUGIN_EXECUTABLE}"
              ${robot_proto}
@@ -111,8 +109,8 @@ list(APPEND SOURCES
 add_library(
         webserver
         STATIC ${SOURCES}
-        ${GENERATED_GRPC_SOURCES}/robot.grpc.pb.cc
-        ${GENERATED_GRPC_SOURCES}/robot.pb.cc
+        ${GENERATED_GRPC_BACKEND_SOURCE_PATH}/robot.grpc.pb.cc
+        ${GENERATED_GRPC_BACKEND_SOURCE_PATH}/robot.pb.cc
         ${WEB_SERVER_HEADERS}
 )
 
@@ -121,7 +119,7 @@ target_include_directories(
         PUBLIC  include
         src
         ${PROTOBUF_INCLUDE_DIR}
-        ${GENERATED_GRPC_SOURCES}
+        ${GENERATED_GRPC_BACKEND_SOURCE_PATH}
 )
 
 target_link_libraries(webserver
