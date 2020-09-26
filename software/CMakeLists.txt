@@ -19,3 +19,4 @@ project(couscous
 add_subdirectory(modules)
 add_subdirectory(application)
 add_subdirectory(external/grpc)
+add_subdirectory(external/googletest)
