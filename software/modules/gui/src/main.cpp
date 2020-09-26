@@ -1,15 +1,12 @@
+#include "WebServer.h"
 #include <iostream>
-#include "src/webInterface/web_ws.hpp"
-#include <thread>
-#include "webInterface/messages_handler.h"
+#include <memory>
 
 int main() {
 
-    messages_handler mh;
+  auto web_server = std::make_shared<WebServer>();
 
-    //run web interface
-    std::thread websockServer(start_server, mh);
+  web_server->start();
 
-    websockServer.join();
-    return 0;
+  return 0;
 }
