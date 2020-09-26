@@ -16,9 +16,19 @@ services:
     privileged: true
     tty: true
     volumes:
-      - ../..:/root/laughing-couscous-dev:delegated
+      - ../..:/workspace/laughing-couscous-dev:delegated
       - ccache:/var/ccache
       - vscode-server:/root/.vscode-server
+    ports: 
+      - 3000:3000
+  envoy:
+    build:
+      context: .
+      dockerfile: envoy.Dockerfile
+    depends_on:
+      - laughing-couscous-dev
+    ports: 
+      - 8080:8080
 volumes:
   ccache:
     external: false
