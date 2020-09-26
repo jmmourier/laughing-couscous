@@ -30,6 +30,6 @@ target_include_directories(
 )
 
 # Tests Binaries
-add_executable(moti_test ${TESTS})
-target_link_libraries(moti_test ${PROJECT_NAME}_lib)
+add_executable(${PROJECT_NAME}_test ${TESTS})
+target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME}_lib)
 
