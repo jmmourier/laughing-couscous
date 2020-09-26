@@ -25,12 +25,12 @@ public:
     Moti();
     MotorSpeed getMotorSpeedFromBaseSpeed(BaseSpeed base_speed);
 
-    void setWheelDiameter(float wheel_diameter_mm);
-    void setWheelDistance(float wheel_distance_mm);
+    void setWheelDiameter(float wheel_diameter_m);
+    void setWheelDistance(float wheel_distance_m);
     void setMaxWheelSpeed(float max_wheel_speed_radps);
 private:
-    float wheel_diameter_mm_ = 100.0;
-    float wheel_distance_mm_ = 253.0;
+    float wheel_diameter_m_ = 0.100;
+    float wheel_distance_m_ = 0.253;
     float max_wheel_speed_radps_ = 17.802; // 170 rpm <> 17,802 radps
 };
 
