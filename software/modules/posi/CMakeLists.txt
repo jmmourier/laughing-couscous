@@ -32,4 +32,4 @@ target_include_directories(
 
 # Tests Binaries
 add_executable(${PROJECT_NAME}_test ${TESTS})
-target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME}_lib)
+target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME}_lib gtest_main)
