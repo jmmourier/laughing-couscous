@@ -57,3 +57,21 @@ void loop() {
     }
 
 }
+
+void HandleCommands(CommandData command_data){
+    if(command_data.command_ == speedMotor1){
+        md25_.setSpeed(motor1,command_data.argument_);
+    }
+    else if( command_data.command_ == speedMotor2)
+    {
+        md25_.setSpeed(motor2,command_data.argument_);
+    }
+    else if(command_data.command_ == versionRevisionRequested)
+    {
+        md25_.updateRevision();
+        delay(10);
+        Serial.print("md25version:");
+        Serial.print(md25_.getRevision());
+        Serial.println(";");
+    }    
+}

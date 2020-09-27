@@ -152,3 +152,7 @@ int md25::getCurrent(MotorIdEnum id_motor_requested){
         return current_motor2_;
     }
 }
+
+int md25::getRevision(){
+    return (int) software_revision_;
+}

@@ -28,6 +28,7 @@ public :
     long getEncoder(MotorIdEnum id_motor_requested);
     int getVoltage();
     int getCurrent(MotorIdEnum id_motor_requested);
+    int getRevision();
 
 private:
     HardwareSerial* serial_port_;
