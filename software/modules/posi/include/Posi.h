@@ -1,11 +1,13 @@
 #ifndef POSI_H
 #define POSI_H
 
-#include <chrono>
+#include "IBaseTime.h"
+#include <memory>
 
 class Posi {
 public:
-  Posi(double &start_pos_x, double &start_pos_y, double &start_orientation);
+  explicit Posi(std::shared_ptr<IBaseTime> time_helper, double &start_pos_x,
+                double &start_pos_y, double &start_orientation);
 
   /**
    * @brief Return abs position and orientation
@@ -26,6 +28,7 @@ public:
   void updatePosition(int encoder1, int encoder2);
 
 private:
+  std::shared_ptr<IBaseTime> time_helper_;
   double abs_pos_x_;
   double abs_pos_y_;
   double orientation_;

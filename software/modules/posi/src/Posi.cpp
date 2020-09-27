@@ -6,10 +6,11 @@ const double SPACE_BETWEEN_WHEELS = 0.2;
 const double WHEEL_RADIUS_M = 0.1;
 const double WHEEL_PERIMETER = M_PI * 2 * WHEEL_RADIUS_M;
 
-Posi::Posi(double &start_pos_x, double &start_pos_y, double &start_orientation)
-    : abs_pos_x_(start_pos_x), abs_pos_y_(start_pos_y),
-      orientation_(start_orientation),
-      timestamp_(std::chrono::system_clock::now()) {}
+Posi::Posi(std::shared_ptr<IBaseTime> time_helper, double &start_pos_x,
+           double &start_pos_y, double &start_orientation)
+    : time_helper_(std::move(time_helper)), abs_pos_x_(start_pos_x),
+      abs_pos_y_(start_pos_y), orientation_(start_orientation),
+      timestamp_(time_helper_->getNow()) {}
 
 void Posi::getPosition(double &pos_x, double &pos_y,
                        double &orientation) const {
@@ -20,13 +21,11 @@ void Posi::getPosition(double &pos_x, double &pos_y,
 
 void Posi::updatePosition(int encoder1, int encoder2) {
 
-  auto time_now = std::chrono::system_clock::now();
+  auto time_now = time_helper_->getNow();
 
   // Diff since last updating position in second
-  auto delta_time_s = std::chrono::duration_cast<std::chrono::milliseconds>(
-                          time_now - timestamp_)
-                          .count() /
-                      1000;
+  auto delta_time_s =
+      time_helper_->getDeltaTimeMS(time_now - timestamp_) / 1000;
 
   // Reset timestamp
   timestamp_ = time_now;
