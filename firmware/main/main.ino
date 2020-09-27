@@ -15,6 +15,7 @@ void setup() {
     Serial.begin(9600);
 
     md25_.setMode(0);
+    md25_.resetEncoder();
 }
 
 void loop() {
