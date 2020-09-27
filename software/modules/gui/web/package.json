@@ -1,0 +1,46 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@grpc/grpc-js": "^1.1.7",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/jest": "^24.9.1",
+    "@types/node": "^12.12.62",
+    "@types/react": "^16.9.49",
+    "@types/react-dom": "^16.9.8",
+    "google-protobuf": "^3.13.0",
+    "grpc-web": "^1.2.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.3",
+    "typescript": "^3.7.5"
+  },
+  "scripts": {
+    "start": "npm run grpc && react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "grpc": "mkdir -p ./node_modules/generated_grpc_sources && ./node_modules/grpc-tools/bin/protoc -I ../src/protos --js_out=import_style=commonjs:./node_modules/generated_grpc_sources --grpc-web_out=import_style=commonjs+dts,mode=grpcwebtext:./node_modules/generated_grpc_sources --plugin=protoc-gen-grpc=./node_modules/grpc-tools/bin/grpc_node_plugin $(find ../src/protos -iname '*.proto')"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "grpc-tools": "^1.9.1"
+  }
+}
