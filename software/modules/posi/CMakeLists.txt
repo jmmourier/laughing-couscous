@@ -9,6 +9,8 @@ file(GLOB_RECURSE HEADERS include/**.h src/**.h test/**.h)
 
 list(APPEND SOURCES 
     src/Posi.cpp
+    src/RealTime.cpp
+    src/FakeTime.cpp
     )
 
 list(APPEND TESTS
