@@ -12,6 +12,48 @@ Posi::Posi(double &start_pos_x, double &start_pos_y, double &start_orientation)
       timestamp_(std::chrono::system_clock::now()) {}
 
 void Posi::getPosition(double &pos_x, double &pos_y,
-                       double &orientation) const {}
+                       double &orientation) const {
+  pos_x = abs_pos_x_;
+  pos_y = abs_pos_y_;
+  orientation = orientation_;
+}
 
-void Posi::updatePosition(int encoder1, int encoder2) {}
+void Posi::updatePosition(int encoder1, int encoder2) {
+
+  auto time_now = std::chrono::system_clock::now();
+
+  // Diff since last updating position in second
+  auto delta_time_s = std::chrono::duration_cast<std::chrono::milliseconds>(
+                          time_now - timestamp_)
+                          .count() /
+                      1000;
+
+  // Reset timestamp
+  timestamp_ = time_now;
+
+  // Convert ticks into angular speed
+  double speed_left_wheel_radps =
+      (WHEEL_PERIMETER * encoder1 / TICKS_PER_ROTATION);
+  double speed_right_wheel_radps =
+      (WHEEL_PERIMETER * encoder2 / TICKS_PER_ROTATION);
+
+  // Linear speed
+  double speed_left_wheel_ms = WHEEL_RADIUS_M * speed_left_wheel_radps;
+  double speed_right_wheel_ms = WHEEL_RADIUS_M * speed_right_wheel_radps;
+
+  // Average speed
+  double average_speed = (speed_left_wheel_ms + speed_right_wheel_ms) / 2;
+
+  // Delta positions
+  double delta_position_x = std::cos(orientation_) * average_speed;
+  double delta_position_y = std::sin(orientation_) * average_speed;
+
+  // Delta orientation
+  double delta_orientation =
+      (speed_left_wheel_ms - speed_right_wheel_ms) / SPACE_BETWEEN_WHEELS;
+
+  // Set new absolute positions and orientation
+  abs_pos_x_ = abs_pos_x_ + delta_position_x * delta_time_s;
+  abs_pos_y_ = abs_pos_y_ + delta_position_y * delta_time_s;
+  orientation_ = orientation_ + delta_orientation * delta_time_s;
+}
