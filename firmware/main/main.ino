@@ -28,6 +28,7 @@ void loop() {
         }
         if(input_char == message_parser.getEndChar()){
             CommandData command_data = message_parser.parse(buffer_);
+            HandleCommands(command_data);
             memset(buffer_, 0, sizeof(buffer_));
             buffer_fullfillness = 0;
 
