@@ -5,10 +5,10 @@ enum CommandsEnum{
     speedMotor1,
     speedMotor2,
     versionRevisionRequested,
-    reserved1,
-    reserved2,
-    reserved3,
-    CommandsEnumMax = reserved3
+    //reserved1,
+    //reserved2,
+    //reserved3,
+    CommandsEnumMax = versionRevisionRequested
 };
 
 struct CommandsMessage{
