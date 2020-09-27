@@ -37,7 +37,7 @@ private:
     int voltage_ = 0;
     int current_motor1_ = 0;
     int current_motor2_ = 0;
-    unsigned int timeout_duration_ = 1000;
+    unsigned int timeout_duration_ = 50;
     bool timeout_arose = false;
 };
 

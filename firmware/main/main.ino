@@ -31,11 +31,11 @@ void loop() {
             memset(buffer_, 0, sizeof(buffer_));
             buffer_fullfillness = 0;
 
-            Serial.print("parsed command id : ");
-            Serial.print(command_data.command_);
-            Serial.print(" argument : ");
-            Serial.print(command_data.argument_,DEC);
-            Serial.println(";");
+            // Serial.print("parsed command id : ");
+            // Serial.print(command_data.command_);
+            // Serial.print(" argument : ");
+            // Serial.print(command_data.argument_,DEC);
+            // Serial.println(";");
         }
     }
 
