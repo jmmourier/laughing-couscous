@@ -80,7 +80,7 @@ bool MessageParser::isCharAllowed(char testedChar){
     //we only keep ascii value, point, endChar and splitChar
     std::string allowedLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
     std::string allowedNumbers = "0123456789";
-    std::string allowedPonctuation = ".";
+    std::string allowedPonctuation = ".-";
 
     return (allowedLetters.find(testedChar,0) != std::string::npos ||
             allowedNumbers.find(testedChar,0) != std::string::npos ||
