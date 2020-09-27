@@ -13,6 +13,8 @@ unsigned int md25_delay_update = 300; // ms
 void setup() {
     Serial1.begin(38400);
     Serial.begin(9600);
+
+    md25_.setMode(0);
 }
 
 void loop() {
