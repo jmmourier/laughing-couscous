@@ -19,6 +19,12 @@ void Posi::getPosition(double &pos_x, double &pos_y,
   orientation = orientation_;
 }
 
+void Posi::setPosition(double pos_x, double pos_y, double orientation) {
+  abs_pos_x_ = pos_x;
+  abs_pos_y_ = pos_y;
+  orientation_ = orientation;
+}
+
 void Posi::updatePosition(int encoder1, int encoder2) {
 
   auto time_now = time_helper_->getNow();
