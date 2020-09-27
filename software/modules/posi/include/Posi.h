@@ -19,6 +19,15 @@ public:
   void getPosition(double &pos_x, double &pos_y, double &orientation) const;
 
   /**
+   * @brief reset the position to a given point and orientation
+   *
+   * @param pos_x
+   * @param pos_y
+   * @param orientation
+   */
+  void setPosition(double pos_x, double pos_y, double orientation);
+
+  /**
    * @brief Update the absolute position and orientation based on new encoders
    * value received from hali moodule
    *
