@@ -30,27 +30,36 @@ int main(int argc, char const *argv[])
 
     std::chrono::milliseconds main_update_loop_time(10); // or whatever
 
+    // add callback for order form GUI
+
     // actions 
     for(;;){
         //update positioning
-        cousous.posi_->updatePosition(couscous.hali_->getEncoder());
-
+        couscous.posi_->updatePosition(couscous.hali_->getEncoder());
+        
         //update mission        
+        int batteryVoltage = couscous.hali_->getBattery();
+        couscous.missi_->updateBattery(batteryVoltage);
+
         couscous.missi_->update(
-            couscous.hali_->getBatteryVoltage();
             couscous.posi_->getPosition();
+            couscous.navi_->hasPositionBeenReached();
             // [...]
-        );
+            );
+        couscous.missi_->setOder(couscous.gui->getRequest());
+        couscous.hali_->setSpeed(couscous.gui->getSpeedRequest());
+        couscous.posi_->setPosition(couscous.gui->getPositionRequest());
 
         // update navigation/motion
         couscous.navi_->updateTarget(couscous.missi_->getNavigationTaget());
-        couscous.hali_->setMd25Speed(couscous.navi_->getMotorSpeedTarget());
-
+        couscous.moti->setBaseSpeed(couscous.navi->getBaseSpeed());
+        couscous.hali_->setMd25Speed(couscous.moti->getMotorSpeed());
+        
         // update interface 
         couscous.gui_->updateInterfacePosition(couscous.posi_->getPosition());
         couscous.gui_->updateInterfaceEncoder();
         couscous.gui_->updateInterfaceBattery();
-        couscous.gui_->updateMissionStatus(couscous.missi_->getMissionStatus());
+        couscous.gui_->updateInterfaceMissionStatus(couscous.missi_->getMissionStatus());
 
         std::this_thread::sleep_for(main_update_loop_time);
     }
