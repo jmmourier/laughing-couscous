@@ -6,8 +6,8 @@
 double const DOUBLE_NEAR_FACTOR = 0.00001;
 
 TEST(PosiTest, whenGettingNewTicks_absolutePositionShouldBeUpdatedAccordingly) {
-  double start_pox_x = 1;
-  double start_pos_y = 1;
+  double start_pox_x = 0;
+  double start_pos_y = 0;
   double orientation = 0;
 
   // Simulates a delta time of 1000 ms
@@ -26,7 +26,7 @@ TEST(PosiTest, whenGettingNewTicks_absolutePositionShouldBeUpdatedAccordingly) {
 
   posi->getPosition(new_abs_pos_x, new_abs_pos_y, new_abs_orientation);
 
-  EXPECT_NEAR(new_abs_pos_x, 1.01396, DOUBLE_NEAR_FACTOR);
-  EXPECT_NEAR(new_abs_pos_y, 1, DOUBLE_NEAR_FACTOR);
+  EXPECT_NEAR(new_abs_pos_x, 0.01396, DOUBLE_NEAR_FACTOR);
+  EXPECT_NEAR(new_abs_pos_y, 0, DOUBLE_NEAR_FACTOR);
   EXPECT_NEAR(new_abs_orientation, 0.48869, DOUBLE_NEAR_FACTOR);
 }
