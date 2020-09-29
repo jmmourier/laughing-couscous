@@ -30,3 +30,33 @@ TEST(PosiTest, whenGettingNewTicks_absolutePositionShouldBeUpdatedAccordingly) {
   EXPECT_NEAR(new_abs_pos_y, 0, DOUBLE_NEAR_FACTOR);
   EXPECT_NEAR(new_abs_orientation, 4.88692, DOUBLE_NEAR_FACTOR);
 }
+
+TEST(
+    PosiTest,
+    whenPositionUpdatedMultipleTimes_absolutePositionShouldBeUpdatedAccordingly) {
+
+  double start_pox_x = 0;
+  double start_pos_y = 0;
+  double orientation = 0;
+
+  // Simulates a delta time of 1000 ms
+  auto time_helper = std::make_shared<FakeTime>(1000);
+
+  auto posi = std::make_shared<Posi>(time_helper, start_pox_x, start_pos_y,
+                                     orientation);
+
+  // Position updated twice to check if the previous ticks where taken into
+  // account
+  posi->updatePosition(360, 360);
+  posi->updatePosition(720, 720); // Same speed so 360 * 2
+
+  double new_abs_pos_x = 0;
+  double new_abs_pos_y = 0;
+  double new_abs_orientation = 0;
+
+  posi->getPosition(new_abs_pos_x, new_abs_pos_y, new_abs_orientation);
+
+  EXPECT_NEAR(new_abs_pos_x, 1.25663, DOUBLE_NEAR_FACTOR);
+  EXPECT_NEAR(new_abs_pos_y, 0, DOUBLE_NEAR_FACTOR);
+  EXPECT_NEAR(new_abs_orientation, 0, DOUBLE_NEAR_FACTOR);
+}
