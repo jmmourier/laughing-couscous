@@ -36,15 +36,11 @@ void Posi::updatePosition(int encoder1, int encoder2) {
   // Reset timestamp
   timestamp_ = time_now;
 
-  // Convert ticks into angular speed
-  double speed_left_wheel_radps =
-      (WHEEL_PERIMETER * encoder1 / TICKS_PER_ROTATION);
-  double speed_right_wheel_radps =
-      (WHEEL_PERIMETER * encoder2 / TICKS_PER_ROTATION);
-
   // Linear speed
-  double speed_left_wheel_ms = WHEEL_RADIUS_M * speed_left_wheel_radps;
-  double speed_right_wheel_ms = WHEEL_RADIUS_M * speed_right_wheel_radps;
+  double speed_left_wheel_ms =
+      (WHEEL_PERIMETER * encoder1 / TICKS_PER_ROTATION);
+  double speed_right_wheel_ms =
+      (WHEEL_PERIMETER * encoder2 / TICKS_PER_ROTATION);
 
   // Average speed
   double average_speed = (speed_left_wheel_ms + speed_right_wheel_ms) / 2;

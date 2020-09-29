@@ -26,7 +26,7 @@ TEST(PosiTest, whenGettingNewTicks_absolutePositionShouldBeUpdatedAccordingly) {
 
   posi->getPosition(new_abs_pos_x, new_abs_pos_y, new_abs_orientation);
 
-  EXPECT_NEAR(new_abs_pos_x, 0.01396, DOUBLE_NEAR_FACTOR);
+  EXPECT_NEAR(new_abs_pos_x, 0.13962, DOUBLE_NEAR_FACTOR);
   EXPECT_NEAR(new_abs_pos_y, 0, DOUBLE_NEAR_FACTOR);
-  EXPECT_NEAR(new_abs_orientation, 0.48869, DOUBLE_NEAR_FACTOR);
+  EXPECT_NEAR(new_abs_orientation, 4.88692, DOUBLE_NEAR_FACTOR);
 }
