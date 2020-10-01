@@ -8,9 +8,9 @@ const double WHEEL_PERIMETER = M_PI * 2 * WHEEL_RADIUS_M;
 
 Posi::Posi(std::shared_ptr<IBaseTime> time_helper, double &start_pos_x,
            double &start_pos_y, double &start_orientation)
-    : time_helper_(std::move(time_helper)), abs_pos_x_(start_pos_x),
-      abs_pos_y_(start_pos_y), orientation_(start_orientation),
-      timestamp_(time_helper_->getNow()) {}
+    : time_helper_(std::move(time_helper)), previous_encoder1_(0),
+      previous_encoder2_(0), abs_pos_x_(start_pos_x), abs_pos_y_(start_pos_y),
+      orientation_(start_orientation), timestamp_(time_helper_->getNow()) {}
 
 void Posi::getPosition(double &pos_x, double &pos_y,
                        double &orientation) const {
@@ -36,15 +36,15 @@ void Posi::updatePosition(int encoder1, int encoder2) {
   // Reset timestamp
   timestamp_ = time_now;
 
-  // Convert ticks into angular speed
-  double speed_left_wheel_radps =
-      (WHEEL_PERIMETER * encoder1 / TICKS_PER_ROTATION);
-  double speed_right_wheel_radps =
-      (WHEEL_PERIMETER * encoder2 / TICKS_PER_ROTATION);
+  // Delta encoders
+  auto delta_encoder1 = encoder1 - previous_encoder1_;
+  auto delta_encoder2 = encoder2 - previous_encoder2_;
 
   // Linear speed
-  double speed_left_wheel_ms = WHEEL_RADIUS_M * speed_left_wheel_radps;
-  double speed_right_wheel_ms = WHEEL_RADIUS_M * speed_right_wheel_radps;
+  double speed_left_wheel_ms =
+      (WHEEL_PERIMETER * delta_encoder1 / TICKS_PER_ROTATION);
+  double speed_right_wheel_ms =
+      (WHEEL_PERIMETER * delta_encoder2 / TICKS_PER_ROTATION);
 
   // Average speed
   double average_speed = (speed_left_wheel_ms + speed_right_wheel_ms) / 2;
@@ -61,4 +61,8 @@ void Posi::updatePosition(int encoder1, int encoder2) {
   abs_pos_x_ = abs_pos_x_ + delta_position_x * delta_time_s;
   abs_pos_y_ = abs_pos_y_ + delta_position_y * delta_time_s;
   orientation_ = orientation_ + delta_orientation * delta_time_s;
+
+  // Update previous encoders with current ones
+  previous_encoder1_ = encoder1;
+  previous_encoder2_ = encoder2;
 }

@@ -38,6 +38,8 @@ public:
 
 private:
   std::shared_ptr<IBaseTime> time_helper_;
+  long previous_encoder1_;
+  long previous_encoder2_;
   double abs_pos_x_;
   double abs_pos_y_;
   double orientation_;
