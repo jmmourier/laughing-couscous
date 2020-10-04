@@ -30,8 +30,9 @@ void Posi::updatePosition(int encoder1, int encoder2) {
   auto time_now = time_helper_->getNow();
 
   // Diff since last updating position in second
-  auto delta_time_s =
-      time_helper_->getDeltaTimeMS(time_now - timestamp_) / 1000;
+  double delta_time_s =
+      static_cast<double>(time_helper_->getDeltaTimeMS(time_now - timestamp_)) /
+      1000;
 
   // Reset timestamp
   timestamp_ = time_now;
