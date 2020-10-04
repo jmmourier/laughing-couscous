@@ -11,6 +11,7 @@ file(GLOB_RECURSE HEADERS include/**.h src/**.h)
 
 list(APPEND SOURCES
         src/main.cpp
+        src/CouscousManager.cpp
 )
         
 # Tests Binaries
