@@ -42,6 +42,7 @@ file(GLOB_RECURSE WEB_SERVER_HEADERS include/**.h src/**.h)
 
 list(APPEND SOURCES
         src/WebServer.cpp
+        src/WebPositionService.cpp
 )
 
 # Library
@@ -66,6 +67,3 @@ target_link_libraries(webserver
         ${_REFLECTION}
         ${_PROTOBUF_LIBPROTOBUF}
 )
-
-add_executable(web_server_exe src/main.cpp)
-target_link_libraries(web_server_exe webserver)
