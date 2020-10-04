@@ -5,7 +5,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
     && apt-get -y install --no-install-recommends \
-    ca-certificates \
+    ca-certificates \   
+    gdb \
     clang-${CLANG_VERSION} \
     clang-tidy-${CLANG_VERSION} \
     clang-format-${CLANG_VERSION} \
