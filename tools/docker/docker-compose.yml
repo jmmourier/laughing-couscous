@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.4"
 
 services:
   laughing-couscous-dev:
@@ -19,7 +19,7 @@ services:
       - ../..:/workspace/laughing-couscous-dev:delegated
       - ccache:/var/ccache
       - vscode-server:/root/.vscode-server
-    ports: 
+    ports:
       - 3000:3000
   envoy:
     build:
@@ -27,7 +27,7 @@ services:
       dockerfile: envoy.Dockerfile
     depends_on:
       - laughing-couscous-dev
-    ports: 
+    ports:
       - 8080:8080
 volumes:
   ccache:
