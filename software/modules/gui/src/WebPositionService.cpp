@@ -3,7 +3,7 @@
 #include "robot.pb.h"
 #include <thread>
 
-const int INTERVAL_SENDING_POSITION_REFRESH_MS = 100;
+const int INTERVAL_SENDING_POSITION_REFRESH_MS = 20;
 
 WebPositionService::WebPositionService(
     std::function<void(double pos_x_m, double pos_y_m, double orientation_rad)>
