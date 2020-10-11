@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 ARG CLANG_VERSION=10
 ARG DEBIAN_FRONTEND=noninteractive
