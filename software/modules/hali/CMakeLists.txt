@@ -35,9 +35,9 @@ target_include_directories(
     ${PROJECT_NAME}_lib
     PUBLIC 
     include
+    ${Boost_INCLUDE_DIRS}
     PRIVATE
     src
-    ${Boost_INCLUDE_DIRS}
 )
 
 target_link_libraries(${PROJECT_NAME}_lib ${Boost_LIBRARIES})

@@ -2,8 +2,15 @@ cmake_minimum_required (VERSION 3.0)
 
 # web server
 set(_REFLECTION grpc++_reflection)
-set(_PROTOBUF_PROTOC $<TARGET_FILE:protobuf::protoc>)
-set(_GRPC_CPP_PLUGIN_EXECUTABLE $<TARGET_FILE:grpc_cpp_plugin>)
+
+if(CMAKE_CROSSCOMPILING)
+        find_program(_gRPC_CPP_PLUGIN grpc_cpp_plugin)
+        find_program(_PROTOBUF_PROTOC protoc)
+else()
+        set(_PROTOBUF_PROTOC $<TARGET_FILE:protobuf::protoc>)
+        set(_gRPC_CPP_PLUGIN $<TARGET_FILE:grpc_cpp_plugin>)
+endif()
+
 set(GENERATED_GRPC_BACKEND_SOURCE_PATH "${CMAKE_CURRENT_BINARY_DIR}/generated")
 
 file(MAKE_DIRECTORY ${GENERATED_GRPC_BACKEND_SOURCE_PATH})
@@ -29,7 +36,7 @@ function(protobuf_generate_grpc_cpp)
         ARGS --grpc_out "${GENERATED_GRPC_BACKEND_SOURCE_PATH}"
              --cpp_out "${GENERATED_GRPC_BACKEND_SOURCE_PATH}"
              -I "${robot_proto_path}"
-             --plugin=protoc-gen-grpc="${_GRPC_CPP_PLUGIN_EXECUTABLE}"
+             --plugin=protoc-gen-grpc="${_gRPC_CPP_PLUGIN}"
              ${robot_proto}
         DEPENDS ${ABS_FIL}
         COMMENT "Running gRPC C++ protocol buffer compiler on ${FIL}")
