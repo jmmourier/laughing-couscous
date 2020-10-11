@@ -46,7 +46,7 @@ int main(int argc, char const *argv[])
             couscous.navi_->hasPositionBeenReached();
             // [...]
             );
-        couscous.missi_->setOder(couscous.gui->getRequest());
+        couscous.missi_->setOder(couscous.gui->getRequestOrder());
         couscous.hali_->setSpeed(couscous.gui->getSpeedRequest());
         couscous.posi_->setPosition(couscous.gui->getPositionRequest());
 
@@ -65,3 +65,4 @@ int main(int argc, char const *argv[])
     }
     return 0;
 }
+
