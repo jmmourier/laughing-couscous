@@ -5,37 +5,31 @@ project(navi
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
-find_package(Boost 
-            1.65.1 #version
-            REQUIRED #crash if not found 
-            COMPONENTS system
-            )
-
-file(GLOB_RECURSE HEADERS include/**.h src/**.h )
+file(GLOB_RECURSE HEADERS include/**.h src/**.h test/**.h)
 
 list(APPEND SOURCES
         src/Navi.cpp
-    )
+        )
 
+list(APPEND TESTS
+        test/NaviTest.cpp
+        test/NaviUtilsTest.cpp
+        test/NaviStateMachineTest.cpp
+        )
 
 # Library
 add_library(
-    ${PROJECT_NAME}_lib
-    STATIC ${SOURCES}
-)
+        ${PROJECT_NAME}_lib
+        STATIC ${SOURCES}
+        src/NaviUtils.cpp include/NaviUtils.h src/NaviStateMachine.cpp include/NaviStateMachine.h )
+
 
 target_include_directories(
-    ${PROJECT_NAME}_lib
-    PUBLIC 
-    include
-    PRIVATE
-    src
-    ${Boost_INCLUDE_DIRS}
+        ${PROJECT_NAME}_lib
+        PUBLIC include
+        PRIVATE src
 )
 
-target_link_libraries(${PROJECT_NAME}_lib ${Boost_LIBRARIES})
-
-
 # Tests Binaries
-#target_link_libraries(Navi ${PROJECT_NAME}_lib)
-
+add_executable(${PROJECT_NAME}_test ${TESTS})
+target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME}_lib gtest_main)
