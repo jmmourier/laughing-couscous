@@ -3,9 +3,8 @@
 
 #include <boost/asio.hpp>
 
-class Serial
-{
-public:
+class Serial {
+   public:
     /**
      * Constructor.
      * \param port device name, example "/dev/ttyUSB0" or "COM4"
@@ -14,7 +13,7 @@ public:
      * serial device
      */
     Serial(std::string port, unsigned int baud_rate);
-    
+
     /**
      * Write a string to the serial device.
      * \param s string to write
@@ -30,17 +29,16 @@ public:
      */
     std::string readLine();
 
-
     /**
      * Blocks until next char is received from the serial device.
      * \return oldest received char
      * \throws boost::system::system_error on failure
      */
     char readChar();
-    
-private:
+
+   private:
     boost::asio::io_service io;
     boost::asio::serial_port serial;
 };
 
-#endif // HALI_SERIAL_H
+#endif  // HALI_SERIAL_H

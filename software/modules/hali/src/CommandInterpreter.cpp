@@ -1,6 +1,3 @@
 #include "CommandInterpreter.h"
 
-CommandInterpreter::CommandInterpreter(/* args */)
-{
-}
-
+CommandInterpreter::CommandInterpreter(/* args */) {}

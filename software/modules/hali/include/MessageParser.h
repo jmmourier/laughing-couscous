@@ -1,15 +1,14 @@
 #ifndef HALI_MESSAGE_PARSER_H
 #define HALI_MESSAGE_PARSER_H
 
+#include <iostream>
 #include <string>
 #include <vector>
-#include <iostream>
 
 #include "CommandData.h"
 
-class MessageParser
-{
-public:
+class MessageParser {
+   public:
     MessageParser();
 
     void addCharToBuffer(char charToAdd);
@@ -22,11 +21,13 @@ public:
 
     void setEndChar(char endChar);
 
-    void printBuffer() {std::cout << "buffer : " << buffer_ << std::endl;}
+    void printBuffer() {
+        std::cout << "buffer : " << buffer_ << std::endl;
+    }
 
     std::string createMessage(CommandData);
 
-private:
+   private:
     bool isCharAllowed(char testedChar);
 
     std::string buffer_;
@@ -35,4 +36,4 @@ private:
     char endChar_ = ';';
 };
 
-#endif // HALI_MESSAGE_PARSER_H
+#endif  // HALI_MESSAGE_PARSER_H
