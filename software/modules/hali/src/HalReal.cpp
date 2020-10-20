@@ -1,80 +1,71 @@
+#include "HalReal.h"
+
 #include <iostream>
 #include <string>
 
-#include "HalReal.h"
+HalReal::HalReal() : serial_("/dev/ttyACM0", 9600), message_parser_(), command_interpreter_() {}
 
-HalReal::HalReal():
-    serial_("/dev/ttyACM0",9600),
-    message_parser_(),
-    command_interpreter_()
-    {
-
+constexpr unsigned int hash(const char *str, int h = 0) {
+    return !str[h] ? 5381 : (hash(str, h + 1) * 33) ^ str[h];
 }
 
-constexpr unsigned int hash(const char* str, int h = 0)
-{
-    return !str[h] ? 5381 : (hash(str, h+1)*33) ^ str[h];
-}
-
-void HalReal::updater(){
-    while(true){
+void HalReal::updater() {
+    while (true) {
         message_parser_.addCharToBuffer(serial_.readChar());
         CommandData command_data = message_parser_.analyseBuffer();
-        if(!command_data.command_.empty()){
-            std::cout << "data received : " << command_data << std::endl; 
+        if (!command_data.command_.empty()) {
+            std::cout << "data received : " << command_data << std::endl;
             int argument_received = 0;
-            if(!command_data.arguments_.empty()){
-            try{
-                argument_received = atoi(command_data.arguments_.at(0).c_str());
-            }
-            catch(...){
+            if (!command_data.arguments_.empty()) {
+                try {
+                    argument_received = atoi(command_data.arguments_.at(0).c_str());
+                } catch (...) {
+                    return;
+                }
+            } else {
                 return;
             }
+
+            switch (hash(command_data.command_.c_str())) {
+                case hash("md25revision"):
+                    md25_revision_ = argument_received;
+                    break;
+                case hash("md25voltage"):
+                    md25_voltage_ = argument_received;
+                    break;
+                case hash("md25encoder1"):
+                    md25_encoder_1_ = argument_received;
+                    break;
+                case hash("md25encoder2"):
+                    md25_encoder_2_ = argument_received;
+                    break;
+                default:
+                    break;
             }
-            else{
-                return;
-            }
-            
-            switch (hash(command_data.command_.c_str()))
-            {
-            case hash("md25revision"):
-                md25_revision_ = argument_received;
-                break;
-            case hash("md25voltage"):
-                md25_voltage_ = argument_received;
-                break;
-            case hash("md25encoder1"):
-                md25_encoder_1_ = argument_received;
-                break;
-            case hash("md25encoder2"):
-                md25_encoder_2_ = argument_received;
-                break;
-            default:
-                break;
-            }
-            //command_interpreter_.analyse(command_data);
+            // command_interpreter_.analyse(command_data);
         }
     }
 }
 
-int HalReal::getMd25Revision(){
+int HalReal::getMd25Revision() {
     return md25_revision_;
 }
 
-int HalReal::getBatteryVoltage(){
+int HalReal::getBatteryVoltage() {
     return md25_voltage_;
 }
 
-int HalReal::getEncoder(MotorIdEnum id_motor){
-    if(id_motor == motor1){
+int HalReal::getEncoder(MotorIdEnum id_motor) {
+    if (id_motor == motor1) {
         return md25_encoder_1_;
-    }
-    else {
+    } else {
         return md25_encoder_2_;
     }
 }
 
-void HalReal::setMd25Speed(int speed_1, int speed_2){
-    serial_.writeString(message_parser_.createMessage(CommandData("md25speed1",std::to_string(speed_1))));
-    serial_.writeString(message_parser_.createMessage(CommandData("md25speed2",std::to_string(speed_2))));
+void HalReal::setMd25Speed(int speed_1, int speed_2) {
+    serial_.writeString(
+        message_parser_.createMessage(CommandData("md25speed1", std::to_string(speed_1))));
+    serial_.writeString(
+        message_parser_.createMessage(CommandData("md25speed2", std::to_string(speed_2))));
 }

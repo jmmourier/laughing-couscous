@@ -1,13 +1,12 @@
 #ifndef HALI_COMMAND_INTERPRETER_H
 #define HALI_COMMAND_INTERPRETER_H
 
-class CommandInterpreter
-{
-public:
+class CommandInterpreter {
+   public:
     CommandInterpreter(/* args */);
 
-private:
+   private:
     /* data */
 };
 
-#endif // HALI_COMMAND_INTERPRETER_H
+#endif  // HALI_COMMAND_INTERPRETER_H
