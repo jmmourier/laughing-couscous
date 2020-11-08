@@ -97,10 +97,6 @@ const Arena: FunctionComponent<IArenaProps> = ({ onPositionSelected }) => {
     >
       <svg style={{ position: "absolute", backgroundColor: "#e3e3e3" }}>
         <Robot />
-        {/* {buoyList.map(({ color, position: { pos_x_m: x, pos_y_m: y } }) => (
-          <Buoy color={color} position={{ pos_x_m: x, pos_y_m: y }} />
-        ))} */}
-
         <PositionIndicator
           mouseState={mouseState}
           ratioPixelsMeters={ratioPixelToMeter}
