@@ -1,5 +1,12 @@
 #include "MessageParser/MessageParser.cpp"
 #include "Md25/Md25.cpp"
+#include "Grabber/Grabber.cpp"
+
+
+int pin_grabber_ = 2;
+Grabber grabber_(pin_grabber_);
+unsigned long grabber_update_time = 0;
+unsigned int grabber_delay_update = 300; // ms
 
 MessageParser message_parser;
 const int buffer_size = 80;
@@ -10,12 +17,18 @@ md25 md25_(Serial1);
 unsigned long md25_update_time = 0;
 unsigned int md25_delay_update = 300; // ms
 
+
 void setup() {
     Serial1.begin(38400);
     Serial.begin(9600);
 
     md25_.setMode(0);
     md25_.resetEncoder();
+
+    grabber_.init();
+    delay(10);
+    grabber_.open();
+
 }
 
 void loop() {
@@ -34,12 +47,6 @@ void loop() {
             HandleCommands(command_data);
             memset(buffer_, 0, sizeof(buffer_));
             buffer_fullfillness = 0;
-
-            // Serial.print("parsed command id : ");
-            // Serial.print(command_data.command_);
-            // Serial.print(" argument : ");
-            // Serial.print(command_data.argument_,DEC);
-            // Serial.println(";");
         }
     }
 
@@ -60,6 +67,13 @@ void loop() {
         md25_update_time = millis();
     }
 
+    if(millis() - grabber_update_time > grabber_delay_update){
+        Serial.print("grabberState:");
+        Serial.print(grabber_.getGrabber());
+        Serial.println(";");
+        grabber_update_time = millis();
+    }
+
 }
 
 void HandleCommands(CommandData command_data){
@@ -78,4 +92,11 @@ void HandleCommands(CommandData command_data){
         Serial.print(md25_.getRevision());
         Serial.println(";");
     }    
+    else if(command_data.command_ == grabberPositionRequested){
+        if(command_data.argument_ == grabberOpen){
+            grabber_.open();
+        }else if(command_data.argument_ == grabberClose){
+            grabber_.close();
+        }
+    }
 }

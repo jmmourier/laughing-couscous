@@ -5,10 +5,10 @@ enum CommandsEnum{
     speedMotor1,
     speedMotor2,
     versionRevisionRequested,
-    //reserved1,
+    grabberPositionRequested,
     //reserved2,
     //reserved3,
-    CommandsEnumMax = versionRevisionRequested
+    CommandsEnumMax
 };
 
 struct CommandsMessage{
@@ -16,11 +16,12 @@ struct CommandsMessage{
     CommandsMessage(){
         for (size_t i = 0; i < CommandsEnumMax; i++)
         {
-            Messages_[speedMotor1] = "";
+            Messages_[i] = "";
         }
         Messages_[speedMotor1] = "md25speed1";
         Messages_[speedMotor2] = "md25speed2";
         Messages_[versionRevisionRequested] = "version";
+        Messages_[grabberPositionRequested] = "grabber";
     }
 };
 
