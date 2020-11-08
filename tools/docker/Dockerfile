@@ -31,11 +31,11 @@ RUN wget -O /usr/bin/protoc-gen-grpc-web \
 RUN chmod +x /usr/bin/protoc-gen-grpc-web
 
 WORKDIR /usr
-RUN wget https://github.com/clangd/clangd/releases/download/11.0.0-rc1/clangd-linux-11.0.0-rc1.zip --no-check-certificate
-RUN unzip clangd-linux-11.0.0-rc1.zip \
-    && cp -r clangd_11.0.0-rc1/* . \
-    && rm -rf clangd_11.0.0-rc1 && \
-    rm -rf clangd-linux-11.0.0-rc1.zip
+RUN wget https://github.com/clangd/clangd/releases/download/11.0.0/clangd-linux-11.0.0.zip --no-check-certificate
+RUN unzip clangd-linux-11.0.0.zip \
+    && cp -r clangd_11.0.0/* . \
+    && rm -rf clangd_11.0.0 && \
+    rm -rf clangd-linux-11.0.0.zip
 
 # create workspace folder
 RUN mkdir -p /workspace/laughing-couscous-dev
