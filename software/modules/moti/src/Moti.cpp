@@ -35,15 +35,3 @@ MotorSpeed Moti::getMotorSpeedFromBaseSpeed(BaseSpeed base_speed) {
 
     return motor_speed;
 }
-
-void Moti::setWheelDiameter(float wheel_diameter_m) {
-    wheel_diameter_m_ = wheel_diameter_m;
-}
-
-void Moti::setWheelDistance(float wheel_distance_m) {
-    wheel_distance_m_ = wheel_distance_m;
-}
-
-void Moti::setMaxWheelSpeed(float max_wheel_speed_radps) {
-    max_wheel_speed_radps_ = max_wheel_speed_radps;
-}
