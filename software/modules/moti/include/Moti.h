@@ -20,6 +20,11 @@ struct BaseSpeed {
 class Moti {
    public:
     Moti();
+    
+    void setBaseSpeed(BaseSpeed base_speed);
+    
+    MotorSpeed getMotorSpeed();
+
     MotorSpeed getMotorSpeedFromBaseSpeed(BaseSpeed base_speed);
 
     void setWheelDiameter(float wheel_diameter_m);
@@ -27,6 +32,7 @@ class Moti {
     void setMaxWheelSpeed(float max_wheel_speed_radps);
 
    private:
+    BaseSpeed base_speed_;
     float wheel_diameter_m_ = 0.100;
     float wheel_distance_m_ = 0.253;
     float max_wheel_speed_radps_ = 17.802;  // 170 rpm <> 17,802 radps
