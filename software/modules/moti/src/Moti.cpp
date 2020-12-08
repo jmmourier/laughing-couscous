@@ -3,21 +3,26 @@
 #include <algorithm>
 #include <iostream>
 
-Moti::Moti() {}
+Moti::Moti():
+base_speed_(0,0,0){}
 
-MotorSpeed Moti::getMotorSpeedFromBaseSpeed(BaseSpeed base_speed) {
+void Moti::setBaseSpeed(BaseSpeed base_speed){
+    base_speed_ = base_speed;
+}
+    
+MotorSpeed Moti::getMotorSpeed(){
     MotorSpeed motor_speed(127, 127);
 
     float rotation_speed_left = 0.0;
     float rotation_speed_right = 0.0;
 
     // add linar speed
-    rotation_speed_left += base_speed.v_x_mps_;
-    rotation_speed_right += base_speed.v_x_mps_;
+    rotation_speed_left += base_speed_.v_x_mps_;
+    rotation_speed_right += base_speed_.v_x_mps_;
 
     // add rotation
-    rotation_speed_left -= base_speed.omega_radps_ * wheel_distance_m_ / 2.0;
-    rotation_speed_right += base_speed.omega_radps_ * wheel_distance_m_ / 2.0;
+    rotation_speed_left -= base_speed_.omega_radps_ * wheel_distance_m_ / 2.0;
+    rotation_speed_right += base_speed_.omega_radps_ * wheel_distance_m_ / 2.0;
 
     // convert to motor speed
     rotation_speed_left = rotation_speed_left / (wheel_diameter_m_ / 2.0);
@@ -35,3 +40,9 @@ MotorSpeed Moti::getMotorSpeedFromBaseSpeed(BaseSpeed base_speed) {
 
     return motor_speed;
 }
+
+MotorSpeed Moti::getMotorSpeedFromBaseSpeed(BaseSpeed base_speed) {
+    setBaseSpeed(base_speed);
+    return getMotorSpeed();
+}
+

@@ -22,12 +22,18 @@ struct BaseSpeed {
 class Moti {
    public:
     Moti();
+    
+    void setBaseSpeed(BaseSpeed base_speed);
+    
+    MotorSpeed getMotorSpeed();
+
     MotorSpeed getMotorSpeedFromBaseSpeed(BaseSpeed base_speed);
 
    private:
     float wheel_diameter_m_ = constant::wheel_diameter_m_;
     float wheel_distance_m_ = constant::wheel_distance_m_;
     float max_wheel_speed_radps_ = constant::max_wheel_speed_radps_;
+    BaseSpeed base_speed_;
 };
 
 #endif  // MOTI_H
