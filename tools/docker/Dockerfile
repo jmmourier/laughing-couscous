@@ -39,3 +39,23 @@ RUN unzip clangd-linux-11.0.0.zip \
 
 # create workspace folder
 RUN mkdir -p /workspace/laughing-couscous-dev
+
+WORKDIR /tmp
+
+# clone grpc repo and install its submodules
+RUN git clone https://github.com/grpc/grpc.git && \
+    cd grpc && \
+    git submodule update --init --recursive && \
+    mkdir -p "cmake/build" 
+
+WORKDIR /tmp/grpc/cmake/build
+
+# compile and install grpc 
+RUN cmake \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DgRPC_INSTALL=ON \
+    -DgRPC_BUILD_TESTS=OFF \
+    -DgRPC_SSL_PROVIDER=package \
+    ../.. && \
+    make -j4 install && \
+    rm -rf /tmp/grpc

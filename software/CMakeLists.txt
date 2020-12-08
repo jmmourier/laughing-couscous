@@ -41,7 +41,6 @@ add_subdirectory(applications)
 
 if (ENABLE_GUI)
     add_subdirectory(application_test_gui)
-    add_subdirectory(external/grpc)
 endif ()
 
 add_subdirectory(external/googletest)
