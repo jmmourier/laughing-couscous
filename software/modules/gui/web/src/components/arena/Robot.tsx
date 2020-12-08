@@ -11,8 +11,8 @@ const Robot: FunctionComponent = () => {
 
   return (
     <g
-      transform={`translate(${state.x},${state.y})
-        rotate(${(state.angleRad * 180) / Math.PI})`}
+      transform={`translate(${state.x_m},${state.y_m})
+        rotate(${(state.orientation_rad * 180) / Math.PI})`}
     >
       <rect
         x={-WHEEL_RADIUS_M}

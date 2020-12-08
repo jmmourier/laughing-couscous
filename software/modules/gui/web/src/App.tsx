@@ -1,16 +1,9 @@
 import { Input } from "@material-ui/core";
-import React, {
-  FunctionComponent,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { FunctionComponent, useContext, useState } from "react";
 import "./App.css";
 import Arena from "./components/arena/Arena";
-import { ActionEnum, context } from "./components/StateProvider";
-import IPosition from "./interfaces/position";
-import { PositionPromiseClient } from "generated_grpc_sources/robot_grpc_web_pb";
-import { PositionMsg, Empty } from "generated_grpc_sources/robot_pb";
+import * as stateProvider from "./components/StateProvider";
+import * as communicationProvider from "./components/CommunicationProvider";
 
 const TextField = require("@material-ui/core/TextField/TextField").default;
 const Table = require("@material-ui/core/Table/Table").default;
@@ -28,35 +21,14 @@ function createData(name: string, value: number) {
   return { name, value };
 }
 
-const client: PositionPromiseClient = new PositionPromiseClient(
-  "http://localhost:8080"
-);
-
-interface Position {
-  pos_x_m: number;
-  pos_y_m: number;
-  orientation_rad: number;
-}
-
 const App: FunctionComponent = () => {
   const {
-    state: { x, y, angleRad },
-    dispatch,
-  } = useContext(context);
+    state: { x_m: x, y_m: y, orientation_rad: angleRad },
+  } = useContext(stateProvider.context);
 
-  useEffect(() => {
-    const position_stream = client.onAbsolutePositionUpdated(new Empty());
-    position_stream.on("data", (positionMsg: PositionMsg) => {
-      dispatch({
-        type: ActionEnum.UPDATE_POSITION,
-        position: {
-          x: positionMsg.getPosXM(),
-          y: positionMsg.getPosYM(),
-          angleRad: positionMsg.getOrientationRad(),
-        },
-      });
-    });
-  }, []);
+  const { dispatch: communicationProviderDispatch } = useContext(
+    communicationProvider.context
+  );
 
   const rows = [
     // createData(
@@ -81,9 +53,12 @@ const App: FunctionComponent = () => {
     ),
   ];
 
-  const [selectedPosition, setSelectedPosition] = useState<IPosition>({
-    pos_x_m: 0,
-    pos_y_m: 0,
+  const [
+    selectedPosition,
+    setSelectedPosition,
+  ] = useState<stateProvider.IRobotPosition>({
+    x_m: 0,
+    y_m: 0,
     orientation_rad: 0,
   });
 
@@ -123,11 +98,10 @@ const App: FunctionComponent = () => {
             className={"form-set-position"}
             onSubmit={(e) => {
               e.preventDefault();
-              const position_request = new PositionMsg();
-              position_request.setPosXM(selectedPosition.pos_x_m);
-              position_request.setPosYM(selectedPosition.pos_y_m);
-              position_request.setOrientationRad(selectedPosition.pos_y_m);
-              client.setAbsolutePosition(position_request);
+              communicationProviderDispatch({
+                type: communicationProvider.Action.SET_ABSOLUTE_POSITION,
+                position: selectedPosition,
+              });
             }}
           >
             <TextField
@@ -135,14 +109,14 @@ const App: FunctionComponent = () => {
               variant="outlined"
               type={"number"}
               value={
-                Math.round(selectedPosition.pos_x_m * ROUND_RATIO) / ROUND_RATIO
+                Math.round(selectedPosition.x_m * ROUND_RATIO) / ROUND_RATIO
               }
               onChange={({
                 target: { value },
               }: React.ChangeEvent<HTMLInputElement>) => {
                 setSelectedPosition({
                   ...selectedPosition,
-                  pos_x_m: parseFloat(value),
+                  x_m: parseFloat(value),
                 });
               }}
             />
@@ -151,14 +125,14 @@ const App: FunctionComponent = () => {
               variant="outlined"
               type={"number"}
               value={
-                Math.round(selectedPosition.pos_y_m * ROUND_RATIO) / ROUND_RATIO
+                Math.round(selectedPosition.y_m * ROUND_RATIO) / ROUND_RATIO
               }
               onChange={({
                 target: { value },
               }: React.ChangeEvent<HTMLInputElement>) => {
                 setSelectedPosition({
                   ...selectedPosition,
-                  pos_y_m: parseFloat(value),
+                  y_m: parseFloat(value),
                 });
               }}
             />
