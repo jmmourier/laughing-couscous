@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useCallback, useState } from "react";
-import ISize from "../../interfaces/size";
+import { ISize } from "../../interfaces/size";
 import useWindow from "../../hooks/window";
 import * as stateProvider from "../StateProvider";
 import Robot from "./Robot";
