@@ -3,16 +3,18 @@
 
 #include <thread>
 
+#include "Hali.h"
 #include "Posi.h"
 #include "WebServer.h"
 
 class CouscousManager {
    public:
-    CouscousManager();
+    explicit CouscousManager(std::shared_ptr<Hali> hali);
     void start();
 
    private:
     std::shared_ptr<Posi> posi_;
+    std::shared_ptr<Hali> hali_;
     std::shared_ptr<WebServer> web_server_;
     std::thread web_server_thread_;
 

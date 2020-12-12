@@ -1,10 +1,11 @@
 #include "CouscousManager.h"
 
+#include "Hali.h"
 #include "RealTime.h"
 
 const static int INTERVAL_REFRESH_MS = 50;
 
-CouscousManager::CouscousManager() {
+CouscousManager::CouscousManager(std::shared_ptr<Hali> hali) : hali_(std::move(hali)) {
     auto time_helper = std::make_shared<RealTime>();
 
     double start_pos_x_m = 1;
@@ -34,24 +35,23 @@ void CouscousManager::onClientRequestSetPosition(
 };
 
 void CouscousManager::start() {
-    int encoder1 = 0;
-    int encoder2 = 0;
+    hali_->setMd25Speed(20, 20);
 
     while (true) {
+        int encoder1 = hali_->getEncoder(MotorIdEnum::motor1);
+        int encoder2 = hali_->getEncoder(MotorIdEnum::motor2);
+
         posi_->updatePosition(encoder1, encoder2);
 
+        // Send new position to gui
         double abs_pos_x_m = 0;
         double abs_pos_y_m = 0;
         double abs_orientation_rad = 0;
 
         posi_->getPosition(abs_pos_x_m, abs_pos_y_m, abs_orientation_rad);
-
-        // Trigger new position
         onPosiPositionUpdate(abs_pos_x_m, abs_pos_y_m, abs_orientation_rad);
+        // ---------------------------
 
         std::this_thread::sleep_for(std::chrono::milliseconds(INTERVAL_REFRESH_MS));
-
-        encoder1 += 60;
-        encoder2 += 30;
     }
 }
