@@ -1,6 +1,8 @@
 #ifndef MOTI_H
 #define MOTI_H
 
+#include "constant.h"
+
 struct MotorSpeed {
     MotorSpeed(int speed_motor_1, int speed_motor_2)
         : speed_motor_1_(speed_motor_1),
@@ -27,15 +29,11 @@ class Moti {
 
     MotorSpeed getMotorSpeedFromBaseSpeed(BaseSpeed base_speed);
 
-    void setWheelDiameter(float wheel_diameter_m);
-    void setWheelDistance(float wheel_distance_m);
-    void setMaxWheelSpeed(float max_wheel_speed_radps);
-
    private:
+    float wheel_diameter_m_ = constant::wheel_diameter_m_;
+    float wheel_distance_m_ = constant::wheel_distance_m_;
+    float max_wheel_speed_radps_ = constant::max_wheel_speed_radps_;
     BaseSpeed base_speed_;
-    float wheel_diameter_m_ = 0.100;
-    float wheel_distance_m_ = 0.253;
-    float max_wheel_speed_radps_ = 17.802;  // 170 rpm <> 17,802 radps
 };
 
 #endif  // MOTI_H

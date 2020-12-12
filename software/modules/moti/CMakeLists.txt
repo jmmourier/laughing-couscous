@@ -21,6 +21,11 @@ add_library(
     STATIC ${SOURCES}
 )
 
+target_link_libraries(
+    ${PROJECT_NAME}_lib
+    utils_lib
+)
+
 target_include_directories(
     ${PROJECT_NAME}_lib
     PUBLIC 
