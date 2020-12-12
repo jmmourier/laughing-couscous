@@ -5,9 +5,12 @@
 #include "grpcpp/ext/proto_server_reflection_plugin.h"
 #include "grpcpp/server_builder.h"
 
-WebServer::WebServer(std::function<void(double pos_x_m, double pos_y_m, double orientation_rad)>
-                         on_set_position_callback)
-    : web_position_service_(std::move(on_set_position_callback)) {}
+WebServer::WebServer(
+    std::function<void(double pos_x_m, double pos_y_m, double orientation_rad)>
+        on_set_position_callback,
+    std::function<void(int motor1, int motor2)> on_set_speed_callback)
+    : web_position_service_(std::move(on_set_position_callback), std::move(on_set_speed_callback)) {
+}
 
 void WebServer::start() {
     std::string server_address("0.0.0.0:9090");

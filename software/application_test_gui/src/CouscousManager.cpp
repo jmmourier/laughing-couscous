@@ -15,10 +15,11 @@ CouscousManager::CouscousManager(std::shared_ptr<Hali> hali) : hali_(std::move(h
     posi_ =
         std::make_shared<Posi>(time_helper, start_pos_x_m, start_pos_y_m, start_orientation_rad);
 
-    web_server_ =
-        std::make_shared<WebServer>([&](double pos_x_m, double pos_y_m, double orientation_rad) {
+    web_server_ = std::make_shared<WebServer>(
+        [&](double pos_x_m, double pos_y_m, double orientation_rad) {
             onClientRequestSetPosition(pos_x_m, pos_y_m, orientation_rad);
-        });
+        },
+        [&](int motor1, int motor2) { onClientRequestSetSpeed(motor1, motor2); });
 
     web_server_thread_ = std::thread([this] { web_server_->start(); });
 }
@@ -34,9 +35,11 @@ void CouscousManager::onClientRequestSetPosition(
     posi_->setPosition(pos_x_m, pos_y_m, orientation_rad);
 };
 
-void CouscousManager::start() {
-    hali_->setMd25Speed(20, 20);
+void CouscousManager::onClientRequestSetSpeed(int motor1, int motor2) {
+    hali_->setMd25Speed(motor1, motor2);
+};
 
+void CouscousManager::start() {
     while (true) {
         int encoder1 = hali_->getEncoder(MotorIdEnum::motor1);
         int encoder2 = hali_->getEncoder(MotorIdEnum::motor2);
