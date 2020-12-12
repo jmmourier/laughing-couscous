@@ -4,6 +4,7 @@ import "./App.css";
 import Arena from "./components/arena/Arena";
 import * as stateProvider from "./components/StateProvider";
 import * as communicationProvider from "./components/CommunicationProvider";
+import Joystick from "./components/arena/Joystick";
 
 const TextField = require("@material-ui/core/TextField/TextField").default;
 const Table = require("@material-ui/core/Table/Table").default;
@@ -132,6 +133,7 @@ const App: FunctionComponent = () => {
               <Input type="submit" value="Set position"></Input>
             </div>
           </form>
+          <Joystick></Joystick>
         </Paper>
       </div>
     </div>
