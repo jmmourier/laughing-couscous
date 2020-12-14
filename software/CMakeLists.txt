@@ -20,28 +20,11 @@ if (CCACHE_PROGRAM)
     set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
 endif ()
 
-if (ENABLE_GUI)
-    # gRPC flags
-    set(gRPC_BUILD_CSHARP_EXT OFF)
-    set(gRPC_BUILD_GRPC_CSHARP_PLUGIN OFF)
-    set(gRPC_BUILD_GRPC_OBJECTIVE_C_PLUGIN OFF)
-    set(gRPC_BUILD_GRPC_PHP_PLUGIN OFF)
-    set(gRPC_BUILD_GRPC_PYTHON_PLUGIN OFF)
-    set(gRPC_BUILD_GRPC_RUBY_PLUGIN OFF)
-    set(gRPC_BUILD_GRPC_NODE_PLUGIN OFF)
-    set(gRPC_BUILD_TESTS OFF)
-endif ()
-
 project(couscous
         VERSION 1.0
         )
 
 add_subdirectory(modules)
 add_subdirectory(applications)
-
-if (ENABLE_GUI)
-    add_subdirectory(application_test_gui)
-    add_subdirectory(external/grpc)
-endif ()
-
+add_subdirectory(application_test_gui)
 add_subdirectory(external/googletest)

@@ -1,14 +1,28 @@
 cmake_minimum_required (VERSION 3.0)
 
 # web server
-set(_REFLECTION grpc++_reflection)
+set(protobuf_MODULE_COMPATIBLE TRUE)
+find_package(Protobuf CONFIG REQUIRED)
+message(STATUS "Using protobuf ${Protobuf_VERSION}")
 
+set(_PROTOBUF_LIBPROTOBUF protobuf::libprotobuf)
+set(_REFLECTION gRPC::grpc++_reflection)
 if(CMAKE_CROSSCOMPILING)
-        find_program(_gRPC_CPP_PLUGIN grpc_cpp_plugin)
-        find_program(_PROTOBUF_PROTOC protoc)
+  find_program(_PROTOBUF_PROTOC protoc)
 else()
-        set(_PROTOBUF_PROTOC $<TARGET_FILE:protobuf::protoc>)
-        set(_gRPC_CPP_PLUGIN $<TARGET_FILE:grpc_cpp_plugin>)
+  set(_PROTOBUF_PROTOC $<TARGET_FILE:protobuf::protoc>)
+endif()
+
+# Find gRPC installation
+# Looks for gRPCConfig.cmake file installed by gRPC's cmake installation.
+find_package(gRPC CONFIG REQUIRED)
+message(STATUS "Using gRPC ${gRPC_VERSION}")
+
+set(_GRPC_GRPCPP gRPC::grpc++)
+if(CMAKE_CROSSCOMPILING)
+  find_program(_GRPC_CPP_PLUGIN_EXECUTABLE grpc_cpp_plugin)
+else()
+  set(_GRPC_CPP_PLUGIN_EXECUTABLE $<TARGET_FILE:gRPC::grpc_cpp_plugin>)
 endif()
 
 set(GENERATED_GRPC_BACKEND_SOURCE_PATH "${CMAKE_CURRENT_BINARY_DIR}/generated")
@@ -36,7 +50,7 @@ function(protobuf_generate_grpc_cpp)
         ARGS --grpc_out "${GENERATED_GRPC_BACKEND_SOURCE_PATH}"
              --cpp_out "${GENERATED_GRPC_BACKEND_SOURCE_PATH}"
              -I "${robot_proto_path}"
-             --plugin=protoc-gen-grpc="${_gRPC_CPP_PLUGIN}"
+             --plugin=protoc-gen-grpc="${_GRPC_CPP_PLUGIN_EXECUTABLE}"
              ${robot_proto}
         DEPENDS ${ABS_FIL}
         COMMENT "Running gRPC C++ protocol buffer compiler on ${FIL}")
@@ -51,6 +65,8 @@ list(APPEND SOURCES
         src/WebServer.cpp
         src/WebPositionService.cpp
 )
+
+find_package(Threads REQUIRED)
 
 # Library
 add_library(
@@ -73,4 +89,5 @@ target_link_libraries(webserver
         PUBLIC ${_GRPC_GRPCPP}
         ${_REFLECTION}
         ${_PROTOBUF_LIBPROTOBUF}
+        Threads::Threads
 )
