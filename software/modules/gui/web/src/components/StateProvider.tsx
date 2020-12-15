@@ -1,5 +1,4 @@
 import React, { Dispatch, FunctionComponent, Reducer, useReducer } from "react";
-import { act } from "react-dom/test-utils";
 
 export const TICKS_PER_ROTATION = 360;
 export const WHEEL_WIDTH = 0.02;
@@ -7,49 +6,49 @@ export const WHEEL_RADIUS_M = 0.05;
 export const WHEEL_PERIMETER = Math.PI * 2 * WHEEL_RADIUS_M;
 export const SPACE_BETWEEN_WHEELS = 0.2;
 
-type IRobotPositionState = {
-  x: number;
-  y: number;
-  angleRad: number;
+export type IRobotPosition = {
+  x_m: number;
+  y_m: number;
+  orientation_rad: number;
 };
 
 export type IAction = {
-  type: ActionEnum.UPDATE_POSITION;
-  position: IRobotPositionState;
+  type: Action.UPDATE_POSITION;
+  position: IRobotPosition;
 };
 
-const initialState: IRobotPositionState = {
-  x: 0,
-  y: 0,
-  angleRad: 0,
+const initialState: IRobotPosition = {
+  x_m: 0,
+  y_m: 0,
+  orientation_rad: 0,
 };
 
 /**
  * Available callable actions
  */
-enum ActionEnum {
+enum Action {
   UPDATE_POSITION = "UPDATE_POSITION",
 }
 
 const context = React.createContext<{
-  state: IRobotPositionState;
+  state: IRobotPosition;
   dispatch: Dispatch<IAction>;
 }>({
   state: initialState,
   dispatch: () => null,
 });
 
-const reducer: Reducer<IRobotPositionState, IAction> = (
-  state: IRobotPositionState,
+const reducer: Reducer<IRobotPosition, IAction> = (
+  state: IRobotPosition,
   action: IAction
 ) => {
   switch (action.type) {
-    case ActionEnum.UPDATE_POSITION:
-      console.log(action.position.x);
+    case Action.UPDATE_POSITION:
+      console.log(action.position.x_m);
       return {
-        x: action.position.x,
-        y: action.position.y,
-        angleRad: action.position.angleRad,
+        x_m: action.position.x_m,
+        y_m: action.position.y_m,
+        orientation_rad: action.position.orientation_rad,
       };
     default:
       throw new Error();
@@ -57,7 +56,7 @@ const reducer: Reducer<IRobotPositionState, IAction> = (
 };
 
 const StateProvider: FunctionComponent = ({ children }) => {
-  const [state, dispatch] = useReducer<Reducer<IRobotPositionState, IAction>>(
+  const [state, dispatch] = useReducer<Reducer<IRobotPosition, IAction>>(
     reducer,
     initialState
   );
@@ -67,5 +66,5 @@ const StateProvider: FunctionComponent = ({ children }) => {
   return <Provider value={{ state, dispatch }}>{children}</Provider>;
 };
 
-export { context, ActionEnum };
+export { context, Action };
 export default StateProvider;

@@ -1,38 +1,21 @@
 import React, { FunctionComponent, useCallback, useState } from "react";
 import ISize from "../../interfaces/size";
 import useWindow from "../../hooks/window";
+import * as stateProvider from "../StateProvider";
 import Robot from "./Robot";
 import PositionIndicator from "./PositionIndicator";
-import IPosition from "../../interfaces/position";
 
 const ARENA_HEIGHT = 2;
 const ARENA_WIDTH = 3;
 
 interface IArenaProps {
-  onPositionSelected(position: IPosition): void;
+  onPositionSelected(position: stateProvider.IRobotPosition): void;
 }
 
 export interface IArenaMouseState {
   isDown: boolean;
-  position: IPosition;
+  position: stateProvider.IRobotPosition;
 }
-
-interface IBuoyProps {
-  position: IPosition;
-  color: string;
-}
-
-// const buoyList: Array<IBuoyProps> = [
-//   { color: "green", position: { pos_x_m: 2, pos_y_m: 1 } },
-//   { color: "green", position: { pos_x_m: 2, pos_y_m: 1.5 } },
-// ];
-
-const Buoy: FunctionComponent<IBuoyProps> = ({
-  position: { pos_x_m: x, pos_y_m: y },
-  color,
-}) => {
-  return <circle style={{ fill: color }} r={0.036} cx={x} cy={y} />;
-};
 
 const getRatioPixelToMeter = (areaSize: ISize): number => {
   const pixelAreaDiagonal = Math.sqrt(
@@ -47,14 +30,17 @@ const getRatioPixelToMeter = (areaSize: ISize): number => {
 
 const Arena: FunctionComponent<IArenaProps> = ({ onPositionSelected }) => {
   const [areaSize, setAreaSize] = useState<ISize>({ width: 0, height: 0 });
-  const [selectedPosition, setSelectedPosition] = useState<IPosition>({
-    pos_x_m: 0,
-    pos_y_m: 0,
+  const [
+    selectedPosition,
+    setSelectedPosition,
+  ] = useState<stateProvider.IRobotPosition>({
+    x_m: 0,
+    y_m: 0,
     orientation_rad: 0,
   });
   const [mouseState, setMouseState] = useState<IArenaMouseState>({
     isDown: false,
-    position: { pos_x_m: 0, pos_y_m: 0, orientation_rad: 0 },
+    position: { x_m: 0, y_m: 0, orientation_rad: 0 },
   });
 
   /**
@@ -88,10 +74,10 @@ const Arena: FunctionComponent<IArenaProps> = ({ onPositionSelected }) => {
       }}
       onDoubleClick={(e) => {
         onPositionSelected({
-          pos_x_m:
+          x_m:
             (e.clientX - e.currentTarget.getBoundingClientRect().x) *
             ratioPixelToMeter,
-          pos_y_m:
+          y_m:
             (e.clientY - e.currentTarget.getBoundingClientRect().y) *
             ratioPixelToMeter,
           orientation_rad: selectedPosition.orientation_rad,
@@ -101,8 +87,8 @@ const Arena: FunctionComponent<IArenaProps> = ({ onPositionSelected }) => {
         setMouseState({
           ...mouseState,
           position: {
-            pos_x_m: e.clientX - e.currentTarget.getBoundingClientRect().x,
-            pos_y_m: e.clientY - e.currentTarget.getBoundingClientRect().y,
+            x_m: e.clientX - e.currentTarget.getBoundingClientRect().x,
+            y_m: e.clientY - e.currentTarget.getBoundingClientRect().y,
             orientation_rad: selectedPosition.orientation_rad,
           },
         });

@@ -18,10 +18,8 @@ const PositionIndicator: FunctionComponent<IPositionIndicators> = ({
   mouseState,
   ratioPixelsMeters,
 }) => {
-  const mouseAbsolutePositionXM =
-    mouseState.position.pos_x_m * ratioPixelsMeters;
-  const mouseAbsolutePositionYM =
-    mouseState.position.pos_y_m * ratioPixelsMeters;
+  const mouseAbsolutePositionXM = mouseState.position.x_m * ratioPixelsMeters;
+  const mouseAbsolutePositionYM = mouseState.position.y_m * ratioPixelsMeters;
   return (
     <>
       <line

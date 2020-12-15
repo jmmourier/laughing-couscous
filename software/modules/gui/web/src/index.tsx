@@ -4,11 +4,14 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import StateProvider from "./components/StateProvider";
+import CommunicationProvider from "./components/CommunicationProvider";
 
 ReactDOM.render(
   <React.StrictMode>
     <StateProvider>
-      <App />
+      <CommunicationProvider>
+        <App />
+      </CommunicationProvider>
     </StateProvider>
   </React.StrictMode>,
   document.getElementById("root")
