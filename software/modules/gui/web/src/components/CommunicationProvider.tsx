@@ -7,15 +7,18 @@ import React, {
   useReducer,
 } from "react";
 import { PositionPromiseClient } from "generated_grpc_sources/robot_grpc_web_pb";
-import { PositionMsg, Empty } from "generated_grpc_sources/robot_pb";
+import { PositionMsg, Empty, SpeedMsg } from "generated_grpc_sources/robot_pb";
 import * as stateProvider from "./StateProvider";
+import { ISpeed } from "../interfaces/size";
 
 type IState = {};
 
-type IAction = {
-  type: Action.SET_ABSOLUTE_POSITION;
-  position: stateProvider.IRobotPosition;
-};
+type IAction =
+  | {
+      type: Action.SET_ABSOLUTE_POSITION;
+      position: stateProvider.IRobotPosition;
+    }
+  | { type: Action.SET_SPEED; speed: ISpeed };
 
 const serverUrl: string = `${process.env.REACT_APP_PROXY_URL}:${process.env.REACT_APP_PROXY_PORT}`;
 const defaultState: IState = {
@@ -29,6 +32,7 @@ const client: PositionPromiseClient = new PositionPromiseClient(serverUrl);
  */
 enum Action {
   SET_ABSOLUTE_POSITION = "SET_ABSOLUTE_POSITION",
+  SET_SPEED = "SET_SPEED",
   UPDATE_POSITION = "UPDATE_POSITION",
 }
 
@@ -44,6 +48,12 @@ const reducer: Reducer<IState, IAction> = async (
       positionMsg.setOrientationRad(action.position.orientation_rad);
       await client.setAbsolutePosition(positionMsg);
       return { ...state };
+    case Action.SET_SPEED: {
+      const speedMsg = new SpeedMsg();
+      speedMsg.setMotor1(action.speed.motor1);
+      speedMsg.setMotor2(action.speed.motor2);
+      client.setSpeed(speedMsg);
+    }
   }
 };
 

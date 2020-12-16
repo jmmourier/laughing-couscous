@@ -36,6 +36,14 @@ class CouscousManager {
      * @param orientation_rad
      */
     void onClientRequestSetPosition(double pos_x_m, double pos_y_m, double orientation_rad);
+
+    /**
+     * @brief Is called when the front calls to set robot's speed
+     *
+     * @param motor1
+     * @param motor2
+     */
+    void onClientRequestSetSpeed(int motor1, int motor2);
 };
 
 #endif  // COUSCOUS_MANAGER_H

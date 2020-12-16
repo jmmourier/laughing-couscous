@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ISize from "../interfaces/size";
+import { ISize } from "../interfaces/size";
 
 const useWindow = (): ISize => {
   const [windowSize, setWindowSize] = useState<ISize>({

@@ -4,6 +4,7 @@ import "./App.css";
 import Arena from "./components/arena/Arena";
 import * as stateProvider from "./components/StateProvider";
 import * as communicationProvider from "./components/CommunicationProvider";
+import Joystick from "./components/arena/Joystick";
 
 const TextField = require("@material-ui/core/TextField/TextField").default;
 const Table = require("@material-ui/core/Table/Table").default;
@@ -31,14 +32,6 @@ const App: FunctionComponent = () => {
   );
 
   const rows = [
-    // createData(
-    //   "Left wheel speed (rad/s)",
-    //   Math.round(leftWheelRadPs * ROUND_RATIO) / ROUND_RATIO
-    // ),
-    // createData(
-    //   "Right wheel speed (rad/s)",
-    //   Math.round(rightWheelRadPs * ROUND_RATIO) / ROUND_RATIO
-    // ),
     createData(
       "Absolute position X",
       Math.round(x * ROUND_RATIO) / ROUND_RATIO
@@ -136,27 +129,11 @@ const App: FunctionComponent = () => {
                 });
               }}
             />
-            {/* <TextField
-              label="Orientation"
-              variant="outlined"
-              type={"number"}
-              value={
-                Math.round(selectedPosition.orientation_rad * ROUND_RATIO) /
-                ROUND_RATIO
-              }
-              onChange={({
-                target: { value },
-              }: React.ChangeEvent<HTMLInputElement>) => {
-                setSelectedPosition({
-                  ...selectedPosition,
-                  orientation_rad: parseFloat(value),
-                });
-              }}
-            /> */}
             <div>
               <Input type="submit" value="Set position"></Input>
             </div>
           </form>
+          <Joystick></Joystick>
         </Paper>
       </div>
     </div>

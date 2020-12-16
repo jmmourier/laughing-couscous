@@ -10,7 +10,13 @@ message PositionMsg {
   double orientation_rad = 3;
 }
 
+message SpeedMsg {
+  int32 motor1 = 1;
+  int32 motor2 = 2;
+}
+
 service Position{
+  rpc setSpeed(SpeedMsg) returns (Empty) {}
   rpc setAbsolutePosition(PositionMsg) returns (Empty) {}
   rpc onAbsolutePositionUpdated(Empty) returns (stream PositionMsg) {}
 }

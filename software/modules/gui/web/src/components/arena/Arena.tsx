@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useCallback, useState } from "react";
-import ISize from "../../interfaces/size";
+import { ISize } from "../../interfaces/size";
 import useWindow from "../../hooks/window";
 import * as stateProvider from "../StateProvider";
 import Robot from "./Robot";
@@ -97,10 +97,6 @@ const Arena: FunctionComponent<IArenaProps> = ({ onPositionSelected }) => {
     >
       <svg style={{ position: "absolute", backgroundColor: "#e3e3e3" }}>
         <Robot />
-        {/* {buoyList.map(({ color, position: { pos_x_m: x, pos_y_m: y } }) => (
-          <Buoy color={color} position={{ pos_x_m: x, pos_y_m: y }} />
-        ))} */}
-
         <PositionIndicator
           mouseState={mouseState}
           ratioPixelsMeters={ratioPixelToMeter}
