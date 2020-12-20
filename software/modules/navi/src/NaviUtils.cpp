@@ -3,6 +3,11 @@
 #include <iostream>
 
 /**
+ * angle between two points (base reference)
+ * angle between one point and
+ */
+
+/**
  *
  * @param robot_pos_x
  * @param robot_pos_y
@@ -38,21 +43,13 @@ double get_reference_angle_to_target(pos_info robot_pos, pos_info target_pos){
  * @return angle between robot orientation and target position
  */
 double get_angle_to_target(const double robot_pos_x, const double robot_pos_y, const double robot_orientation, const double target_pos_x, const double target_pos_y){
-    double diff_x = (target_pos_x-robot_pos_x );
-    double diff_y = (target_pos_y - robot_pos_y );
-    double angle = atan(diff_y/diff_x);
 
-    if(diff_x<0.f && diff_y >0.f){ //quarter 2
-        angle = angle + M_PI;
-    }else if(diff_x<0.f && diff_y < 0.f) { //quarter 3
-        angle = angle + M_PI;
-    }else if(diff_x>0.f && diff_y<0.f){   //quarter 4
-        angle = (2*M_PI)+angle;
-    }
+    double angle = get_angle_difference(robot_orientation, get_reference_angle_to_target(robot_pos_x, robot_pos_y, target_pos_x, target_pos_y));
+    //std::cout<<"angle="<<angle<<" ref="<<get_reference_angle_to_target(robot_pos_x, robot_pos_y, target_pos_x, target_pos_y)<<std::endl;
     return angle;
 }
 double get_angle_to_target(pos_info robot_pos, pos_info target_pos){
-//    return get_angle_to_target(robot_pos.pos_x, robot_pos.pos_y, target_pos.pos_x, target_pos.pos_y);
+  return get_angle_to_target(robot_pos.pos_x, robot_pos.pos_y, robot_pos.orientation, target_pos.pos_x, target_pos.pos_y);
 }
 /**
  * Compute shortest angle between two angles

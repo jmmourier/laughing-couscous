@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
 #include <NaviStateMachine.h>
+#include <cmath>
 
-TEST(NaviStateMachineTest, start_align_to_target){
+TEST(NaviStateMachineTest, start_align_to_target_1){
     pos_info robot_pos, target_pos;
     robot_pos.pos_x=0.0;
     robot_pos.pos_y=0.0;
@@ -12,7 +13,7 @@ TEST(NaviStateMachineTest, start_align_to_target){
     EXPECT_EQ(enumNaviStateMachine::ST2_ALIGN_TO_TARGET, state1_start_align_to_target(robot_pos, target_pos));
 }
 
-TEST(NaviStateMachineTest, align_to_target){
+TEST(NaviStateMachineTest, align_to_target_2){
     pos_info robot_pos, target_pos;
     //anticlockwise
     robot_pos.pos_x=0.0;
@@ -24,11 +25,15 @@ TEST(NaviStateMachineTest, align_to_target){
     //turning in progress
     EXPECT_EQ(enumNaviStateMachine::ST2_ALIGN_TO_TARGET, state2_align_to_target(robot_pos, target_pos));
     //turning done
-    robot_pos.orientation=0.78;
+    robot_pos.orientation=M_PI/4;
     EXPECT_EQ(enumNaviStateMachine::ST3_WAIT_FOR_MOVMENT, state2_align_to_target(robot_pos, target_pos));
 
     //clockwise
-    //...
+    robot_pos.orientation=M_PI/4+1;
+    EXPECT_EQ(enumNaviStateMachine::ST2_ALIGN_TO_TARGET, state2_align_to_target(robot_pos, target_pos));
+    robot_pos.orientation=M_PI/4;
+    EXPECT_EQ(enumNaviStateMachine::ST3_WAIT_FOR_MOVMENT, state2_align_to_target(robot_pos, target_pos));
+
 
 }
 
@@ -58,8 +63,7 @@ TEST(NaviStateMachineTest, rotation_to_target_orientation){
     target_pos.pos_y=1.0;
     target_pos.orientation=1.0;
     //turning in progress
-    EXPECT_EQ(enumNaviStateMachine::ST8_ROTATION_TO_TARGET_ORIENTATION,
-              state8_rotation_to_target_orientation(robot_pos, target_pos));
+    EXPECT_EQ(enumNaviStateMachine::ST8_ROTATION_TO_TARGET_ORIENTATION,state8_rotation_to_target_orientation(robot_pos, target_pos));
     //turning done
     robot_pos.orientation=1.0;
     EXPECT_EQ(enumNaviStateMachine::ST9_DONE, state8_rotation_to_target_orientation(robot_pos, target_pos));

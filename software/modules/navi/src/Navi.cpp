@@ -16,34 +16,14 @@ int Navi::setTargetPosition(const double &target_pos_x, const double &target_pos
     target_position.pos_y = target_pos_y;
     target_position.orientation = target_orientation;
     actual_navi_state = enumNaviStateMachine::ST1_START_ALIGN_TO_TARGET;
-    // rotation_direction = get_rotation_direction(actual_robot_position.orientation, target_orientation);
-    //double align_angle = get_angle_to_target(actual_robot_pos_x, actual_robot_pos_y, actual_robot_orientation, target_pos_x, target_pos_y);
-    // double align_angle = get_angle_difference(actual_robot_pos_x, actual_robot_pos_y, actual_robot_orientation, target_pos_x_, target_pos_y_);
-    //std::cout<<"rotation angle = "<<align_angle<<std::endl;
-    //call hali to align
-
-    //travel distance
-    // double dist = get_distance_to_target(actual_robot_pos_x, actual_robot_pos_y, target_pos_x, target_pos_y);
-
-    /*v_x_mps=target_pos_x;
-    v_y_mps=target_pos_y;
-    omega_radps=target_orientation;
-     */
+    target_reached = false;
     return 0;
-}
-
-int Navi::setTargetAngle(const double &target_orientation){
-    target_position.orientation = target_orientation;
-    target_position.pos_x = actual_robot_position.pos_x;
-    target_position.pos_y = actual_robot_position.pos_y;
-    rotdir rdir = get_rotation_direction(actual_robot_position.orientation, target_position.orientation);
-    std::cout << "Send rotation command to hali. Rotate->:" << rdir << std::endl;
 }
 
 void Navi::stateMachine(enumNaviStateMachine sm , pos_info robot_pos, pos_info target_pos){
     switch(sm) {
         case enumNaviStateMachine::ST0_IDLE:
-            std::cout << ">>>1)state idle" << std::endl;
+            //state changed by setTargetPosition()
             break;
         case enumNaviStateMachine::ST1_START_ALIGN_TO_TARGET:
             actual_navi_state = state1_start_align_to_target(robot_pos, target_pos);
@@ -70,7 +50,7 @@ void Navi::stateMachine(enumNaviStateMachine sm , pos_info robot_pos, pos_info t
             actual_navi_state = state8_rotation_to_target_orientation(robot_pos, target_pos);
             break;
         case enumNaviStateMachine::ST9_DONE:
-            std::cout<<">>>9: done, stop motors"<<std::endl;
+            target_reached = true;
             break;
         default:
             break;
@@ -79,7 +59,6 @@ void Navi::stateMachine(enumNaviStateMachine sm , pos_info robot_pos, pos_info t
 }
 
 int Navi::setCurrentPosition(const double &new_rob_pos_x, const double &new_rob_pos_y, const double &new_rob_orientation){
-  //  std::cout<<"update position"<<std::endl;
     actual_robot_position.pos_x = new_rob_pos_x;
     actual_robot_position.pos_y = new_rob_pos_y;
     actual_robot_position.orientation = new_rob_orientation;
@@ -89,7 +68,7 @@ int Navi::setCurrentPosition(const double &new_rob_pos_x, const double &new_rob_
 
 
 int Navi::getPositionReached(void){
-    return 0;
+    return target_reached;
 }
 
 int Navi::getActualState(void){

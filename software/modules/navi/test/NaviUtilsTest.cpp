@@ -4,6 +4,114 @@
 
 #define ANGLE_ERROR_TOLERANCE 0.001
 
+TEST(NaviUtilsTest, compute_angle_with_reference){
+    double robot_pos_x;
+    double robot_pos_y;
+    double target_pos_x;
+    double target_pos_y;
+
+//quarter 1: x pos and y pos
+    robot_pos_x = 0.0;
+    robot_pos_y = 0.0;
+    target_pos_x = 100.0;
+    target_pos_y = 100.0;
+    double angle = get_reference_angle_to_target(robot_pos_x, robot_pos_y, target_pos_x, target_pos_y);
+    EXPECT_NEAR(angle, M_PI/4, ANGLE_ERROR_TOLERANCE);
+
+//quarter 2: x neg and y pos
+    robot_pos_x = 100.0;
+    robot_pos_y = 0.0;
+    target_pos_x = 0.0;
+    target_pos_y = 100.0;
+    angle = get_reference_angle_to_target(robot_pos_x, robot_pos_y, target_pos_x, target_pos_y);
+    EXPECT_NEAR(angle, (3.f/4.f)*M_PI, ANGLE_ERROR_TOLERANCE);
+
+//quarter 3: x neg and y neg
+    robot_pos_x = 100.0;
+    robot_pos_y = 100.0;
+    target_pos_x = 0.0;
+    target_pos_y = 0.0;
+    angle = get_reference_angle_to_target(robot_pos_x, robot_pos_y, target_pos_x, target_pos_y);
+    EXPECT_NEAR(angle, M_PI+(M_PI/4.f), ANGLE_ERROR_TOLERANCE);
+
+//quarter 4: x pos and y neg
+    robot_pos_x = 0.0;
+    robot_pos_y = 100.0;
+    target_pos_x = 100.0;
+    target_pos_y = 0.0;
+    angle = get_reference_angle_to_target(robot_pos_x, robot_pos_y, target_pos_x, target_pos_y);
+    EXPECT_NEAR(angle, M_PI+((3.f/4.f)*M_PI),ANGLE_ERROR_TOLERANCE);
+
+    robot_pos_x = 100.0;
+    robot_pos_y = 100.0;
+    target_pos_x = 200.0;
+    target_pos_y = 200.0;
+    angle = get_reference_angle_to_target(robot_pos_x, robot_pos_y, target_pos_x, target_pos_y);
+    EXPECT_NEAR(angle, M_PI/4, ANGLE_ERROR_TOLERANCE);
+
+}
+
+
+TEST(NaviUtilsTest, compute_angle_with_target){
+    double robot_pos_x;
+    double robot_pos_y;
+    double robot_orientation;
+    double target_pos_x;
+    double target_pos_y;
+
+//quarter 1: x pos and y pos
+    robot_pos_x = 0.0;
+    robot_pos_y = 0.0;
+    robot_orientation = 0.0;
+    target_pos_x = 100.0;
+    target_pos_y = 100.0;
+    double angle = get_angle_to_target(robot_pos_x, robot_pos_y, robot_orientation, target_pos_x, target_pos_y);
+    EXPECT_NEAR(angle, M_PI/4, ANGLE_ERROR_TOLERANCE);
+
+    robot_orientation = M_PI/4;
+    angle = get_angle_to_target(robot_pos_x, robot_pos_y, robot_orientation, target_pos_x, target_pos_y);
+    EXPECT_NEAR(angle, 0, ANGLE_ERROR_TOLERANCE);
+
+    robot_orientation = M_PI;
+    angle = get_angle_to_target(robot_pos_x, robot_pos_y, robot_orientation, target_pos_x, target_pos_y);
+    EXPECT_NEAR(angle, -3*(M_PI/4), ANGLE_ERROR_TOLERANCE);
+
+    robot_orientation = M_PI+(M_PI/4);
+    angle = get_angle_to_target(robot_pos_x, robot_pos_y, robot_orientation, target_pos_x, target_pos_y);
+    EXPECT_NEAR(angle, -M_PI , ANGLE_ERROR_TOLERANCE);
+
+
+//quarter 2: x neg and y pos
+    robot_pos_x = 100.0;
+    robot_pos_y = 0.0;
+    target_pos_x = 0.0;
+    target_pos_y = 100.0;
+    robot_orientation = 0.0;
+    angle = get_angle_to_target(robot_pos_x, robot_pos_y, robot_orientation, target_pos_x, target_pos_y);
+    EXPECT_NEAR(angle, (3.f/4.f)*M_PI, ANGLE_ERROR_TOLERANCE);
+
+//quarter 3: x neg and y neg
+    robot_pos_x = 100.0;
+    robot_pos_y = 100.0;
+    target_pos_x = 0.0;
+    target_pos_y = 0.0;
+    robot_orientation = 0.0;
+    angle = get_angle_to_target(robot_pos_x, robot_pos_y, robot_orientation, target_pos_x, target_pos_y);
+    EXPECT_NEAR(angle, 3*(M_PI/4.f), ANGLE_ERROR_TOLERANCE);
+
+//quarter 4: x pos and y neg
+    robot_pos_x = 0.0;
+    robot_pos_y = 100.0;
+    target_pos_x = 100.0;
+    target_pos_y = 0.0;
+    robot_orientation = 0.0;
+    angle = get_angle_to_target(robot_pos_x, robot_pos_y, robot_orientation, target_pos_x, target_pos_y);
+    EXPECT_NEAR(angle, M_PI/4.f,ANGLE_ERROR_TOLERANCE);
+
+}
+
+
+
 TEST(NaviUtilsTest, utils_rotation_direction){
     //case: robot_orientation > target_orientation. diff<PI
     EXPECT_EQ(rotation_direction::Clockwise, get_rotation_direction(3 * (M_PI / 4.f), M_PI / 4.f));
@@ -38,51 +146,6 @@ TEST(NaviUtilsTest, utils_test_angles_diff){
     rotation_angle = get_angle_difference(robot_orientation, target_orientation);
   //  std::cout<<"----"<<rotation_angle<<std::endl;
     EXPECT_FLOAT_EQ(rotation_angle, M_PI/2);
-}
-
-TEST(NaviUtilsTest, utils_target_angle){
-    double robot_pos_x;
-    double robot_pos_y;
-    double robot_orientation;
-    double target_pos_x;
-    double target_pos_y;
-
-//quarter 1: x pos and y pos
-    robot_pos_x = 0.0;
-    robot_pos_y = 0.0;
-    robot_orientation = 0.0;
-    target_pos_x = 100.0;
-    target_pos_y = 100.0;
-    double angle = get_angle_to_target(robot_pos_x, robot_pos_y, robot_orientation, target_pos_x, target_pos_y);
-    EXPECT_NEAR(angle, M_PI/4, ANGLE_ERROR_TOLERANCE);
-
-//quarter 2: x neg and y pos
-    robot_pos_x = 100.0;
-    robot_pos_y = 0.0;
-    target_pos_x = 0.0;
-    target_pos_y = 100.0;
-    robot_orientation = 0.0;
-    angle = get_angle_to_target(robot_pos_x, robot_pos_y, robot_orientation, target_pos_x, target_pos_y);
-    EXPECT_NEAR(angle, (3.f/4.f)*M_PI, ANGLE_ERROR_TOLERANCE);
-
-//quarter 3: x neg and y neg
-    robot_pos_x = 100.0;
-    robot_pos_y = 100.0;
-    target_pos_x = 0.0;
-    target_pos_y = 0.0;
-    robot_orientation = 0.0;
-    angle = get_angle_to_target(robot_pos_x, robot_pos_y, robot_orientation, target_pos_x, target_pos_y);
-    EXPECT_NEAR(angle, M_PI+(M_PI/4.f
-    ), ANGLE_ERROR_TOLERANCE);
-
-//quarter 4: x pos and y neg
-    robot_pos_x = 0.0;
-    robot_pos_y = 100.0;
-    target_pos_x = 100.0;
-    target_pos_y = 0.0;
-    robot_orientation = 0.0;
-    angle = get_angle_to_target(robot_pos_x, robot_pos_y, robot_orientation, target_pos_x, target_pos_y);
-    EXPECT_NEAR(angle, M_PI+((3.f/4.f)*M_PI),ANGLE_ERROR_TOLERANCE);
 }
 
 TEST(NaviUtilsTest, distance_computation){
