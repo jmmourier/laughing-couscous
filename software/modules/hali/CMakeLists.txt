@@ -5,12 +5,6 @@ project(hali
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
-find_package(Boost 
-            1.65.1 #version
-            REQUIRED #crash if not found 
-            COMPONENTS system
-            )
-
 file(GLOB_RECURSE HEADERS include/**.h src/**.h test/**.h)
 
 list(APPEND SOURCES 
@@ -19,6 +13,7 @@ list(APPEND SOURCES
     src/CommandInterpreter.cpp
     src/HalReal.cpp
     src/HalSimu.cpp
+    src/serialib.cpp
     )
 
 list(APPEND TESTS
