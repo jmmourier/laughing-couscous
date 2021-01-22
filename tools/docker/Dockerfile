@@ -23,8 +23,9 @@ RUN apt-get update \
     libboost-all-dev
 
 ### Install NodeJS
-RUN wget -qO- https://deb.nodesource.com/setup_12.x | bash
+RUN wget -qO- https://deb.nodesource.com/setup_15.x | bash
 RUN apt-get -y install nodejs
+RUN npm install -g yarn
 
 RUN wget -O /usr/bin/protoc-gen-grpc-web \
     https://github.com/grpc/grpc-web/releases/download/1.0.7/protoc-gen-grpc-web-1.0.7-linux-x86_64 --no-check-certificate
