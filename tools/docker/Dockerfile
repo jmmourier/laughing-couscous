@@ -58,5 +58,38 @@ RUN cmake \
     -DgRPC_BUILD_TESTS=OFF \
     -DgRPC_SSL_PROVIDER=package \
     ../.. && \
-    make -j4 install && \
-    rm -rf /tmp/grpc
+    make -j4 install
+
+WORKDIR /tmp
+
+RUN mkdir -p mkdir -p raspberrypi_root && \
+    cd raspberrypi_root && \
+    git clone https://github.com/raspberrypi/tools raspberrypi-tools && \
+    cd raspberrypi-tools && git checkout 4a335520900ce55e251ac4f420f52bf0b2ab6b1f
+
+RUN echo " \n\
+    SET(CMAKE_SYSTEM_NAME Linux) \n\
+    SET(CMAKE_SYSTEM_PROCESSOR arm) \n\
+    set(devel_root /tmp/raspberrypi_root) \n\
+    set(CMAKE_STAGING_PREFIX \${devel_root}/stage) \n\
+    set(tool_root \${devel_root}/raspberrypi-tools/arm-bcm2708) \n\
+    set(CMAKE_SYSROOT \${tool_root}/arm-rpi-4.9.3-linux-gnueabihf/arm-linux-gnueabihf/sysroot) \n\
+    set(CMAKE_C_COMPILER \${tool_root}/arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc) \n\
+    set(CMAKE_CXX_COMPILER \${tool_root}/arm-linux-gnueabihf/bin/arm-linux-gnueabihf-g++) \n\
+    set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER) \n\
+    set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY) \n\
+    set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY) \n\
+    set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY) \n\
+    " >> /tmp/toolchain.cmake
+
+WORKDIR /tmp/grpc/cmake
+
+RUN mkdir -p raspberrypi_build
+
+WORKDIR /tmp/grpc/cmake/raspberrypi_build
+
+RUN cmake -DCMAKE_TOOLCHAIN_FILE=/tmp/toolchain.cmake \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/tmp/raspberrypi_root/grpc_install \
+    ../.. && \
+    make -j4 install
