@@ -17,8 +17,13 @@ class HalSimu : public Hali {
 
     void setMd25Speed(int speed_1, int speed_2);
 
+    void setGrabber(GrabberState grabber_state);
+    GrabberState getGrabber();
+
    private:
     void updateEncoder();
+
+    GrabberState grabber_state_;
 
     int saved_speed_1_ = 127;
     int saved_speed_2_ = 127;

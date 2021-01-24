@@ -4,6 +4,7 @@
 #include <string>
 
 HalSimu::HalSimu() {
+    grabber_state_ = grabberUndefined;
     timestamp_since_last_encoder_1_update_ = std::chrono::system_clock::now();
     timestamp_since_last_encoder_2_update_ = std::chrono::system_clock::now();
 }
@@ -49,4 +50,12 @@ void HalSimu::updateEncoder() {
 
     timestamp_since_last_encoder_1_update_ = time_update;
     timestamp_since_last_encoder_2_update_ = time_update;
+}
+
+void HalSimu::setGrabber(GrabberState grabber_state) {
+    grabber_state_ = grabber_state;
+}
+
+GrabberState HalSimu::getGrabber() {
+    return grabber_state_;
 }

@@ -2,6 +2,7 @@
 #define HALI_H
 
 enum MotorIdEnum { motor1, motor2 };
+enum GrabberState{ grabberUndefined = 0, grabberOpen = 1, grabberClose = 2};
 
 class Hali {
    public:
@@ -12,6 +13,9 @@ class Hali {
     virtual int getEncoder(MotorIdEnum id_motor) = 0;
 
     virtual void setMd25Speed(int speed_1, int speed_2) = 0;
+
+    virtual void setGrabber(GrabberState grabber_state) = 0;
+    GrabberState getGrabber();
 
    private:
 };
