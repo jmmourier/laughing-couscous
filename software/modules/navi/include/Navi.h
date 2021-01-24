@@ -3,6 +3,7 @@
 
 #include "NaviUtils.h"
 #include "NaviStateMachine.h"
+#include <functional>
 /*
 struct RobotBaseSpeed
 {
@@ -15,21 +16,20 @@ struct RobotBaseSpeed
 
 class Navi {
 public:
-
-
+    Navi(std::function<void(int motor1, int motor2)> on_set_speed_callback);
     int setTargetPosition(const double &target_pos_x, const double &target_pos_y, const double &target_orientation);
-    //int setTargetAngle(const double &target_orientation);
     int setCurrentPosition(const double &new_rob_pos_x, const double &new_rob_pos_y, const double &new_rob_orientation);
     int getPositionReached(void);
     int getActualState(void);
     void stateMachine(enumNaviStateMachine sm, pos_info robot_pos, pos_info target_pos);
 
 private:
-    bool target_reached = true;
+    bool target_reached = false;
     pos_info target_position;
     pos_info actual_robot_position;
     rotdir rotation_direction;
     enumNaviStateMachine actual_navi_state = enumNaviStateMachine::ST0_IDLE;
+    std::function<void(int motor1, int motor2)> on_set_speed_callback_;
 };
 
 

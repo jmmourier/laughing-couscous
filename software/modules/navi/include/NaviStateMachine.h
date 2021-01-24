@@ -3,6 +3,7 @@
 #define COUSCOUS_NAVISTATEMACHINE_H
 
 #include "NaviUtils.h"
+#include <functional>
 
 #define DELTA_ANGLE_TO_STOP_ROTATION_MOVEMENT 0.1
 #define DELTA_DIST_TO_STOP_FW_MOVEMENT 0.1
@@ -21,14 +22,14 @@ enum enumNaviStateMachine {
 };
 void naviStateMachineExec(const enumNaviStateMachine execState, enumNaviStateMachine next_state,  pos_info robot_pos, pos_info target_pos);
 //void state_idle();
-enumNaviStateMachine state1_start_align_to_target(pos_info robot_pos, pos_info target_pos);
-enumNaviStateMachine state2_align_to_target(pos_info robot_pos, pos_info target_pos);
+enumNaviStateMachine state1_start_align_to_target(pos_info robot_pos, pos_info target_pos, std::function<void(int motor1, int motor2)> on_set_speed_callbac);
+enumNaviStateMachine state2_align_to_target(pos_info robot_pos, pos_info target_pos, std::function<void(int motor1, int motor2)> on_set_speed_callback);
 enumNaviStateMachine state3_wait_for_movement();
-enumNaviStateMachine state4_start_fw();
-enumNaviStateMachine state5_driving_to_target(pos_info robot_pos, pos_info target_pos);
+enumNaviStateMachine state4_start_fw(std::function<void(int motor1, int motor2)> on_set_speed_callback);
+enumNaviStateMachine state5_driving_to_target(pos_info robot_pos, pos_info target_pos, std::function<void(int motor1, int motor2)> on_set_speed_callback);
 enumNaviStateMachine state6_wait_for_rotation();
-enumNaviStateMachine state7_start_rotation_to_target_orientation(pos_info robot_pos, pos_info target_pos);
+enumNaviStateMachine state7_start_rotation_to_target_orientation(pos_info robot_pos, pos_info target_pos,std::function<void(int motor1, int motor2)> on_set_speed_callback);
 enumNaviStateMachine state8_rotation_to_target_orientation(pos_info robot_pos, pos_info target_pos);
-enumNaviStateMachine state9_done();
+enumNaviStateMachine state9_done(std::function<void(int motor1, int motor2)> on_set_speed_callback);
 
 #endif //COUSCOUS_NAVISTATEMACHINE_H

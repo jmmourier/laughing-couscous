@@ -144,7 +144,7 @@ TEST(NaviUtilsTest, utils_test_angles_diff){
     robot_orientation = 7*(M_PI/4);
     target_orientation = M_PI/4;
     rotation_angle = get_angle_difference(robot_orientation, target_orientation);
-  //  std::cout<<"----"<<rotation_angle<<std::endl;
+    //  std::cout<<"----"<<rotation_angle<<std::endl;
     EXPECT_FLOAT_EQ(rotation_angle, M_PI/2);
 }
 

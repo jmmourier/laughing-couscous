@@ -9,6 +9,8 @@ file(GLOB_RECURSE HEADERS include/**.h src/**.h test/**.h)
 
 list(APPEND SOURCES
         src/Navi.cpp
+        src/NaviStateMachine.cpp
+        src/NaviUtils.cpp
         )
 
 list(APPEND TESTS
@@ -21,8 +23,8 @@ list(APPEND TESTS
 add_library(
         ${PROJECT_NAME}_lib
         STATIC ${SOURCES}
-        src/NaviUtils.cpp include/NaviUtils.h src/NaviStateMachine.cpp include/NaviStateMachine.h )
-
+       # src/NaviUtils.cpp include/NaviUtils.h src/NaviStateMachine.cpp include/NaviStateMachine.h )
+)
 
 target_include_directories(
         ${PROJECT_NAME}_lib
