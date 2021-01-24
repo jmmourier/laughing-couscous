@@ -176,12 +176,14 @@ int main(int argc, char *argv[]) {
             if (further) {
                 if (hali->getEncoder(motor1) < 1000) {
                     hali->setMd25Speed(127 + 30, 127 + 30);
+                    hali->setGrabber(grabberOpen);
                 } else {
                     further = false;
                 }
             } else {
                 if (hali->getEncoder(motor1) > 0) {
                     hali->setMd25Speed(127 - 30, 127 - 30);
+                    hali->setGrabber(grabberClose);
                 } else {
                     further = true;
                 }

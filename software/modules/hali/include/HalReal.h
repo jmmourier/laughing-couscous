@@ -18,6 +18,9 @@ class HalReal : public Hali {
 
     void setMd25Speed(int speed_1, int speed_2);
 
+    void setGrabber(GrabberState grabber_state);
+    GrabberState getGrabber();
+
    private:
     Serial serial_;
     MessageParser message_parser_;
@@ -27,6 +30,7 @@ class HalReal : public Hali {
     int md25_voltage_ = 0;
     int md25_encoder_1_ = 0;
     int md25_encoder_2_ = 0;
+    GrabberState grabber_state_;
 };
 
 #endif  // HALI_REAL_H

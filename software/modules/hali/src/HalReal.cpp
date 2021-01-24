@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-HalReal::HalReal() : serial_("/dev/ttyACM0", 9600), message_parser_(), command_interpreter_() {}
+HalReal::HalReal() : serial_("/dev/ttyACM0", 9600), message_parser_(), command_interpreter_(), grabber_state_(grabberUndefined) {}
 
 constexpr unsigned int hash(const char *str, int h = 0) {
     return !str[h] ? 5381 : (hash(str, h + 1) * 33) ^ str[h];
@@ -39,10 +39,12 @@ void HalReal::updater() {
                 case hash("md25encoder2"):
                     md25_encoder_2_ = argument_received;
                     break;
+                case hash("grabberState"):
+                    grabber_state_ = (GrabberState)argument_received;
+                    break;
                 default:
                     break;
             }
-            // command_interpreter_.analyse(command_data);
         }
     }
 }
@@ -68,4 +70,9 @@ void HalReal::setMd25Speed(int speed_1, int speed_2) {
         message_parser_.createMessage(CommandData("md25speed1", std::to_string(speed_1))));
     serial_.writeString(
         message_parser_.createMessage(CommandData("md25speed2", std::to_string(speed_2))));
+}
+
+void HalReal::setGrabber(GrabberState grabber_state){
+    serial_.writeString(
+        message_parser_.createMessage(CommandData("grabber", std::to_string(static_cast<int>(grabber_state)))));
 }
