@@ -1,6 +1,3 @@
 [submodule "software/external/googletest"]
 	path = software/external/googletest
 	url = https://github.com/google/googletest.git
-[submodule "software/external/tools"]
-	path = software/external/tools
-	url = git@github.com:raspberrypi/tools.git
