@@ -20,7 +20,10 @@ RUN apt-get update \
     ccache \
     git \
     libssl-dev \ 
-    libboost-all-dev
+    libboost-all-dev \
+    sshpass \
+    rsync \
+    ansible
 
 ### Install NodeJS
 RUN wget -qO- https://deb.nodesource.com/setup_15.x | bash
