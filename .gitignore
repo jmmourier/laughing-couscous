@@ -1,5 +1,5 @@
 #build folders
-**/build/
+build/
 **/cmake-build-debug/
 
 #editors configs

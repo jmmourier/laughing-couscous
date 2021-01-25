@@ -1,0 +1,14 @@
+---
+- name: Push application_test_gui_exe
+  copy:
+    src: "{{ PROJECT_PATH }}/build/application_test_gui/application_test_gui_exe"
+    dest: /home/pi
+    mode: "755"
+- name: Create web directory if it does not exist
+  file:
+    path: /home/pi/web
+    state: directory
+- name: Push front sources
+  copy:
+    src: "{{ PROJECT_PATH }}/software/modules/gui/web/build"
+    dest: /home/pi/web

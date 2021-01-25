@@ -1,0 +1,7 @@
+[Unit]
+Description=Couscous app service
+
+[Service]
+User=pi
+ExecStart=/home/pi/application_test_gui_exe
+Restart=always

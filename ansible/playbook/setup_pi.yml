@@ -1,0 +1,8 @@
+---
+- hosts: pi
+  gather_facts: no
+
+  roles:
+    - include_role:
+      name: setup_pi
+      become: true

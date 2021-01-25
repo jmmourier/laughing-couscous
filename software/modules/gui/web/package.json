@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "npm run grpc && react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm run grpc && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "grpc": "mkdir -p ./node_modules/generated_grpc_sources && ./node_modules/grpc-tools/bin/protoc -I ../src/protos --js_out=import_style=commonjs:./node_modules/generated_grpc_sources --grpc-web_out=import_style=commonjs+dts,mode=grpcwebtext:./node_modules/generated_grpc_sources --plugin=protoc-gen-grpc=./node_modules/grpc-tools/bin/grpc_node_plugin $(find ../src/protos -iname '*.proto')"

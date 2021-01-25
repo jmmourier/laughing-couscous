@@ -1,0 +1,7 @@
+[Unit]
+Description=Exec grpcwebproxy
+
+[Service]
+User=pi
+ExecStart=grpcwebproxy-v0.13.0-arm6 --backend_addr=localhost:9090 --run_tls_server=false --allow_all_origins --server_http_max_write_timeout=0
+Restart=always

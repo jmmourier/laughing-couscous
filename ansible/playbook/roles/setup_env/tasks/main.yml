@@ -1,0 +1,9 @@
+---
+- name: Create hosts file
+  template: src=/workspace/laughing-couscous/ansible/playbook/roles/setup_env/templates/hosts.yml.j2 dest=/workspace/laughing-couscous/ansible/hosts.yml
+- name: Create front .env file
+  template: src=/workspace/laughing-couscous/ansible/playbook/roles/setup_env/templates/.env.production.j2 dest=/workspace/laughing-couscous/software/modules/gui/web/.env.production
+- name: Install front dependencies
+  command:
+    chdir: "{{ PROJECT_PATH }}/software/modules/gui/web"
+    cmd: npm ci
