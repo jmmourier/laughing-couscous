@@ -1,0 +1,13 @@
+---
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
+- name: Restart envoy
+  service:
+    name: grpcwebproxy.service
+    state: restarted
+- name: Restart couscous_app
+  service:
+    name: couscous_app.service
+    state: restarted

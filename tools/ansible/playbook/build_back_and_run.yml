@@ -1,0 +1,15 @@
+---
+- hosts: all
+  gather_facts: no
+- hosts: localhost
+  roles:
+    - include_role:
+      name: build_back
+- hosts: pi
+  roles:
+    - include_role:
+      name: push_back
+      become: true
+    - include_role:
+      name: run
+      become: true

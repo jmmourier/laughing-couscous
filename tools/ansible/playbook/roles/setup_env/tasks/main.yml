@@ -1,0 +1,33 @@
+---
+- name: Create hosts file
+  template:
+    src: "{{ role_path }}/templates/hosts.yml.j2"
+    dest: "{{ playbook_dir }}/../hosts.yml"
+- name: Create front .env file
+  template:
+    src: "{{ role_path }}/templates/.env.production.j2"
+    dest: "{{ playbook_dir }}/../../../software/modules/gui/web/.env.production"
+- name: Create nginx config file
+  template:
+    src: "{{ role_path }}/templates/static_site.cfg.j2"
+    dest: "{{ playbook_dir }}/../static_site.cfg"
+- name: Create setup_pi/files directory
+  file:
+    path: "{{ playbook_dir }}/roles/setup_pi/files"
+    state: directory
+- name: Create couscous service file
+  template:
+    src: "{{ role_path }}/templates/couscous_app.service.j2"
+    dest: "{{ playbook_dir }}/roles/setup_pi/files/couscous_app.service"
+- name: Create grpcwebproxy service file
+  template:
+    src: "{{ role_path }}/templates/grpcwebproxy.service.j2"
+    dest: "{{ playbook_dir }}/roles/setup_pi/files/grpcwebproxy.service"
+- name: Install git submodule
+  command:
+    chdir: "{{ role_path }}/../.."
+    cmd: git submodule update --init --recursive
+- name: Install front dependencies
+  command:
+    chdir: "{{ playbook_dir }}/../../../software/modules/gui/web"
+    cmd: npm ci

@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  gather_facts: no
+
+  roles:
+    - include_role:
+      name: setup_env
+      become: true

@@ -1,0 +1,10 @@
+all:
+  vars:
+    PROJECT_PATH: /workspace/laughing-couscous
+    PI_USERNAME: {{ PI_USERNAME }}
+  hosts:
+    pi:
+      ansible_user: {{ PI_USERNAME }}
+      ansible_host: {{ PI_IP }}
+      ansible_port: {{ PI_PORT }}
+      ansible_ssh_pass: {{ PI_SSH_PASSWORD }}

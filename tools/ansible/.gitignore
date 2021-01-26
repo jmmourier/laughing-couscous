@@ -1,0 +1,9 @@
+# hosts file
+hosts.yml
+
+# nginx config file
+static_site.cfg
+
+# app services
+playbook/roles/setup_pi/files/grpcwebproxy.service
+playbook/roles/setup_pi/files/couscous_app.service
