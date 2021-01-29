@@ -1,3 +1,5 @@
+import { PositionPromiseClient } from "generated_grpc_sources/robot_grpc_web_pb";
+import { Empty, PositionMsg, SpeedMsg } from "generated_grpc_sources/robot_pb";
 import React, {
   Dispatch,
   FunctionComponent,
@@ -6,10 +8,8 @@ import React, {
   useEffect,
   useReducer,
 } from "react";
-import { PositionPromiseClient } from "generated_grpc_sources/robot_grpc_web_pb";
-import { PositionMsg, Empty, SpeedMsg } from "generated_grpc_sources/robot_pb";
-import * as stateProvider from "./StateProvider";
 import { ISpeed } from "../interfaces/size";
+import * as stateProvider from "./StateProvider";
 
 type IState = {};
 
