@@ -1,10 +1,10 @@
 ### 'Running the app'
 
-- If it's the first time, the nodejs packages must be installed. For that go to ./laughing-couscous/software/modules/gui/web and run 'npm ci'
+- If it's the first time, the nodejs packages must be installed. For that go to ./laughing-couscous/software/modules/gui/web and run 'yarn install'
 - Make sure cpp web_server_exe is running using cmake. This will also generate cpp classes for gRPC
-- in the same folder gui/web run the command 'npm start'
+- in the same folder gui/web run the command 'yarn start'
 
-### `npm start`
+### `yarn start`
 
 Runs the app in the development mode.<br />
 Before starting, gRPC will generate every required typescript classes

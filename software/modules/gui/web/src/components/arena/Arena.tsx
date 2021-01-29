@@ -1,9 +1,9 @@
 import React, { FunctionComponent, useCallback, useState } from "react";
-import { ISize } from "../../interfaces/size";
 import useWindow from "../../hooks/window";
+import { ISize } from "../../interfaces/size";
 import * as stateProvider from "../StateProvider";
-import Robot from "./Robot";
 import PositionIndicator from "./PositionIndicator";
+import Robot from "./Robot";
 
 const ARENA_HEIGHT = 2;
 const ARENA_WIDTH = 3;
@@ -65,13 +65,9 @@ const Arena: FunctionComponent<IArenaProps> = ({ onPositionSelected }) => {
 
   return (
     <svg
+      className="bg-gradient-to-r from-gray-100 via-gray-50 to-gray-100 rounded-md shadow"
       ref={svgAreaRef}
       viewBox={`0 0 ${ARENA_WIDTH} ${ARENA_HEIGHT}`}
-      style={{
-        position: "absolute",
-        backgroundColor: "#e3e3e3",
-        width: "100%",
-      }}
       onDoubleClick={(e) => {
         onPositionSelected({
           x_m:
@@ -95,13 +91,13 @@ const Arena: FunctionComponent<IArenaProps> = ({ onPositionSelected }) => {
       }}
       onMouseDown={() => setMouseState({ ...mouseState, isDown: true })}
     >
-      <svg style={{ position: "absolute", backgroundColor: "#e3e3e3" }}>
+      <g>
         <Robot />
         <PositionIndicator
           mouseState={mouseState}
           ratioPixelsMeters={ratioPixelToMeter}
         />
-      </svg>
+      </g>
     </svg>
   );
 };
