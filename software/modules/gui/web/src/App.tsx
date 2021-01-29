@@ -1,20 +1,9 @@
-import { Input } from "@material-ui/core";
 import React, { FunctionComponent, useContext, useState } from "react";
-import "./App.css";
 import Arena from "./components/arena/Arena";
-import * as stateProvider from "./components/StateProvider";
-import * as communicationProvider from "./components/CommunicationProvider";
 import Joystick from "./components/arena/Joystick";
-
-const TextField = require("@material-ui/core/TextField/TextField").default;
-const Table = require("@material-ui/core/Table/Table").default;
-const Paper = require("@material-ui/core/Paper/Paper").default;
-const TableBody = require("@material-ui/core/TableBody/TableBody").default;
-const TableCell = require("@material-ui/core/TableCell/TableCell").default;
-const TableContainer = require("@material-ui/core/TableContainer/TableContainer")
-  .default;
-const TableRow = require("@material-ui/core/TableRow/TableRow").default;
-const TableHead = require("@material-ui/core/TableHead/TableHead").default;
+import Block from "./components/Block";
+import * as communicationProvider from "./components/CommunicationProvider";
+import * as stateProvider from "./components/StateProvider";
 
 const ROUND_RATIO = 1000;
 
@@ -56,87 +45,100 @@ const App: FunctionComponent = () => {
   });
 
   return (
-    <div className={"container"}>
-      <div className={"area"}>
+    <main className={"flex h-full bg-gray-200 gap-4 p-4"}>
+      <div className={"w-8/12"}>
         <Arena onPositionSelected={setSelectedPosition} />
       </div>
-      <div className={"data-view"}>
-        <Paper style={{ padding: "16px" }}>
-          <h2>Couscous position</h2>
-          <TableContainer>
-            <Table aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Data</TableCell>
-                  <TableCell align="right">Value</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow key={row.name}>
-                    <TableCell component="th" scope="row">
+      <div className={"flex-1 rounded-xl flex flex-col gap-4"}>
+        <Block title="position">
+          <table className="table-auto w-full whitespace-no-wrap table-striped relative">
+            <tbody>
+              {rows.map((row, index) => (
+                <tr>
+                  <td className="order-gray-200 userId">
+                    <span className="text-gray-700 px-6 py-3 flex items-center">
                       {row.name}
-                    </TableCell>
-                    <TableCell align="right">{row.value}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-
-          <h2>Set position</h2>
-          <form
-            noValidate
-            autoComplete="off"
-            className={"form-set-position"}
-            onSubmit={(e) => {
-              e.preventDefault();
-              communicationProviderDispatch({
-                type: communicationProvider.Action.SET_ABSOLUTE_POSITION,
-                position: selectedPosition,
-              });
-            }}
-          >
-            <TextField
-              label="Pos X"
-              variant="outlined"
-              type={"number"}
-              value={
-                Math.round(selectedPosition.x_m * ROUND_RATIO) / ROUND_RATIO
-              }
-              onChange={({
-                target: { value },
-              }: React.ChangeEvent<HTMLInputElement>) => {
-                setSelectedPosition({
-                  ...selectedPosition,
-                  x_m: parseFloat(value),
+                    </span>
+                  </td>
+                  <td className="border-gray-200 userId">
+                    <span className="text-gray-700 px-6 py-3 flex items-center">
+                      {row.value}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Block>
+        <Block title="set position">
+          <div className="p-4">
+            <form
+              noValidate
+              autoComplete="off"
+              onSubmit={(e) => {
+                e.preventDefault();
+                communicationProviderDispatch({
+                  type: communicationProvider.Action.SET_ABSOLUTE_POSITION,
+                  position: selectedPosition,
                 });
               }}
-            />
-            <TextField
-              label="Pos Y"
-              variant="outlined"
-              type={"number"}
-              value={
-                Math.round(selectedPosition.y_m * ROUND_RATIO) / ROUND_RATIO
-              }
-              onChange={({
-                target: { value },
-              }: React.ChangeEvent<HTMLInputElement>) => {
-                setSelectedPosition({
-                  ...selectedPosition,
-                  y_m: parseFloat(value),
-                });
-              }}
-            />
-            <div>
-              <Input type="submit" value="Set position"></Input>
-            </div>
-          </form>
-          <Joystick></Joystick>
-        </Paper>
+            >
+              <div className="flex gap-4">
+                <label className="flex-1">
+                  <span className="text-gray-700">Position X</span>
+                  <input
+                    type="number"
+                    className="mt-2 w-full rounded-lg p-4 border-2 border-gray-700 bg-gray-50 text-gray-700"
+                    placeholder="Position X"
+                    value={
+                      Math.round(selectedPosition.x_m * ROUND_RATIO) /
+                      ROUND_RATIO
+                    }
+                    onChange={({
+                      target: { value },
+                    }: React.ChangeEvent<HTMLInputElement>) => {
+                      setSelectedPosition({
+                        ...selectedPosition,
+                        x_m: parseFloat(value),
+                      });
+                    }}
+                  />
+                </label>
+                <label className="flex-1">
+                  <span className="text-gray-700">Position Y</span>
+                  <input
+                    type="number"
+                    className="mt-2 w-full rounded-lg p-4 border-2 border-gray-700 bg-gray-50 text-gray-700"
+                    placeholder="Position Y"
+                    value={
+                      Math.round(selectedPosition.y_m * ROUND_RATIO) /
+                      ROUND_RATIO
+                    }
+                    onChange={({
+                      target: { value },
+                    }: React.ChangeEvent<HTMLInputElement>) => {
+                      setSelectedPosition({
+                        ...selectedPosition,
+                        y_m: parseFloat(value),
+                      });
+                    }}
+                  />
+                </label>
+              </div>
+              <button
+                type="submit"
+                className="w-full rounded-xl p-4 uppercase bg-gray-700 shadow text-white mt-4"
+              >
+                Apply
+              </button>
+            </form>
+          </div>
+        </Block>
+        <Block title="Joystick">
+          <Joystick />
+        </Block>
       </div>
-    </div>
+    </main>
   );
 };
 

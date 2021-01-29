@@ -3,28 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/icons": "^4.11.2",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "@types/jest": "^24.9.1",
-    "@types/node": "^12.12.62",
-    "@types/react": "^16.9.49",
-    "@types/react-dom": "^16.9.8",
-    "google-protobuf": "^3.13.0",
+    "google-protobuf": "^3.14.0",
     "grpc-web": "^1.2.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3",
-    "typescript": "^3.7.5"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "4.0.1"
   },
   "scripts": {
-    "start": "npm run grpc && react-scripts start",
-    "build": "npm run grpc && react-scripts build",
-    "test": "react-scripts test",
+    "start": "yarn run grpc && craco start",
+    "build": "yarn run grpc && craco build",
+    "test": "craco test",
     "eject": "react-scripts eject",
-    "grpc": "mkdir -p ./node_modules/generated_grpc_sources && ./node_modules/grpc-tools/bin/protoc -I ../src/protos --js_out=import_style=commonjs:./node_modules/generated_grpc_sources --grpc-web_out=import_style=commonjs+dts,mode=grpcwebtext:./node_modules/generated_grpc_sources --plugin=protoc-gen-grpc=./node_modules/grpc-tools/bin/grpc_node_plugin $(find ../src/protos -iname '*.proto')"
+    "grpc": "./generate-grpc-files.sh"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -42,7 +32,19 @@
     ]
   },
   "devDependencies": {
-    "google-protobuf": "^3.13.0",
-    "grpc-tools": "^1.9.1"
+    "@craco/craco": "^6.0.0",
+    "@tailwindcss/postcss7-compat": "^2.0.2",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.3",
+    "@testing-library/user-event": "^12.6.0",
+    "@types/jest": "^26.0.20",
+    "@types/node": "^14.14.21",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "autoprefixer": "^9.8.6",
+    "grpc-tools": "^1.10.0",
+    "postcss": "^7.0.35",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
+    "typescript": "^4.1.3"
   }
 }

@@ -1,63 +1,17 @@
 import React, { FunctionComponent, useContext } from "react";
 import * as communicationProvider from "../CommunicationProvider";
 
-const Theme = require("@material-ui/core/styles/createMuiTheme").default;
-const makeStyles = require("@material-ui/core/styles/makeStyles").default;
-const ArrowUpwardIcon = require("@material-ui/icons/ArrowUpward").default;
-const Button = require("@material-ui/core/Button").default;
-const ArrowDownward = require("@material-ui/icons/ArrowDownward").default;
-const ArrowForward = require("@material-ui/icons/ArrowForward").default;
-const ArrowBack = require("@material-ui/icons/ArrowBack").default;
-
 const FIX_SEED = 500;
 
-const useStyles = makeStyles((theme: typeof Theme) => ({
-  container: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr",
-    gridTemplateRows: "1fr 1fr 1fr",
-  },
-  upButton: {
-    gridColumn: 2,
-    gridRow: 1,
-    backgroundColor: "#d2d2d2",
-    borderRadius: "5px",
-    margin: "auto",
-  },
-  leftButton: {
-    gridColumn: 1,
-    gridRow: 2,
-    backgroundColor: "#d2d2d2",
-    borderRadius: "5px",
-    margin: "auto",
-  },
-  rightButton: {
-    gridColumn: 3,
-    gridRow: 2,
-    backgroundColor: "#d2d2d2",
-    borderRadius: "5px",
-    margin: "auto",
-  },
-  bottomButton: {
-    gridColumn: 2,
-    gridRow: 3,
-    backgroundColor: "#d2d2d2",
-    borderRadius: "5px",
-    margin: "auto",
-  },
-}));
 const Joystick: FunctionComponent = () => {
   const { dispatch: communicationProviderDispatch } = useContext(
     communicationProvider.context
   );
 
-  const style = useStyles();
   return (
-    <div className={style.container}>
-      <Button
-        className={style.upButton}
-        variant="contained"
-        color="primary"
+    <div className="flex flex-col p-4">
+      <button
+        className="flex-1 w-1/6 self-center bg-gray-700 text-white rounded-xl"
         onClick={() => {
           communicationProviderDispatch({
             type: communicationProvider.Action.SET_SPEED,
@@ -65,38 +19,70 @@ const Joystick: FunctionComponent = () => {
           });
         }}
       >
-        <ArrowUpwardIcon color="primary">Up</ArrowUpwardIcon>
-      </Button>
-      <Button
-        className={style.leftButton}
-        variant="contained"
-        color="primary"
-        onClick={() => {
-          communicationProviderDispatch({
-            type: communicationProvider.Action.SET_SPEED,
-            speed: { motor1: -FIX_SEED, motor2: FIX_SEED },
-          });
-        }}
-      >
-        <ArrowBack color="primary">Left</ArrowBack>
-      </Button>
-      <Button
-        className={style.rightButton}
-        variant="contained"
-        color="primary"
-        onClick={() => {
-          communicationProviderDispatch({
-            type: communicationProvider.Action.SET_SPEED,
-            speed: { motor1: FIX_SEED, motor2: -FIX_SEED },
-          });
-        }}
-      >
-        <ArrowForward color="primary">Right</ArrowForward>
-      </Button>
-      <Button
-        className={style.bottomButton}
-        variant="contained"
-        color="primary"
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 15l7-7 7 7"
+          />
+        </svg>
+      </button>
+      <div className="flex justify-around">
+        <button
+          className="w-1/6 bg-gray-700 text-white rounded-xl"
+          onClick={() => {
+            communicationProviderDispatch({
+              type: communicationProvider.Action.SET_SPEED,
+              speed: { motor1: -FIX_SEED, motor2: FIX_SEED },
+            });
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+        <button
+          className="w-1/6 bg-gray-700 text-white rounded-xl"
+          onClick={() => {
+            communicationProviderDispatch({
+              type: communicationProvider.Action.SET_SPEED,
+              speed: { motor1: FIX_SEED, motor2: -FIX_SEED },
+            });
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
+      </div>
+      <button
+        className="flex-1 w-1/6 self-center bg-gray-700 text-white rounded-xl"
         onClick={() => {
           communicationProviderDispatch({
             type: communicationProvider.Action.SET_SPEED,
@@ -104,8 +90,20 @@ const Joystick: FunctionComponent = () => {
           });
         }}
       >
-        <ArrowDownward color="primary">Down</ArrowDownward>
-      </Button>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
     </div>
   );
 };
