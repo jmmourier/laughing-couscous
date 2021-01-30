@@ -1,11 +1,12 @@
-#include "CouscousManager.h"
+
+#include "CouscousManagerGui.h"
 
 #include "Hali.h"
 #include "RealTime.h"
 
 const static int INTERVAL_REFRESH_MS = 50;
 
-CouscousManager::CouscousManager(std::shared_ptr<Hali> hali) : hali_(std::move(hali)) {
+CouscousManagerGui::CouscousManagerGui(std::shared_ptr<Hali> hali) : hali_(std::move(hali)) {
     auto time_helper = std::make_shared<RealTime>();
 
     double start_pos_x_m = 1;
@@ -24,22 +25,25 @@ CouscousManager::CouscousManager(std::shared_ptr<Hali> hali) : hali_(std::move(h
     web_server_thread_ = std::thread([this] { web_server_->start(); });
 }
 
-void CouscousManager::onPosiPositionUpdate(double pos_x_m, double pos_y_m, double orientation_rad) {
+void CouscousManagerGui::onPosiPositionUpdate(
+    double pos_x_m,
+    double pos_y_m,
+    double orientation_rad) {
     web_server_->updatePosition(pos_x_m, pos_y_m, orientation_rad);
 }
 
-void CouscousManager::onClientRequestSetPosition(
+void CouscousManagerGui::onClientRequestSetPosition(
     double pos_x_m,
     double pos_y_m,
     double orientation_rad) {
     posi_->setPosition(pos_x_m, pos_y_m, orientation_rad);
 };
 
-void CouscousManager::onClientRequestSetSpeed(int motor1, int motor2) {
+void CouscousManagerGui::onClientRequestSetSpeed(int motor1, int motor2) {
     hali_->setMd25Speed(motor1, motor2);
 };
 
-void CouscousManager::start() {
+void CouscousManagerGui::start() {
     while (true) {
         int encoder1 = hali_->getEncoder(MotorIdEnum::motor1);
         int encoder2 = hali_->getEncoder(MotorIdEnum::motor2);
