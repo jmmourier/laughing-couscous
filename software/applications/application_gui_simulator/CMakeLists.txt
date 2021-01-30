@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.0)
-project(application_test_gui
+project(application_gui_simulator
         VERSION 1.0
         LANGUAGES CXX
         )
