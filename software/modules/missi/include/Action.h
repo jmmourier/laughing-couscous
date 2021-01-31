@@ -4,11 +4,11 @@
 #include <string>
 #include <vector>
 
-enum ActionType {WAIT, GRIPPER, MOVE, TURN};
+enum ActionType { WAIT, GRIPPER, MOVE, TURN };
 
-struct Action{
+struct Action {
     ActionType type;
     std::vector<std::string> arguments;
 };
 
-#endif //ACTION_H
+#endif  // ACTION_H
