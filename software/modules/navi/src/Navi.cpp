@@ -60,7 +60,6 @@ void Navi::stateMachine(enumNaviStateMachine sm , pos_info robot_pos, pos_info t
         default:
             break;
     }
-
 }
 
 int Navi::setCurrentPosition(const double &new_rob_pos_x, const double &new_rob_pos_y, const double &new_rob_orientation){
@@ -71,7 +70,6 @@ int Navi::setCurrentPosition(const double &new_rob_pos_x, const double &new_rob_
     return 0;
 }
 
-
 int Navi::getPositionReached(void){
     return target_reached;
 }
@@ -79,18 +77,3 @@ int Navi::getPositionReached(void){
 int Navi::getActualState(void){
     return actual_navi_state;
 }
-
-
-
-/*
-double Navi::alignToTarget(const double &robot_pos_x, const double &robot_pos_y, const double &robot_orientation, const double &target_pos_x, const double &target_pos_y){
-    return 0.0;
-}
-void Navi::goToTarget(const double &pos_x, const double &pos_y){
-}
-*/
-/*
-RobotBaseSpeed Navi::getBaseSpeed() {
-    RobotBaseSpeed baseSpeed(v_x_mps, v_y_mps, omega_radps);
-    return baseSpeed;
-}*/

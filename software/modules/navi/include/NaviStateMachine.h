@@ -5,7 +5,7 @@
 #include "NaviUtils.h"
 #include <functional>
 
-#define DELTA_ANGLE_TO_STOP_ROTATION_MOVEMENT 0.1
+#define DELTA_ANGLE_TO_STOP_ROTATION_MOVEMENT 0.05
 #define DELTA_DIST_TO_STOP_FW_MOVEMENT 0.1
 
 enum enumNaviStateMachine {
