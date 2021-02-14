@@ -7,3 +7,4 @@ if(ENABLE_GUI)
 endif()
 
 add_subdirectory(application_gui_simulator)
+add_subdirectory(application_gui)
