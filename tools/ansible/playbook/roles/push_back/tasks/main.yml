@@ -1,6 +1,6 @@
 ---
-- name: Push application_test_gui_exe
+- name: Push application_gui_simulator_exe
   copy:
-    src: "{{ PROJECT_PATH }}/build/application_test_gui/application_test_gui_exe"
+    src: "{{ PROJECT_PATH }}/build/applications/application_gui_simulator/application_gui_simulator_exe"
     dest: "/home/{{ PI_USERNAME }}"
     mode: "755"
