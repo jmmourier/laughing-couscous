@@ -1,0 +1,5 @@
+---
+- name: CMAKE
+  command: "/usr/bin/cmake --no-warn-unused-cli -DCMAKE_TOOLCHAIN_FILE:STRING=/tmp/toolchain.cmake -DProtobuf_DIR:STRING=/tmp/raspberrypi_root/stage/lib/cmake/protobuf -DgRPC_DIR:STRING=/tmp/raspberrypi_root/stage/lib/cmake/grpc -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -H{{ PROJECT_PATH }}/software -B{{ PROJECT_PATH }}/build -G 'Unix Makefiles'"
+- name: Build application_test_gui_exe
+  command: "/usr/bin/cmake --build {{ PROJECT_PATH }}/build --config Debug --target application_test_gui_exe -- -j8"

@@ -20,7 +20,9 @@ RUN apt-get update \
     ccache \
     git \
     libssl-dev \ 
-    libboost-all-dev
+    sshpass \
+    rsync \
+    ansible
 
 ### Install NodeJS
 RUN wget -qO- https://deb.nodesource.com/setup_15.x | bash
@@ -39,7 +41,7 @@ RUN unzip clangd-linux-11.0.0.zip \
     rm -rf clangd-linux-11.0.0.zip
 
 # create workspace folder
-RUN mkdir -p /workspace/laughing-couscous-dev
+RUN mkdir -p /workspace/laughing-couscous
 
 WORKDIR /tmp
 
@@ -58,7 +60,7 @@ RUN cmake \
     -DgRPC_BUILD_TESTS=OFF \
     -DgRPC_SSL_PROVIDER=package \
     ../.. && \
-    make -j4 install
+    make -j$(nproc) install
 
 WORKDIR /tmp
 
@@ -92,4 +94,4 @@ RUN cmake -DCMAKE_TOOLCHAIN_FILE=/tmp/toolchain.cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/tmp/raspberrypi_root/grpc_install \
     ../.. && \
-    make -j4 install
+    make -j$(nproc) install

@@ -1,8 +1,8 @@
 version: "3.4"
 
 services:
-  laughing-couscous-dev:
-    image: laughing-couscous-img
+  laughing-couscous:
+    image: laughing-couscous
     container_name: laughing-couscous
     build:
       context: .
@@ -16,7 +16,7 @@ services:
     privileged: true
     tty: true
     volumes:
-      - ../..:/workspace/laughing-couscous-dev:delegated
+      - ../..:/workspace/laughing-couscous:delegated
       - ccache:/var/ccache
       - vscode-server:/root/.vscode-server
     ports:
@@ -26,7 +26,7 @@ services:
       context: .
       dockerfile: envoy.Dockerfile
     depends_on:
-      - laughing-couscous-dev
+      - laughing-couscous
     ports:
       - 8080:8080
 volumes:

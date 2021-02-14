@@ -1,0 +1,6 @@
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        root /home/{{ PI_USERNAME }}/web/build;
+        server_name _;
+}
