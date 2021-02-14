@@ -23,7 +23,6 @@ list(APPEND TESTS
 add_library(
         ${PROJECT_NAME}_lib
         STATIC ${SOURCES}
-       # src/NaviUtils.cpp include/NaviUtils.h src/NaviStateMachine.cpp include/NaviStateMachine.h )
 )
 
 target_include_directories(
