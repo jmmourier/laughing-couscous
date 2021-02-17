@@ -2,13 +2,13 @@
 #define ACTION_H
 
 #include <string>
-#include <vector>
 
-enum ActionType { WAIT, GRIPPER, MOVE, TURN };
+enum ActionType { WAIT, GRABBER, MOVE, TURN, UNKNOWN };
 
 struct Action {
     ActionType type;
-    std::vector<std::string> arguments;
+    std::string arguments;
+    int timeout_s = 0;
 };
 
 #endif  // ACTION_H

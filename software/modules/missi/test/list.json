@@ -1,0 +1,27 @@
+{
+  "action1" :{
+    "actionType": "wait",
+    "arguments": "dummy argument 1",
+    "timeout": "0"
+  },
+  "action2" :{
+    "actionType": "turn",
+    "arguments": "dummy argument 2",
+    "timeout": "0"
+  },
+  "action3" :{
+    "actionType": "move",
+    "arguments": "dummy argument 3",
+    "timeout": "0"
+  },
+  "action4" :{
+    "actionType": "grabber",
+    "arguments": "dummy argument 4",
+    "timeout": "0"
+  },
+  "action5" :{
+    "actionType": "dummyType",
+    "arguments": "dummy argument 5",
+    "timeout": "0"
+  }
+}
