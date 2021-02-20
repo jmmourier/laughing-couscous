@@ -1,5 +1,5 @@
-#ifndef COUSCOUS_MANAGER_H
-#define COUSCOUS_MANAGER_H
+#ifndef COUSCOUS_MANAGER_GUI_H
+#define COUSCOUS_MANAGER_GUI_H
 
 #include <thread>
 
@@ -7,9 +7,9 @@
 #include "Posi.h"
 #include "WebServer.h"
 
-class CouscousManager {
+class CouscousManagerGui {
    public:
-    explicit CouscousManager(std::shared_ptr<Hali> hali);
+    explicit CouscousManagerGui(std::shared_ptr<Hali> hali);
     void start();
 
    private:
@@ -46,4 +46,4 @@ class CouscousManager {
     void onClientRequestSetSpeed(int motor1, int motor2);
 };
 
-#endif  // COUSCOUS_MANAGER_H
+#endif  // COUSCOUS_MANAGER_GUI_H
