@@ -1,6 +1,8 @@
 #ifndef POSI_H
 #define POSI_H
 
+#include <spdlog/logger.h>
+
 #include <memory>
 
 #include "IBaseTime.h"
@@ -41,6 +43,7 @@ class Posi {
     void updatePosition(int encoder1, int encoder2);
 
    private:
+    std::shared_ptr<spdlog::logger> logger_;
     std::shared_ptr<IBaseTime> time_helper_;
     long previous_encoder1_;
     long previous_encoder2_;
