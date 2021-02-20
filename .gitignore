@@ -11,3 +11,6 @@ build/
 
 #external libs folder
 software/external
+
+# log
+couscous.log
