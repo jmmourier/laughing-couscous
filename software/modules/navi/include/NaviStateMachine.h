@@ -22,14 +22,14 @@ enum enumNaviStateMachine {
 };
 void naviStateMachineExec(const enumNaviStateMachine execState, enumNaviStateMachine next_state,  pos_info robot_pos, pos_info target_pos);
 //void state_idle();
-enumNaviStateMachine state1_start_align_to_target(pos_info robot_pos, pos_info target_pos, std::function<void(int motor1, int motor2)> on_set_speed_callbac);
-enumNaviStateMachine state2_align_to_target(pos_info robot_pos, pos_info target_pos, std::function<void(int motor1, int motor2)> on_set_speed_callback);
+enumNaviStateMachine state1_start_align_to_target(pos_info robot_pos, pos_info target_pos, std::function<void(float vx, float vy, float omega_rdps)> on_set_speed_callbac);
+enumNaviStateMachine state2_align_to_target(pos_info robot_pos, pos_info target_pos, std::function<void(float vx, float vy, float omega_rdps)> on_set_speed_callback);
 enumNaviStateMachine state3_wait_for_movement();
-enumNaviStateMachine state4_start_fw(std::function<void(int motor1, int motor2)> on_set_speed_callback);
-enumNaviStateMachine state5_driving_to_target(pos_info robot_pos, pos_info target_pos, std::function<void(int motor1, int motor2)> on_set_speed_callback);
+enumNaviStateMachine state4_start_fw(std::function<void(float vx, float vy, float omega)> on_set_speed_callback);
+enumNaviStateMachine state5_driving_to_target(pos_info robot_pos, pos_info target_pos, std::function<void(float vx, float vy, float omega_rdps)> on_set_speed_callback);
 enumNaviStateMachine state6_wait_for_rotation();
-enumNaviStateMachine state7_start_rotation_to_target_orientation(pos_info robot_pos, pos_info target_pos,std::function<void(int motor1, int motor2)> on_set_speed_callback);
+enumNaviStateMachine state7_start_rotation_to_target_orientation(pos_info robot_pos, pos_info target_pos,std::function<void(float vx, float vy, float omega_rdps)> on_set_speed_callback);
 enumNaviStateMachine state8_rotation_to_target_orientation(pos_info robot_pos, pos_info target_pos);
-enumNaviStateMachine state9_done(std::function<void(int motor1, int motor2)> on_set_speed_callback);
+enumNaviStateMachine state9_done(std::function<void(float vx, float vy, float omega_rdps)> on_set_speed_callback);
 
 #endif //COUSCOUS_NAVISTATEMACHINE_H

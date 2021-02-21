@@ -8,6 +8,4 @@ if(ENABLE_GUI)
 endif()
 
 add_subdirectory(application_gui_simulator)
-add_subdirectory(application_gui)
-
 add_subdirectory(navi_app)

@@ -1,10 +1,9 @@
 #include "NaviStateMachine.h"
 #include <iostream>
 
-#define WHEEL_SPEED 120
-#define WHEEL_SPEED_FW WHEEL_STOP+WHEEL_SPEED
-#define WHEEL_SPEED_BW WHEEL_STOP-WHEEL_SPEED
-#define WHEEL_STOP 127
+
+#define WHEEL_SPEED 1.0
+#define ROTATION_SPEED 10.0
 
 void naviStateMachineExec(const enumNaviStateMachine execState, enumNaviStateMachine next_state,  pos_info robot_pos, pos_info target_pos){
 
@@ -17,14 +16,13 @@ void naviStateMachineExec(const enumNaviStateMachine execState, enumNaviStateMac
  * @param on_set_speed_callback
  * @return
  */
-enumNaviStateMachine state1_start_align_to_target(pos_info robot_pos, pos_info target_pos, std::function<void(int motor1, int motor2)> on_set_speed_callback){
-    //std::cout << ">>>2)Send rotation command to hali. Rotate->:" << get_rotation_direction(robot_pos.orientation,get_reference_angle_to_target(robot_pos, target_pos));
+enumNaviStateMachine state1_start_align_to_target(pos_info robot_pos, pos_info target_pos, std::function<void(float vx, float vy, float omega_rdps)> on_set_speed_callback){
     if (get_rotation_direction(robot_pos.orientation,get_reference_angle_to_target(robot_pos, target_pos)) == rotdir::Clockwise) {
         //rotate clockwise
-        on_set_speed_callback(WHEEL_SPEED_BW,WHEEL_SPEED_FW);
+        on_set_speed_callback(0,0,ROTATION_SPEED);
     } else {
         //rotate anti-clockwise
-        on_set_speed_callback(WHEEL_SPEED_FW,WHEEL_SPEED_BW);
+        on_set_speed_callback(0,0,-ROTATION_SPEED);
     }
     return enumNaviStateMachine::ST2_ALIGN_TO_TARGET;
 }
@@ -36,17 +34,17 @@ enumNaviStateMachine state1_start_align_to_target(pos_info robot_pos, pos_info t
  * @param on_set_speed_callback
  * @return
  */
-enumNaviStateMachine state2_align_to_target(pos_info robot_pos, pos_info target_pos, std::function<void(int motor1, int motor2)> on_set_speed_callback){
+enumNaviStateMachine state2_align_to_target(pos_info robot_pos, pos_info target_pos, std::function<void(float vx, float vy, float omega_rdps)> on_set_speed_callback){
     float delta_angle = get_angle_to_target(robot_pos, target_pos);
     //std::cout<<"robot angle:"<<robot_pos.orientation<<" delta angle:"<<delta_angle<<" target angle:"<<get_reference_angle_to_target(robot_pos, target_pos)<<std::endl;
     if (get_rotation_direction(robot_pos.orientation,get_reference_angle_to_target(robot_pos, target_pos)) == rotdir::Clockwise) {
         if (std::abs(delta_angle) < DELTA_ANGLE_TO_STOP_ROTATION_MOVEMENT) {
-            on_set_speed_callback(WHEEL_STOP,WHEEL_STOP);
+            on_set_speed_callback(0,0,0);
             return enumNaviStateMachine::ST3_WAIT_FOR_MOVMENT;
         }
     } else {
         if (std::abs(delta_angle) < DELTA_ANGLE_TO_STOP_ROTATION_MOVEMENT) {
-            on_set_speed_callback(WHEEL_STOP,WHEEL_STOP);
+            on_set_speed_callback(0,0,0);
             return enumNaviStateMachine::ST3_WAIT_FOR_MOVMENT;
         }
     }
@@ -61,15 +59,14 @@ enumNaviStateMachine state3_wait_for_movement(){
     return enumNaviStateMachine::ST4_START_FW_MOVEMENT;
 }
 
-enumNaviStateMachine state4_start_fw(std::function<void(int motor1, int motor2)> on_set_speed_callback) {
-    on_set_speed_callback(WHEEL_SPEED_FW,WHEEL_SPEED_FW);
+enumNaviStateMachine state4_start_fw(std::function<void(float vx, float vy, float omega_rdps)> on_set_speed_callback) {
+    on_set_speed_callback(WHEEL_SPEED, 0,0);
     return enumNaviStateMachine::ST5_DRIVING_TO_TARGET;
 }
 
-enumNaviStateMachine state5_driving_to_target(pos_info robot_pos, pos_info target_pos, std::function<void(int motor1, int motor2)> on_set_speed_callback){
-    //std::cout<<"distance to target:"<<get_distance_to_target(robot_pos, target_pos)<<std::endl;
+enumNaviStateMachine state5_driving_to_target(pos_info robot_pos, pos_info target_pos, std::function<void(float vx, float vy, float omega_rdps)> on_set_speed_callback){
     if(get_distance_to_target(robot_pos, target_pos) < DELTA_DIST_TO_STOP_FW_MOVEMENT){
-        on_set_speed_callback(0,0);
+        on_set_speed_callback(0,0,0);
         return enumNaviStateMachine::ST6_WAIT_FOR_ROTATION;
     }
     return enumNaviStateMachine::ST5_DRIVING_TO_TARGET;
@@ -78,20 +75,19 @@ enumNaviStateMachine state5_driving_to_target(pos_info robot_pos, pos_info targe
 enumNaviStateMachine state6_wait_for_rotation(){
     return enumNaviStateMachine::ST7_START_ROTATION_TO_TARGET_ORIENTATION;
 }
-enumNaviStateMachine state7_start_rotation_to_target_orientation(pos_info robot_pos, pos_info target_pos, std::function<void(int motor1, int motor2)> on_set_speed_callback){
+enumNaviStateMachine state7_start_rotation_to_target_orientation(pos_info robot_pos, pos_info target_pos, std::function<void(float vx, float vy, float omega_rdps)> on_set_speed_callback){
     if (get_rotation_direction(robot_pos.orientation,target_pos.orientation) == rotdir::Clockwise) {
         //turn robot clockwise
-        on_set_speed_callback(WHEEL_SPEED_BW,WHEEL_SPEED_FW);
+        on_set_speed_callback(0,0,ROTATION_SPEED);
     } else {
-        on_set_speed_callback(WHEEL_SPEED_FW,WHEEL_SPEED_BW);
         //turn robot anti-clockwise
+        on_set_speed_callback(0,0,-ROTATION_SPEED);
     }
     return enumNaviStateMachine::ST8_ROTATION_TO_TARGET_ORIENTATION;
 }
 
 enumNaviStateMachine state8_rotation_to_target_orientation(pos_info robot_pos, pos_info target_pos){
     float delta_angle = get_angle_difference(robot_pos.orientation, target_pos.orientation);
-    //std::cout<<"robot angle:"<<robot_pos.orientation<<" delta angle:"<<delta_angle<<" target angle:"<<get_reference_angle_to_target(robot_pos, target_pos)<<std::endl;
     if (get_rotation_direction(robot_pos.orientation,target_pos.orientation) == rotdir::Clockwise) {
         if (std::abs(delta_angle) < DELTA_ANGLE_TO_STOP_ROTATION_MOVEMENT) {
             return enumNaviStateMachine::ST9_DONE;
@@ -104,8 +100,8 @@ enumNaviStateMachine state8_rotation_to_target_orientation(pos_info robot_pos, p
     return enumNaviStateMachine::ST8_ROTATION_TO_TARGET_ORIENTATION;
 }
 
-enumNaviStateMachine state9_done(std::function<void(int motor1, int motor2)> on_set_speed_callback){
-    on_set_speed_callback(WHEEL_STOP,WHEEL_STOP);
+enumNaviStateMachine state9_done(std::function<void(float vx, float vy, float omega_rdps)> on_set_speed_callback){
+    on_set_speed_callback(0,0,0);
     exit(0);
     return enumNaviStateMachine::ST0_IDLE;
 }

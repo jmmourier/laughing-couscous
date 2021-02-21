@@ -26,5 +26,4 @@ project(couscous
 
 add_subdirectory(modules)
 add_subdirectory(applications)
-#add_subdirectory(application_test_gui)
 add_subdirectory(external/googletest)

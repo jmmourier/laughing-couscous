@@ -16,7 +16,7 @@ struct RobotBaseSpeed
 
 class Navi {
 public:
-    Navi(std::function<void(int motor1, int motor2)> on_set_speed_callback);
+    Navi(std::function<void(float vx, float vy, float omega_rdps)> on_set_speed_callback);
     int setTargetPosition(const double &target_pos_x, const double &target_pos_y, const double &target_orientation);
     int setCurrentPosition(const double &new_rob_pos_x, const double &new_rob_pos_y, const double &new_rob_orientation);
     int getPositionReached(void);
@@ -29,7 +29,7 @@ private:
     pos_info actual_robot_position;
     rotdir rotation_direction;
     enumNaviStateMachine actual_navi_state = enumNaviStateMachine::ST0_IDLE;
-    std::function<void(int motor1, int motor2)> on_set_speed_callback_;
+    std::function<void(float vx, float vy, float omega_rdps)> on_set_speed_callback_;
 };
 
 

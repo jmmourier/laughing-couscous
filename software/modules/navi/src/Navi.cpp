@@ -3,7 +3,7 @@
 #include "NaviUtils.h"
 #include <iostream>
 
-Navi::Navi(std::function<void(int motor1, int motor2)> on_set_speed_callback){
+Navi::Navi(std::function<void(float vx, float vy, float omega_rdps)> on_set_speed_callback){
     on_set_speed_callback_=on_set_speed_callback;
 
 }

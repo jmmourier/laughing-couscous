@@ -6,6 +6,7 @@
 #include "Hali.h"
 #include "Posi.h"
 #include <Navi.h>
+#include <Moti.h>
 
 class RobotController {
    public:
@@ -23,7 +24,7 @@ class RobotController {
     std::shared_ptr<Posi> posi_;
     std::shared_ptr<Hali> hali_;
     std::shared_ptr<Navi> nav_;
-
+    //std::shared_ptr<Moti> moti_;
     /**
      * @brief This method is called when posi updates its position and dispatch
      * the information to the web_server
@@ -42,8 +43,8 @@ class RobotController {
      * @param motor1
      * @param motor2
      */
-    void onClientRequestSetSpeed(int motor1, int motor2);
-
+    //void onClientRequestSetSpeed(int motor1, int motor2);
+    void onClientRequestSetSpeed(float vx, float vy, float omega);
 
 };
 

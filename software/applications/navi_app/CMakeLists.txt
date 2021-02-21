@@ -28,4 +28,5 @@ target_link_libraries (${PROJECT_NAME}_exe
         hali_lib
         navi_lib
         posi_lib
+        moti_lib
         )
