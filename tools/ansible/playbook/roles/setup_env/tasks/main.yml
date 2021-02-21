@@ -30,4 +30,4 @@
 - name: Install front dependencies
   command:
     chdir: "{{ playbook_dir }}/../../../software/modules/gui/web"
-    cmd: npm ci
+    cmd: yarn install

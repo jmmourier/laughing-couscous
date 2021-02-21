@@ -2,4 +2,4 @@
 - name: Build front end
   command:
     chdir: "{{ PROJECT_PATH }}/software/modules/gui/web"
-    cmd: npm run build
+    cmd: yarn build
