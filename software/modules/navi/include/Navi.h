@@ -1,9 +1,10 @@
 #ifndef COUSCOUS_NAVI_H
 #define COUSCOUS_NAVI_H
 
-#include "NaviUtils.h"
-#include "NaviStateMachine.h"
 #include <functional>
+
+#include "NaviStateMachine.h"
+#include "NaviUtils.h"
 /*
 struct RobotBaseSpeed
 {
@@ -15,15 +16,21 @@ struct RobotBaseSpeed
 };*/
 
 class Navi {
-public:
+   public:
     Navi(std::function<void(float vx, float vy, float omega_rdps)> on_set_speed_callback);
-    int setTargetPosition(const double &target_pos_x, const double &target_pos_y, const double &target_orientation);
-    int setCurrentPosition(const double &new_rob_pos_x, const double &new_rob_pos_y, const double &new_rob_orientation);
+    int setTargetPosition(
+        const double &target_pos_x,
+        const double &target_pos_y,
+        const double &target_orientation);
+    int setCurrentPosition(
+        const double &new_rob_pos_x,
+        const double &new_rob_pos_y,
+        const double &new_rob_orientation);
     int getPositionReached(void);
     int getActualState(void);
     void stateMachine(enumNaviStateMachine sm, pos_info robot_pos, pos_info target_pos);
 
-private:
+   private:
     bool target_reached = false;
     pos_info target_position;
     pos_info actual_robot_position;
@@ -32,5 +39,4 @@ private:
     std::function<void(float vx, float vy, float omega_rdps)> on_set_speed_callback_;
 };
 
-
-#endif //COUSCOUS_NAVI_H
+#endif  // COUSCOUS_NAVI_H
