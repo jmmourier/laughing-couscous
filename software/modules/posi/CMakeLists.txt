@@ -29,7 +29,13 @@ target_include_directories(
     PUBLIC include
     PRIVATE src
 )
+    
+target_link_libraries(${PROJECT_NAME}_lib 
+    PUBLIC 
+    logger_lib 
+    spdlog::spdlog
+)
 
 # Tests Binaries
 add_executable(${PROJECT_NAME}_test ${TESTS})
-target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME}_lib gtest_main)
+target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME}_lib gtest_main logger_lib spdlog::spdlog)

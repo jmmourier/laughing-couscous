@@ -1,6 +1,11 @@
 #include "Posi.h"
 
+#include <spdlog/logger.h>
+
 #include <cmath>
+#include <iostream>
+
+#include "logger/LoggerFactory.h"
 
 const int TICKS_PER_ROTATION = 360;
 const double SPACE_BETWEEN_WHEELS = 0.2;
@@ -12,7 +17,8 @@ Posi::Posi(
     double &start_pos_x,
     double &start_pos_y,
     double &start_orientation)
-    : time_helper_(std::move(time_helper)),
+    : logger_(LoggerFactory::registerOrGetLogger("Posi", spdlog::level::level_enum::debug)),
+      time_helper_(std::move(time_helper)),
       previous_encoder1_(0),
       previous_encoder2_(0),
       abs_pos_x_(start_pos_x),
@@ -68,4 +74,11 @@ void Posi::updatePosition(int encoder1, int encoder2) {
     // Update previous encoders with current ones
     previous_encoder1_ = encoder1;
     previous_encoder2_ = encoder2;
+
+    SPDLOG_LOGGER_INFO(
+        logger_,
+        "Update position x: {} - y: {} - orientation: {}",
+        abs_pos_x_,
+        abs_pos_y_,
+        orientation_);
 }
