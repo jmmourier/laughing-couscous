@@ -127,6 +127,6 @@ enumNaviStateMachine state8_rotation_to_target_orientation(
 enumNaviStateMachine state9_done(
     std::function<void(float vx, float vy, float omega_rdps)> on_set_speed_callback) {
     on_set_speed_callback(0, 0, 0);
-    exit(0);
+    //exit(0);
     return enumNaviStateMachine::ST0_IDLE;
 }

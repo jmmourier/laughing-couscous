@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 
 #include <cmath>
-void dummy_lambda(int motor1, int motor2) {}
+void dummy_lambda(float vx, float vy, float omega_rdps) {}
 TEST(NaviStateMachineTest, start_align_to_target_1) {
     pos_info robot_pos, target_pos;
     robot_pos.pos_x = 0.0;

@@ -22,7 +22,6 @@ target_include_directories(
 )
 # Tests Binaries
 
-#target_link_libraries(application1_exe3 ${PROJECT_NAME})
 target_link_libraries (${PROJECT_NAME}_exe
         LINK_PUBLIC
         hali_lib

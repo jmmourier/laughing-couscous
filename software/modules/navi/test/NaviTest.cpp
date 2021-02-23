@@ -5,8 +5,10 @@
 #include "Navi.h"
 #include "NaviUtils.h"
 
-void dummy_init(int motor1, int motor2) {}
+void dummy_init(float vx, float vy, float omega_rdps) {}
+
 TEST(NaviTest, standard_path) {
+
     pos_info target_position, rob_start_position, rob_point_aligned_to_target, rob_point2,
         rob_end_position;
     rob_start_position.pos_x = 0.0;
@@ -104,4 +106,5 @@ TEST(NaviTest, standard_path) {
         rob_start_position.pos_y,
         target_position.orientation);
     EXPECT_EQ(enumNaviStateMachine::ST0_IDLE, nav.getActualState());
+
 }
