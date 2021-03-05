@@ -48,6 +48,7 @@ WORKDIR /tmp
 # clone grpc repo and install its submodules
 RUN git clone https://github.com/grpc/grpc.git && \
     cd grpc && \
+    git checkout 257d0045ab958eb767a3591c88e9d0c2bdf4b916 && \
     git submodule update --init --recursive && \
     mkdir -p "cmake/build" 
 
