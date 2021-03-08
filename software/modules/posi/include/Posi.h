@@ -4,8 +4,10 @@
 #include <spdlog/logger.h>
 
 #include <memory>
+#include <vector>
 
 #include "IBaseTime.h"
+#include "IPositionListener.h"
 
 class Posi {
    public:
@@ -14,6 +16,10 @@ class Posi {
         double &start_pos_x,
         double &start_pos_y,
         double &start_orientation);
+
+    void registerPositionListener(const std::weak_ptr<IPositionListener> &position_listener);
+
+    void publishToListeners() const;
 
     /**
      * @brief Return abs position and orientation
@@ -51,6 +57,7 @@ class Posi {
     double abs_pos_y_;
     double orientation_;
     std::chrono::_V2::system_clock::time_point timestamp_;
+    std::vector<std::weak_ptr<IPositionListener>> position_listeners_;
 };
 
 #endif  // POSI_H
