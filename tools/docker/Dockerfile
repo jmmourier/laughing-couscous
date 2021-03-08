@@ -95,11 +95,3 @@ RUN cmake -DCMAKE_TOOLCHAIN_FILE=/tmp/toolchain.cmake \
     -DCMAKE_INSTALL_PREFIX=/tmp/raspberrypi_root/grpc_install \
     ../.. && \
     make -j$(nproc) install
-
-
-# Install spdlog library
-WORKDIR /tmp
-
-RUN git clone https://github.com/gabime/spdlog.git && \
-    cd spdlog && mkdir build && cd build && \
-    cmake .. && make -j$(nproc) install

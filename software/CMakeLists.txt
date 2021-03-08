@@ -24,11 +24,8 @@ project(couscous
         VERSION 1.0
         )
 
-if(NOT TARGET spdlog)
-    find_package(spdlog REQUIRED)
-endif()
-
 add_subdirectory(libs)
 add_subdirectory(modules)
 add_subdirectory(applications)
 add_subdirectory(external/googletest)
+add_subdirectory(external/spdlog)
