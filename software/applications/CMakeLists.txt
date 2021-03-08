@@ -3,3 +3,5 @@ project(applications)
 
 if(ENABLE_GUI)
 endif()
+
+add_subdirectory(couscous)
