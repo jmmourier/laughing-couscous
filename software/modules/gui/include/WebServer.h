@@ -1,16 +1,13 @@
 #ifndef WEB_SERVER_H
 #define WEB_SERVER_H
 
+#include "IWebServerListener.h"
 #include "WebPositionService.h"
 #include "grpcpp/server.h"
 
 class WebServer {
    public:
-    explicit WebServer(
-        std::function<void(double pos_x_m, double pos_y_m, double orientation_rad)>
-            on_set_position_callback,
-        std::function<void(int motor1, int motor2)> on_set_speed_callback);
-
+    void registerWebServerListener(const std::weak_ptr<IWebServerListener> &webserver_listener);
     /**
      * @brief Create and launch web server and it's services
      *
@@ -23,9 +20,9 @@ class WebServer {
      */
     void stop();
 
-    void updatePosition(double pos_x_m, double pos_y_m, double orientation_rad);
+    void setPosition(const double &pos_x_m, const double &pos_y_m, const double &orientation_rad);
 
-    void updateSpeed(int motor1, int motor2);
+    // void setSpeed(const int &motor1, const int &motor2);
 
    private:
     std::shared_ptr<grpc::Server> server_;

@@ -16,7 +16,7 @@ message SpeedMsg {
 }
 
 service Position{
-  rpc setSpeed(SpeedMsg) returns (Empty) {}
-  rpc setAbsolutePosition(PositionMsg) returns (Empty) {}
-  rpc onAbsolutePositionUpdated(Empty) returns (stream PositionMsg) {}
+  rpc setSpeedRequest(SpeedMsg) returns (Empty) {}
+  rpc setAbsolutePositionRequest(PositionMsg) returns (Empty) {}
+  rpc registerPositionObserver(Empty) returns (stream PositionMsg) {}
 }

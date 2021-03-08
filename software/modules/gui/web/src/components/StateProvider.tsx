@@ -44,7 +44,6 @@ const reducer: Reducer<IRobotPosition, IAction> = (
 ) => {
   switch (action.type) {
     case Action.UPDATE_POSITION:
-      console.log(action.position.x_m);
       return {
         x_m: action.position.x_m,
         y_m: action.position.y_m,
