@@ -6,7 +6,7 @@ list(APPEND SOURCES
 
 file(GLOB_RECURSE HEADERS include/*.h)
 
-add_compile_definitions(LOG_DIR="/workspace/laughing-couscous/")
+add_compile_definitions(LOG_DIR="/tmp/")
 
 # Library
 add_library(
