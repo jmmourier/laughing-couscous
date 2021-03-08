@@ -46,7 +46,7 @@ target_link_libraries(${PROJECT_NAME}_lib
 )
 
 target_link_libraries(${PROJECT_NAME}_gui_lib
-    PUBLIC webserver 
+    PUBLIC webserver_lib
            posi_lib
            hali_lib
 )
