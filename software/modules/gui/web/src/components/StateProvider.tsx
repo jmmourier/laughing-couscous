@@ -9,15 +9,20 @@ export const SPACE_BETWEEN_WHEELS = 0.2;
 export type IRobotPosition = {
   x_m: number;
   y_m: number;
+};
+
+export type IRobotPositionOrientation = {
+  x_m: number;
+  y_m: number;
   orientation_rad: number;
 };
 
 export type IAction = {
   type: Action.UPDATE_POSITION;
-  position: IRobotPosition;
+  position: IRobotPositionOrientation;
 };
 
-const initialState: IRobotPosition = {
+const initialState: IRobotPositionOrientation = {
   x_m: 0,
   y_m: 0,
   orientation_rad: 0,
@@ -31,15 +36,15 @@ enum Action {
 }
 
 const context = React.createContext<{
-  state: IRobotPosition;
+  state: IRobotPositionOrientation;
   dispatch: Dispatch<IAction>;
 }>({
   state: initialState,
   dispatch: () => null,
 });
 
-const reducer: Reducer<IRobotPosition, IAction> = (
-  state: IRobotPosition,
+const reducer: Reducer<IRobotPositionOrientation, IAction> = (
+  state: IRobotPositionOrientation,
   action: IAction
 ) => {
   switch (action.type) {
@@ -55,10 +60,9 @@ const reducer: Reducer<IRobotPosition, IAction> = (
 };
 
 const StateProvider: FunctionComponent = ({ children }) => {
-  const [state, dispatch] = useReducer<Reducer<IRobotPosition, IAction>>(
-    reducer,
-    initialState
-  );
+  const [state, dispatch] = useReducer<
+    Reducer<IRobotPositionOrientation, IAction>
+  >(reducer, initialState);
 
   const { Provider } = context;
 

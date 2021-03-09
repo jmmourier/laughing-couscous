@@ -38,7 +38,7 @@ const App: FunctionComponent = () => {
   const [
     selectedPosition,
     setSelectedPosition,
-  ] = useState<stateProvider.IRobotPosition>({
+  ] = useState<stateProvider.IRobotPositionOrientation>({
     x_m: 0,
     y_m: 0,
     orientation_rad: 0,

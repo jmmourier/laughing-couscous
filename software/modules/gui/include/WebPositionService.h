@@ -16,17 +16,22 @@ class WebPositionService final : public web_service::Position::Service {
 
     ::grpc::Status setSpeedRequest(
         ::grpc::ServerContext *context,
-        const ::web_service::SpeedMsg *request,
+        const ::web_service::SpeedRequest *request,
         ::web_service::Empty *response) override;
 
     ::grpc::Status registerPositionObserver(
         ::grpc::ServerContext *context,
         const ::web_service::Empty *request,
-        ::grpc::ServerWriter<::web_service::PositionMsg> *writer) override;
+        ::grpc::ServerWriter<::web_service::PositionOrientationRequest> *writer) override;
 
     ::grpc::Status setAbsolutePositionRequest(
         ::grpc::ServerContext *context,
-        const ::web_service::PositionMsg *request,
+        const ::web_service::PositionOrientationRequest *request,
+        ::web_service::Empty *response) override;
+
+    ::grpc::Status setTargetPositionRequest(
+        ::grpc::ServerContext *context,
+        const ::web_service::PositionRequest *request,
         ::web_service::Empty *response) override;
 
     void setPosition(const double &pos_x_m, const double &pos_y_m, const double &orientation_rad);

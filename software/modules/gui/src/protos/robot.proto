@@ -4,19 +4,25 @@ package web_service;
 
 message Empty {}
 
-message PositionMsg {
+message PositionRequest {
+  double pos_x_m = 1;
+  double pos_y_m = 2;
+}
+
+message PositionOrientationRequest {
   double pos_x_m = 1;
   double pos_y_m = 2;
   double orientation_rad = 3;
 }
 
-message SpeedMsg {
+message SpeedRequest {
   int32 motor1 = 1;
   int32 motor2 = 2;
 }
 
 service Position{
-  rpc setSpeedRequest(SpeedMsg) returns (Empty) {}
-  rpc setAbsolutePositionRequest(PositionMsg) returns (Empty) {}
-  rpc registerPositionObserver(Empty) returns (stream PositionMsg) {}
+  rpc setSpeedRequest(SpeedRequest) returns (Empty) {}
+  rpc setAbsolutePositionRequest(PositionOrientationRequest) returns (Empty) {}
+  rpc setTargetPositionRequest(PositionRequest) returns (Empty) {}
+  rpc registerPositionObserver(Empty) returns (stream PositionOrientationRequest) {}
 }

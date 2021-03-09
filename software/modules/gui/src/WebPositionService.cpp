@@ -34,7 +34,7 @@ void WebPositionService::publishToSpeedRequestListeners(const int &motor1, const
 
 ::grpc::Status WebPositionService::setSpeedRequest(
     ::grpc::ServerContext *context,
-    const ::web_service::SpeedMsg *request,
+    const ::web_service::SpeedRequest *request,
     ::web_service::Empty *response) {
     publishToSpeedRequestListeners(request->motor1(), request->motor2());
 
@@ -43,7 +43,7 @@ void WebPositionService::publishToSpeedRequestListeners(const int &motor1, const
 
 ::grpc::Status WebPositionService::setAbsolutePositionRequest(
     ::grpc::ServerContext *context,
-    const ::web_service::PositionMsg *request,
+    const ::web_service::PositionOrientationRequest *request,
     ::web_service::Empty *response) {
     publishToPositionRequestListeners(
         request->pos_x_m(),
@@ -53,18 +53,23 @@ void WebPositionService::publishToSpeedRequestListeners(const int &motor1, const
     return ::grpc::Status::OK;
 }
 
+::grpc::Status WebPositionService::setTargetPositionRequest(
+    ::grpc::ServerContext *context,
+    const ::web_service::PositionRequest *request,
+    ::web_service::Empty *response){};
+
 ::grpc::Status WebPositionService::registerPositionObserver(
     ::grpc::ServerContext *context,
     const ::web_service::Empty *request,
-    ::grpc::ServerWriter<::web_service::PositionMsg> *writer) {
-    web_service::PositionMsg position_msg;
+    ::grpc::ServerWriter<::web_service::PositionOrientationRequest> *writer) {
+    web_service::PositionOrientationRequest position_orientation_request;
 
     while (true) {
-        position_msg.set_pos_x_m(pos_x_m_);
-        position_msg.set_pos_y_m(pos_y_m_);
-        position_msg.set_orientation_rad(orientation_rad_);
+        position_orientation_request.set_pos_x_m(pos_x_m_);
+        position_orientation_request.set_pos_y_m(pos_y_m_);
+        position_orientation_request.set_orientation_rad(orientation_rad_);
 
-        writer->Write(position_msg);
+        writer->Write(position_orientation_request);
 
         std::this_thread::sleep_for(
             std::chrono::milliseconds(INTERVAL_SENDING_POSITION_REFRESH_MS));

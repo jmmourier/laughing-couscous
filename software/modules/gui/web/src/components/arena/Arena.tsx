@@ -9,12 +9,12 @@ const ARENA_HEIGHT = 2;
 const ARENA_WIDTH = 3;
 
 interface IArenaProps {
-  onPositionSelected(position: stateProvider.IRobotPosition): void;
+  onPositionSelected(position: stateProvider.IRobotPositionOrientation): void;
 }
 
 export interface IArenaMouseState {
   isDown: boolean;
-  position: stateProvider.IRobotPosition;
+  position: stateProvider.IRobotPositionOrientation;
 }
 
 const getRatioPixelToMeter = (areaSize: ISize): number => {
@@ -33,7 +33,7 @@ const Arena: FunctionComponent<IArenaProps> = ({ onPositionSelected }) => {
   const [
     selectedPosition,
     setSelectedPosition,
-  ] = useState<stateProvider.IRobotPosition>({
+  ] = useState<stateProvider.IRobotPositionOrientation>({
     x_m: 0,
     y_m: 0,
     orientation_rad: 0,
