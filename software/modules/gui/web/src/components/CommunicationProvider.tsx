@@ -21,11 +21,11 @@ type IState = {};
 type IAction =
   | {
       type: Action.SET_ABSOLUTE_POSITION;
-      position: stateProvider.IRobotPositionOrientation;
+      position: stateProvider.IPositionOrientation;
     }
   | {
       type: Action.SET_TARGET_POSITION;
-      position: stateProvider.IRobotPositionOrientation;
+      position: stateProvider.IPosition;
     }
   | { type: Action.SET_SPEED; speed: ISpeed };
 
@@ -73,7 +73,6 @@ const reducer: Reducer<IState, IAction> = async (
       speedMsg.setMotor1(action.speed.motor1);
       speedMsg.setMotor2(action.speed.motor2);
 
-      console.log(action.speed.motor1, action.speed.motor2);
       client.setSpeedRequest(speedMsg);
     }
   }
@@ -105,24 +104,21 @@ const CommunicationProvider: FunctionComponent<ICommunicationProvider> = ({
 
   const { Provider } = context;
 
-  const { dispatch: stateProviderDispatch } = useContext(stateProvider.context);
+  const stateContext = useContext(stateProvider.context);
 
   useEffect(() => {
     const position_stream = client.registerPositionObserver(new Empty());
     position_stream.on(
       "data",
       (positionOrientationRequest: PositionOrientationRequest) => {
-        stateProviderDispatch({
-          type: stateProvider.Action.UPDATE_POSITION,
-          position: {
-            x_m: positionOrientationRequest.getPosXM(),
-            y_m: positionOrientationRequest.getPosYM(),
-            orientation_rad: positionOrientationRequest.getOrientationRad(),
-          },
+        stateContext.proxy.setRobotPosition({
+          x_m: positionOrientationRequest.getPosXM(),
+          y_m: positionOrientationRequest.getPosYM(),
+          orientation_rad: positionOrientationRequest.getOrientationRad(),
         });
       }
     );
-  }, []);
+  }, [stateContext.proxy]);
 
   // type: stateProvider.ActionEnum.UPDATE_POSITION,
   return <Provider value={{ state, dispatch }}>{children}</Provider>;

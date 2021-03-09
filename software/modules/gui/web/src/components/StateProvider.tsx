@@ -1,4 +1,4 @@
-import React, { Dispatch, FunctionComponent, Reducer, useReducer } from "react";
+import React, { FunctionComponent, useMemo, useState } from "react";
 
 export const TICKS_PER_ROTATION = 360;
 export const WHEEL_WIDTH = 0.02;
@@ -6,26 +6,28 @@ export const WHEEL_RADIUS_M = 0.05;
 export const WHEEL_PERIMETER = Math.PI * 2 * WHEEL_RADIUS_M;
 export const SPACE_BETWEEN_WHEELS = 0.2;
 
-export type IRobotPosition = {
+export type IPosition = {
   x_m: number;
   y_m: number;
 };
 
-export type IRobotPositionOrientation = {
+export type IPositionOrientation = {
   x_m: number;
   y_m: number;
   orientation_rad: number;
 };
 
-export type IAction = {
-  type: Action.UPDATE_POSITION;
-  position: IRobotPositionOrientation;
-};
+interface IState {
+  robotPosition: IPositionOrientation;
+  targetPosition?: IPosition;
+}
 
-const initialState: IRobotPositionOrientation = {
-  x_m: 0,
-  y_m: 0,
-  orientation_rad: 0,
+const defaultState: IState = {
+  robotPosition: {
+    x_m: 0,
+    y_m: 0,
+    orientation_rad: 0,
+  },
 };
 
 /**
@@ -33,40 +35,66 @@ const initialState: IRobotPositionOrientation = {
  */
 enum Action {
   UPDATE_POSITION = "UPDATE_POSITION",
+  SET_TARGET_POSITION = "SET_TARGET_POSITION",
 }
 
-const context = React.createContext<{
-  state: IRobotPositionOrientation;
-  dispatch: Dispatch<IAction>;
-}>({
-  state: initialState,
-  dispatch: () => null,
-});
+interface IProxy {
+  setRobotPosition: (robotPosition: IPositionOrientation) => void;
+  setTargetPosition: (targetPosition: IPosition) => void;
+  removeTargetPosition: () => void;
+}
 
-const reducer: Reducer<IRobotPositionOrientation, IAction> = (
-  state: IRobotPositionOrientation,
-  action: IAction
-) => {
-  switch (action.type) {
-    case Action.UPDATE_POSITION:
-      return {
-        x_m: action.position.x_m,
-        y_m: action.position.y_m,
-        orientation_rad: action.position.orientation_rad,
-      };
-    default:
-      throw new Error();
-  }
+interface IStateProvider {
+  proxy?: IProxy;
+  state?: IState;
+}
+
+const defaultProxy: IProxy = {
+  setRobotPosition: () => {},
+  setTargetPosition: () => {},
+  removeTargetPosition: () => {},
 };
 
-const StateProvider: FunctionComponent = ({ children }) => {
-  const [state, dispatch] = useReducer<
-    Reducer<IRobotPositionOrientation, IAction>
-  >(reducer, initialState);
+interface IStateContext {
+  proxy: IProxy;
+  state: IState;
+}
+
+const context = React.createContext<IStateContext>({
+  state: defaultState,
+  proxy: defaultProxy,
+});
+
+const StateProvider: FunctionComponent<IStateProvider> = ({
+  state: initialState,
+  children,
+}) => {
+  const [state, setState] = useState<IState>(defaultState);
 
   const { Provider } = context;
 
-  return <Provider value={{ state, dispatch }}>{children}</Provider>;
+  const proxy: IProxy = useMemo(
+    () => ({
+      setRobotPosition: (robotPosition: IPositionOrientation) =>
+        setState((previousState) => ({
+          ...previousState,
+          robotPosition,
+        })),
+      setTargetPosition: (targetPosition: IPosition) =>
+        setState((previousState) => ({
+          ...previousState,
+          targetPosition,
+        })),
+      removeTargetPosition: () =>
+        setState((previousState) => ({
+          ...previousState,
+          targetPosition: undefined,
+        })),
+    }),
+    []
+  );
+
+  return <Provider value={{ proxy, state }}>{children}</Provider>;
 };
 
 export { context, Action };
