@@ -30,6 +30,8 @@ class CouscousManager : public IPositionListener, public IWebServerListener {
 
     void onSpeedRequested(const int &speed_motor1, const int &speed_motor2) override;
 
+    void onTargetPositionRequested(const double &pos_x, const double &pos_y) override;
+
    private:
     std::shared_ptr<Posi> posi_;
     std::shared_ptr<Hali> hali_;

@@ -35,6 +35,10 @@ void CouscousManager::onSpeedRequested(const int &speed_motor1, const int &speed
     hali_->setMd25Speed(speed_motor1, speed_motor2);
 };
 
+void CouscousManager::onTargetPositionRequested(const double &pos_x, const double &pos_y) {
+    // Will be sent to navi
+}
+
 void CouscousManager::start() {
     while (true) {
         int encoder1 = hali_->getEncoder(MotorIdEnum::motor1);

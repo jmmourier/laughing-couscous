@@ -32,6 +32,16 @@ void WebPositionService::publishToSpeedRequestListeners(const int &motor1, const
     }
 }
 
+void WebPositionService::publishToTargetPositionListeners(
+    const double &pos_x,
+    const double &pos_y) {
+    for (auto const &webserver_listener_ptr : webserver_listeners_) {
+        if (auto webserver_listener = webserver_listener_ptr.lock()) {
+            webserver_listener->onTargetPositionRequested(pos_x, pos_y);
+        }
+    }
+}
+
 ::grpc::Status WebPositionService::setSpeedRequest(
     ::grpc::ServerContext *context,
     const ::web_service::SpeedRequest *request,
@@ -56,7 +66,11 @@ void WebPositionService::publishToSpeedRequestListeners(const int &motor1, const
 ::grpc::Status WebPositionService::setTargetPositionRequest(
     ::grpc::ServerContext *context,
     const ::web_service::PositionRequest *request,
-    ::web_service::Empty *response){};
+    ::web_service::Empty *response) {
+    publishToTargetPositionListeners(request->pos_x_m(), request->pos_y_m());
+
+    return ::grpc::Status::OK;
+};
 
 ::grpc::Status WebPositionService::registerPositionObserver(
     ::grpc::ServerContext *context,

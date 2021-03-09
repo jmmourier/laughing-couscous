@@ -12,7 +12,10 @@ class WebPositionService final : public web_service::Position::Service {
         const double &pos_x,
         const double &pos_y,
         const double &orientation) const;
+
     void publishToSpeedRequestListeners(const int &motor1, const int &motor2) const;
+
+    void publishToTargetPositionListeners(const double &pos_x, const double &pos_y);
 
     ::grpc::Status setSpeedRequest(
         ::grpc::ServerContext *context,
