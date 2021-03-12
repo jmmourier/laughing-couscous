@@ -1,42 +1,59 @@
 
 #include "WebPositionService.h"
 
+#include <iostream>
 #include <thread>
 
 #include "robot.pb.h"
 
 const int INTERVAL_SENDING_POSITION_REFRESH_MS = 20;
 
-WebPositionService::WebPositionService(
-    std::function<void(double pos_x_m, double pos_y_m, double orientation_rad)>
-        on_set_position_callback,
-    std::function<void(int motor1, int motor2)> on_set_speed_callback)
-    : web_service::Position::Service(),
-      on_set_position_callback_(std::move(on_set_position_callback)),
-      on_set_speed_callback_(std::move(on_set_speed_callback)),
-      pos_x_m_(0),
-      pos_y_m_(0),
-      orientation_rad_(0) {}
+void WebPositionService::registerWebServerListener(
+    const std::weak_ptr<IWebServerListener> &webserver_listener) {
+    webserver_listeners_.push_back(webserver_listener);
+}
 
-::grpc::Status WebPositionService::setSpeed(
+void WebPositionService::publishToPositionRequestListeners(
+    const double &pos_x,
+    const double &pos_y,
+    const double &orientation) const {
+    for (auto const &webserver_listener_ptr : webserver_listeners_) {
+        if (auto webserver_listener = webserver_listener_ptr.lock()) {
+            webserver_listener->onPositionRequested(pos_x, pos_y, orientation);
+        }
+    }
+}
+void WebPositionService::publishToSpeedRequestListeners(const int &motor1, const int &motor2)
+    const {
+    for (auto const &webserver_listener_ptr : webserver_listeners_) {
+        if (auto webserver_listener = webserver_listener_ptr.lock()) {
+            webserver_listener->onSpeedRequested(motor1, motor2);
+        }
+    }
+}
+
+::grpc::Status WebPositionService::setSpeedRequest(
     ::grpc::ServerContext *context,
     const ::web_service::SpeedMsg *request,
     ::web_service::Empty *response) {
-    on_set_speed_callback_(request->motor1(), request->motor2());
+    publishToSpeedRequestListeners(request->motor1(), request->motor2());
 
     return ::grpc::Status::OK;
 };
 
-::grpc::Status WebPositionService::setAbsolutePosition(
+::grpc::Status WebPositionService::setAbsolutePositionRequest(
     ::grpc::ServerContext *context,
     const ::web_service::PositionMsg *request,
     ::web_service::Empty *response) {
-    on_set_position_callback_(request->pos_x_m(), request->pos_y_m(), request->orientation_rad());
+    publishToPositionRequestListeners(
+        request->pos_x_m(),
+        request->pos_y_m(),
+        request->orientation_rad());
 
     return ::grpc::Status::OK;
 }
 
-::grpc::Status WebPositionService::onAbsolutePositionUpdated(
+::grpc::Status WebPositionService::registerPositionObserver(
     ::grpc::ServerContext *context,
     const ::web_service::Empty *request,
     ::grpc::ServerWriter<::web_service::PositionMsg> *writer) {
@@ -55,8 +72,16 @@ WebPositionService::WebPositionService(
     return ::grpc::Status::OK;
 }
 
-void WebPositionService::updatePosition(double pos_x_m, double pos_y_m, double orientation_rad) {
+void WebPositionService::setPosition(
+    const double &pos_x_m,
+    const double &pos_y_m,
+    const double &orientation_rad) {
     pos_x_m_ = pos_x_m;
     pos_y_m_ = pos_y_m;
     orientation_rad_ = orientation_rad;
+}
+
+void WebPositionService::setSpeed(const int &motor1, const int &motor2) const {
+    std::cout << motor1 << " " << motor2 << std::endl;
+    publishToSpeedRequestListeners(motor1, motor2);
 }

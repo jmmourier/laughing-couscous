@@ -46,13 +46,15 @@ const reducer: Reducer<IState, IAction> = async (
       positionMsg.setPosXM(action.position.x_m);
       positionMsg.setPosYM(action.position.y_m);
       positionMsg.setOrientationRad(action.position.orientation_rad);
-      await client.setAbsolutePosition(positionMsg);
+      await client.setAbsolutePositionRequest(positionMsg);
       return { ...state };
     case Action.SET_SPEED: {
       const speedMsg = new SpeedMsg();
       speedMsg.setMotor1(action.speed.motor1);
       speedMsg.setMotor2(action.speed.motor2);
-      client.setSpeed(speedMsg);
+
+      console.log(action.speed.motor1, action.speed.motor2);
+      client.setSpeedRequest(speedMsg);
     }
   }
 };
@@ -86,7 +88,7 @@ const CommunicationProvider: FunctionComponent<ICommunicationProvider> = ({
   const { dispatch: stateProviderDispatch } = useContext(stateProvider.context);
 
   useEffect(() => {
-    const position_stream = client.onAbsolutePositionUpdated(new Empty());
+    const position_stream = client.registerPositionObserver(new Empty());
     position_stream.on("data", (positionMsg: PositionMsg) => {
       stateProviderDispatch({
         type: stateProvider.Action.UPDATE_POSITION,

@@ -3,8 +3,8 @@
 #include <spdlog/logger.h>
 
 #include <cmath>
-#include <iostream>
 
+#include "IPositionListener.h"
 #include "logger/LoggerFactory.h"
 
 const int TICKS_PER_ROTATION = 360;
@@ -25,6 +25,18 @@ Posi::Posi(
       abs_pos_y_(start_pos_y),
       orientation_(start_orientation),
       timestamp_(time_helper_->getNow()) {}
+
+void Posi::registerPositionListener(const std::weak_ptr<IPositionListener> &position_listener) {
+    position_listeners_.push_back(position_listener);
+}
+
+void Posi::publishToListeners() const {
+    for (auto const &position_listener_ptr : position_listeners_) {
+        if (auto position_listener = position_listener_ptr.lock()) {
+            position_listener->onPositionChanged(abs_pos_x_, abs_pos_y_, orientation_);
+        }
+    }
+}
 
 void Posi::getPosition(double &pos_x, double &pos_y, double &orientation) const {
     pos_x = abs_pos_x_;
@@ -81,4 +93,7 @@ void Posi::updatePosition(int encoder1, int encoder2) {
         abs_pos_x_,
         abs_pos_y_,
         orientation_);
+
+    // Publish new position to position listeners
+    publishToListeners();
 }

@@ -5,11 +5,9 @@
 #include "grpcpp/ext/proto_server_reflection_plugin.h"
 #include "grpcpp/server_builder.h"
 
-WebServer::WebServer(
-    std::function<void(double pos_x_m, double pos_y_m, double orientation_rad)>
-        on_set_position_callback,
-    std::function<void(int motor1, int motor2)> on_set_speed_callback)
-    : web_position_service_(std::move(on_set_position_callback), std::move(on_set_speed_callback)) {
+void WebServer::registerWebServerListener(
+    const std::weak_ptr<IWebServerListener> &webserver_listener) {
+    web_position_service_.registerWebServerListener(webserver_listener);
 }
 
 void WebServer::start() {
@@ -28,9 +26,16 @@ void WebServer::start() {
     server_->Wait();
 }
 
-void WebServer::updatePosition(double pos_x_m, double pos_y_m, double orientation_rad) {
-    web_position_service_.updatePosition(pos_x_m, pos_y_m, orientation_rad);
+void WebServer::setPosition(
+    const double &pos_x_m,
+    const double &pos_y_m,
+    const double &orientation_rad) {
+    web_position_service_.setPosition(pos_x_m, pos_y_m, orientation_rad);
 }
+
+// void WebServer::setSpeed(const int &motor1, const int &motor2) {
+//     web_position_service_.setSpeed(motor1, motor2);
+// }
 
 void WebServer::stop() {
     server_->Shutdown();

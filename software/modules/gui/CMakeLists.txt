@@ -1,4 +1,8 @@
 cmake_minimum_required (VERSION 3.0)
+project(webserver
+        VERSION 1.0
+        LANGUAGES CXX
+        )
 
 # web server
 set(protobuf_MODULE_COMPATIBLE TRUE)
@@ -70,7 +74,7 @@ find_package(Threads REQUIRED)
 
 # Library
 add_library(
-        webserver
+        ${PROJECT_NAME}_lib
         STATIC ${SOURCES}
         ${GENERATED_GRPC_BACKEND_SOURCE_PATH}/robot.grpc.pb.cc
         ${GENERATED_GRPC_BACKEND_SOURCE_PATH}/robot.pb.cc
@@ -78,14 +82,15 @@ add_library(
 )
 
 target_include_directories(
-        webserver
+        ${PROJECT_NAME}_lib
         PUBLIC  include
         src
         ${PROTOBUF_INCLUDE_DIR}
         ${GENERATED_GRPC_BACKEND_SOURCE_PATH}
 )
 
-target_link_libraries(webserver
+target_link_libraries(
+        ${PROJECT_NAME}_lib
         PUBLIC ${_GRPC_GRPCPP}
         ${_REFLECTION}
         ${_PROTOBUF_LIBPROTOBUF}

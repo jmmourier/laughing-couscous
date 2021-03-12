@@ -1,40 +1,42 @@
 #ifndef WEB_POSITION_SERVICE_H
 #define WEB_POSITION_SERVICE_H
 
+#include "IWebServerListener.h"
 #include "robot.grpc.pb.h"
 
 class WebPositionService final : public web_service::Position::Service {
    public:
-    explicit WebPositionService(
-        std::function<void(double pos_x_m, double pos_y_m, double orientation_rad)>
-            on_set_position_callback,
-        std::function<void(int motor1, int motor2)> on_set_speed_callback);
+    void registerWebServerListener(const std::weak_ptr<IWebServerListener> &webserver_listener);
 
-    ::grpc::Status setSpeed(
+    void publishToPositionRequestListeners(
+        const double &pos_x,
+        const double &pos_y,
+        const double &orientation) const;
+    void publishToSpeedRequestListeners(const int &motor1, const int &motor2) const;
+
+    ::grpc::Status setSpeedRequest(
         ::grpc::ServerContext *context,
         const ::web_service::SpeedMsg *request,
         ::web_service::Empty *response) override;
 
-    ::grpc::Status onAbsolutePositionUpdated(
+    ::grpc::Status registerPositionObserver(
         ::grpc::ServerContext *context,
         const ::web_service::Empty *request,
         ::grpc::ServerWriter<::web_service::PositionMsg> *writer) override;
 
-    ::grpc::Status setAbsolutePosition(
+    ::grpc::Status setAbsolutePositionRequest(
         ::grpc::ServerContext *context,
         const ::web_service::PositionMsg *request,
         ::web_service::Empty *response) override;
 
-    void updatePosition(double pos_x_m, double pos_y_m, double orientation_rad);
+    void setPosition(const double &pos_x_m, const double &pos_y_m, const double &orientation_rad);
+    void setSpeed(const int &motor1, const int &motor2) const;
 
    private:
-    const std::function<void(double pos_x_m, double pos_y_m, double orientation_rad)>
-        on_set_position_callback_;
-    const std::function<void(int motor1, int motor2)> on_set_speed_callback_;
-
     double pos_x_m_;
     double pos_y_m_;
     double orientation_rad_;
+    std::vector<std::weak_ptr<IWebServerListener>> webserver_listeners_;
 };
 
 #endif  // WEB_POSITION_SERVICE_H
