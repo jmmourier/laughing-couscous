@@ -23,18 +23,18 @@ void CouscousManager::onPositionChanged(
     web_server_->setPosition(pos_x_m, pos_y_m, orientation_rad);
 }
 
-void CouscousManager::onPositionRequested(
+void CouscousManager::onWebServerPositionRequest(
     const double &pos_x_m,
     const double &pos_y_m,
     const double &orientation_rad) {
     posi_->setPosition(pos_x_m, pos_y_m, orientation_rad);
-};
+}
 
-void CouscousManager::onSpeedRequested(const int &speed_motor1, const int &speed_motor2) {
+void CouscousManager::onWebServerSpeedRequest(const int &speed_motor1, const int &speed_motor2) {
     hali_->setMd25Speed(speed_motor1, speed_motor2);
 };
 
-void CouscousManager::onTargetPositionRequested(const double &pos_x, const double &pos_y) {
+void CouscousManager::onWebServerTargetPositionRequest(const double &pos_x, const double &pos_y) {
     // Will be sent to navi
 }
 

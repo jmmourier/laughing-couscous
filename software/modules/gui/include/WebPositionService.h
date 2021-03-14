@@ -1,21 +1,22 @@
 #ifndef WEB_POSITION_SERVICE_H
 #define WEB_POSITION_SERVICE_H
 
-#include "IWebServerListener.h"
+#include "IWebServerRequestListener.h"
 #include "robot.grpc.pb.h"
 
 class WebPositionService final : public web_service::Position::Service {
    public:
-    void registerWebServerListener(const std::weak_ptr<IWebServerListener> &webserver_listener);
+    void registerWebServerRequestListener(
+        const std::weak_ptr<IWebServerRequestListener> &webserver_listener);
 
-    void publishToPositionRequestListeners(
+    void publishToWebServerPositionRequestListeners(
         const double &pos_x,
         const double &pos_y,
         const double &orientation) const;
 
-    void publishToSpeedRequestListeners(const int &motor1, const int &motor2) const;
+    void publishToWebServerSpeedRequestListeners(const int &motor1, const int &motor2) const;
 
-    void publishToTargetPositionListeners(const double &pos_x, const double &pos_y);
+    void publishToWebServerTargetPositionListeners(const double &pos_x, const double &pos_y);
 
     ::grpc::Status setSpeedRequest(
         ::grpc::ServerContext *context,
@@ -44,7 +45,7 @@ class WebPositionService final : public web_service::Position::Service {
     double pos_x_m_;
     double pos_y_m_;
     double orientation_rad_;
-    std::vector<std::weak_ptr<IWebServerListener>> webserver_listeners_;
+    std::vector<std::weak_ptr<IWebServerRequestListener>> webserver_listeners_;
 };
 
 #endif  // WEB_POSITION_SERVICE_H
