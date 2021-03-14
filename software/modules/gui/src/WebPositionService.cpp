@@ -8,36 +8,37 @@
 
 const int INTERVAL_SENDING_POSITION_REFRESH_MS = 20;
 
-void WebPositionService::registerWebServerListener(
-    const std::weak_ptr<IWebServerListener> &webserver_listener) {
+void WebPositionService::registerWebServerRequestListener(
+    const std::weak_ptr<IWebServerRequestListener> &webserver_listener) {
     webserver_listeners_.push_back(webserver_listener);
 }
 
-void WebPositionService::publishToPositionRequestListeners(
+void WebPositionService::publishToWebServerPositionRequestListeners(
     const double &pos_x,
     const double &pos_y,
     const double &orientation) const {
     for (auto const &webserver_listener_ptr : webserver_listeners_) {
         if (auto webserver_listener = webserver_listener_ptr.lock()) {
-            webserver_listener->onPositionRequested(pos_x, pos_y, orientation);
+            webserver_listener->onWebServerPositionRequest(pos_x, pos_y, orientation);
         }
     }
 }
-void WebPositionService::publishToSpeedRequestListeners(const int &motor1, const int &motor2)
-    const {
+void WebPositionService::publishToWebServerSpeedRequestListeners(
+    const int &motor1,
+    const int &motor2) const {
     for (auto const &webserver_listener_ptr : webserver_listeners_) {
         if (auto webserver_listener = webserver_listener_ptr.lock()) {
-            webserver_listener->onSpeedRequested(motor1, motor2);
+            webserver_listener->onWebServerSpeedRequest(motor1, motor2);
         }
     }
 }
 
-void WebPositionService::publishToTargetPositionListeners(
+void WebPositionService::publishToWebServerTargetPositionListeners(
     const double &pos_x,
     const double &pos_y) {
     for (auto const &webserver_listener_ptr : webserver_listeners_) {
         if (auto webserver_listener = webserver_listener_ptr.lock()) {
-            webserver_listener->onTargetPositionRequested(pos_x, pos_y);
+            webserver_listener->onWebServerTargetPositionRequest(pos_x, pos_y);
         }
     }
 }
@@ -46,7 +47,7 @@ void WebPositionService::publishToTargetPositionListeners(
     ::grpc::ServerContext *context,
     const ::web_service::SpeedRequest *request,
     ::web_service::Empty *response) {
-    publishToSpeedRequestListeners(request->motor1(), request->motor2());
+    publishToWebServerSpeedRequestListeners(request->motor1(), request->motor2());
 
     return ::grpc::Status::OK;
 };
@@ -55,7 +56,7 @@ void WebPositionService::publishToTargetPositionListeners(
     ::grpc::ServerContext *context,
     const ::web_service::PositionOrientationRequest *request,
     ::web_service::Empty *response) {
-    publishToPositionRequestListeners(
+    publishToWebServerPositionRequestListeners(
         request->pos_x_m(),
         request->pos_y_m(),
         request->orientation_rad());
@@ -67,7 +68,7 @@ void WebPositionService::publishToTargetPositionListeners(
     ::grpc::ServerContext *context,
     const ::web_service::PositionRequest *request,
     ::web_service::Empty *response) {
-    publishToTargetPositionListeners(request->pos_x_m(), request->pos_y_m());
+    publishToWebServerTargetPositionListeners(request->pos_x_m(), request->pos_y_m());
 
     return ::grpc::Status::OK;
 };
@@ -102,5 +103,5 @@ void WebPositionService::setPosition(
 
 void WebPositionService::setSpeed(const int &motor1, const int &motor2) const {
     std::cout << motor1 << " " << motor2 << std::endl;
-    publishToSpeedRequestListeners(motor1, motor2);
+    publishToWebServerSpeedRequestListeners(motor1, motor2);
 }

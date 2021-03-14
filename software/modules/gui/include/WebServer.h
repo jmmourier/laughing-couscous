@@ -1,13 +1,14 @@
 #ifndef WEB_SERVER_H
 #define WEB_SERVER_H
 
-#include "IWebServerListener.h"
+#include "IWebServerRequestListener.h"
 #include "WebPositionService.h"
 #include "grpcpp/server.h"
 
 class WebServer {
    public:
-    void registerWebServerListener(const std::weak_ptr<IWebServerListener> &webserver_listener);
+    void registerWebServerRequestListener(
+        const std::weak_ptr<IWebServerRequestListener> &webserver_listener);
     /**
      * @brief Create and launch web server and it's services
      *

@@ -1,14 +1,13 @@
 
 #include "CouscousManager.h"
 
-#include "Hali.h"
 #include "Posi.h"
 #include "RealTime.h"
 
 const static int INTERVAL_REFRESH_MS = 50;
 
 CouscousManager::CouscousManager(
-    const std::shared_ptr<Hali> &hali,
+    const std::shared_ptr<IHali> &hali,
     const std::shared_ptr<Posi> &posi,
     const std::shared_ptr<WebServer> &web_server)
     : hali_(hali),
@@ -24,18 +23,22 @@ void CouscousManager::onPositionChanged(
     web_server_->setPosition(pos_x_m, pos_y_m, orientation_rad);
 }
 
-void CouscousManager::onPositionRequested(
+void CouscousManager::onWebServerPositionRequest(
     const double &pos_x_m,
     const double &pos_y_m,
     const double &orientation_rad) {
     posi_->setPosition(pos_x_m, pos_y_m, orientation_rad);
-};
+}
 
-void CouscousManager::onSpeedRequested(const int &speed_motor1, const int &speed_motor2) {
+void CouscousManager::onWebServerSpeedRequest(const int &speed_motor1, const int &speed_motor2) {
     hali_->setMd25Speed(speed_motor1, speed_motor2);
 };
 
-void CouscousManager::onTargetPositionRequested(const double &pos_x, const double &pos_y) {
+void CouscousManager::onWebServerTargetPositionRequest(const double &pos_x, const double &pos_y) {
+    // Will be sent to navi
+}
+
+void CouscousManager::onSpeedChanged(const int &motor1, const int &motor2) {
     // Will be sent to navi
 }
 

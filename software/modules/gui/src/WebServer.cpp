@@ -5,9 +5,9 @@
 #include "grpcpp/ext/proto_server_reflection_plugin.h"
 #include "grpcpp/server_builder.h"
 
-void WebServer::registerWebServerListener(
-    const std::weak_ptr<IWebServerListener> &webserver_listener) {
-    web_position_service_.registerWebServerListener(webserver_listener);
+void WebServer::registerWebServerRequestListener(
+    const std::weak_ptr<IWebServerRequestListener> &webserver_listener) {
+    web_position_service_.registerWebServerRequestListener(webserver_listener);
 }
 
 void WebServer::start() {

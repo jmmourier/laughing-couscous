@@ -9,6 +9,18 @@ HalSimu::HalSimu() {
     timestamp_since_last_encoder_2_update_ = std::chrono::system_clock::now();
 }
 
+void HalSimu::registerSpeedListener(const std::weak_ptr<IHaliSpeedListener> &speed_listener) {
+    speed_listeners_.push_back(speed_listener);
+}
+
+void HalSimu::publishToListeners() const {
+    for (auto const &speed_listener_ptr : speed_listeners_) {
+        if (auto speed_listener = speed_listener_ptr.lock()) {
+            speed_listener->onSpeedChanged(encoder_1_, encoder_2_);
+        }
+    }
+}
+
 void HalSimu::updater() {
     // empty
 }
@@ -50,6 +62,8 @@ void HalSimu::updateEncoder() {
 
     timestamp_since_last_encoder_1_update_ = time_update;
     timestamp_since_last_encoder_2_update_ = time_update;
+
+    publishToListeners();
 }
 
 void HalSimu::setGrabber(GrabberState grabber_state) {

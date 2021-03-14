@@ -2,13 +2,17 @@
 #define HALI_REAL_H
 
 #include "CommandInterpreter.h"
-#include "Hali.h"
+#include "IHali.h"
 #include "MessageParser.h"
 #include "Serial.h"
 
-class HalReal : public Hali {
+class HalReal : public IHali {
    public:
     HalReal();
+
+    void registerSpeedListener(const std::weak_ptr<IHaliSpeedListener> &speed_listener) override;
+
+    void publishToListeners() const override;
 
     void updater();
 
@@ -31,6 +35,7 @@ class HalReal : public Hali {
     int md25_encoder_1_ = 0;
     int md25_encoder_2_ = 0;
     GrabberState grabber_state_;
+    std::vector<std::weak_ptr<IHaliSpeedListener>> speed_listeners_;
 };
 
 #endif  // HALI_REAL_H
