@@ -4,7 +4,7 @@
 #include <thread>
 
 #include "IHali.h"
-#include "IHaliSpeedListener.h"
+#include "IHaliEncodersListener.h"
 #include "IPositionListener.h"
 #include "IWebServerRequestListener.h"
 #include "Posi.h"
@@ -12,7 +12,7 @@
 
 class CouscousManager : public IPositionListener,
                         public IWebServerRequestListener,
-                        public IHaliSpeedListener {
+                        public IHaliEncodersListener {
    public:
     explicit CouscousManager(
         const std::shared_ptr<IHali> &hali,
@@ -21,12 +21,12 @@ class CouscousManager : public IPositionListener,
 
     void start();
 
+    void onEncodersChanged(const int &encoders_motor1, const int &encoders_motor2) override;
+
     void onPositionChanged(
         const double &pos_x_m,
         const double &pos_y_m,
         const double &orientation_rad) override;
-
-    void onSpeedChanged(const int &motor1, const int &motor2) override;
 
     void onWebServerPositionRequest(
         const double &pos_x,

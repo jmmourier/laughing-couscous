@@ -4,8 +4,6 @@
 #include "Posi.h"
 #include "RealTime.h"
 
-const static int INTERVAL_REFRESH_MS = 50;
-
 CouscousManager::CouscousManager(
     const std::shared_ptr<IHali> &hali,
     const std::shared_ptr<Posi> &posi,
@@ -38,17 +36,12 @@ void CouscousManager::onWebServerTargetPositionRequest(const double &pos_x, cons
     // Will be sent to navi
 }
 
-void CouscousManager::onSpeedChanged(const int &motor1, const int &motor2) {
+void CouscousManager::onEncodersChanged(const int &encoders_motor1, const int &encoders_motor2) {
     // Will be sent to navi
+    posi_->updatePosition(encoders_motor1, encoders_motor2);
 }
 
 void CouscousManager::start() {
-    while (true) {
-        int encoder1 = hali_->getEncoder(MotorIdEnum::motor1);
-        int encoder2 = hali_->getEncoder(MotorIdEnum::motor2);
-
-        posi_->updatePosition(encoder1, encoder2);
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(INTERVAL_REFRESH_MS));
-    }
+    hali_->updater();
+    web_server_thread_.join();
 }

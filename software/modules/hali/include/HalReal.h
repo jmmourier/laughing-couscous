@@ -10,19 +10,20 @@ class HalReal : public IHali {
    public:
     HalReal();
 
-    void registerSpeedListener(const std::weak_ptr<IHaliSpeedListener> &speed_listener) override;
+    void registerEncodersListener(
+        const std::weak_ptr<IHaliEncodersListener> &encoders_listener) override;
 
     void publishToListeners() const override;
 
-    void updater();
+    void updater() override;
 
-    int getMd25Revision();
-    int getBatteryVoltage();
-    int getEncoder(MotorIdEnum id_motor);
+    int getMd25Revision() override;
+    int getBatteryVoltage() override;
+    int getEncoder(MotorIdEnum id_motor) override;
 
-    void setMd25Speed(int speed_1, int speed_2);
+    void setMd25Speed(int speed_1, int speed_2) override;
 
-    void setGrabber(GrabberState grabber_state);
+    void setGrabber(GrabberState grabber_state) override;
     GrabberState getGrabber();
 
    private:
@@ -35,7 +36,7 @@ class HalReal : public IHali {
     int md25_encoder_1_ = 0;
     int md25_encoder_2_ = 0;
     GrabberState grabber_state_;
-    std::vector<std::weak_ptr<IHaliSpeedListener>> speed_listeners_;
+    std::vector<std::weak_ptr<IHaliEncodersListener>> encoders_listeners_;
 };
 
 #endif  // HALI_REAL_H

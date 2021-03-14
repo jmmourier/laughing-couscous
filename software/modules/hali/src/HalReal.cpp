@@ -9,14 +9,15 @@ HalReal::HalReal()
       command_interpreter_(),
       grabber_state_(grabberUndefined) {}
 
-void HalReal::registerSpeedListener(const std::weak_ptr<IHaliSpeedListener> &speed_listener) {
-    speed_listeners_.push_back(speed_listener);
+void HalReal::registerEncodersListener(
+    const std::weak_ptr<IHaliEncodersListener> &encoders_listener) {
+    encoders_listeners_.push_back(encoders_listener);
 }
 
 void HalReal::publishToListeners() const {
-    for (auto const &speed_listener_ptr : speed_listeners_) {
-        if (auto speed_listener = speed_listener_ptr.lock()) {
-            speed_listener->onSpeedChanged(md25_encoder_1_, md25_encoder_2_);
+    for (auto const &encoders_listener_ptr : encoders_listeners_) {
+        if (auto encoders_listener = encoders_listener_ptr.lock()) {
+            encoders_listener->onEncodersChanged(md25_encoder_1_, md25_encoder_2_);
         }
     }
 }

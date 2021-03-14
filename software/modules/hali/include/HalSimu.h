@@ -5,28 +5,30 @@
 #include <vector>
 
 #include "IHali.h"
-#include "IHaliSpeedListener.h"
+#include "IHaliEncodersListener.h"
 
 class HalSimu : public IHali {
    public:
     HalSimu();
 
-    void registerSpeedListener(const std::weak_ptr<IHaliSpeedListener> &speed_listener) override;
+    void registerEncodersListener(
+        const std::weak_ptr<IHaliEncodersListener> &encoders_listener) override;
 
     void publishToListeners() const override;
 
-    void updater();
+    void updater() override;
 
-    int getMd25Revision();
-    int getBatteryVoltage();
-    int getEncoder(MotorIdEnum id_motor);
+    int getMd25Revision() override;
+    int getBatteryVoltage() override;
+    int getEncoder(MotorIdEnum id_motor) override;
 
-    void setMd25Speed(int speed_1, int speed_2);
+    void setMd25Speed(int speed_1, int speed_2) override;
 
-    void setGrabber(GrabberState grabber_state);
+    void setGrabber(GrabberState grabber_state) override;
     GrabberState getGrabber();
 
    private:
+    const int INTERVAL_ENCODERS_REFRESH_MS = 50;
     void updateEncoder();
 
     GrabberState grabber_state_;
@@ -42,7 +44,7 @@ class HalSimu : public IHali {
 
     const float ratio_speed_time_ = 0.001;
 
-    std::vector<std::weak_ptr<IHaliSpeedListener>> speed_listeners_;
+    std::vector<std::weak_ptr<IHaliEncodersListener>> encoders_listeners_;
 };
 
 #endif  // HAL_SIMU_H

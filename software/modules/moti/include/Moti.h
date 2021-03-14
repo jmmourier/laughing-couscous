@@ -22,9 +22,9 @@ struct BaseSpeed {
 class Moti {
    public:
     Moti();
-    
+
     void setBaseSpeed(BaseSpeed base_speed);
-    
+
     MotorSpeed getMotorSpeed();
 
     MotorSpeed getMotorSpeedFromBaseSpeed(BaseSpeed base_speed);
