@@ -3,15 +3,15 @@
 
 #include <memory>
 
-#include "IHaliSpeedListener.h"
+#include "IHaliEncodersListener.h"
 
 enum MotorIdEnum { motor1, motor2 };
 enum GrabberState { grabberUndefined = 0, grabberOpen = 1, grabberClose = 2 };
 
 class IHali {
    public:
-    virtual void registerSpeedListener(
-        const std::weak_ptr<IHaliSpeedListener> &position_listener) = 0;
+    virtual void registerEncodersListener(
+        const std::weak_ptr<IHaliEncodersListener> &encoders_listener) = 0;
 
     virtual void publishToListeners() const = 0;
 

@@ -161,8 +161,8 @@ int main(int argc, char *argv[]) {
                 hali = realhali;
             }
         } else {
-            auto realhali = new HalSimu();
-            hali = realhali;
+            auto hali_simu = new HalSimu();
+            hali = hali_simu;
         }
 
         std::thread updater_thread(&IHali::updater, hali);

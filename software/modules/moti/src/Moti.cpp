@@ -3,14 +3,13 @@
 #include <algorithm>
 #include <iostream>
 
-Moti::Moti():
-base_speed_(0,0,0){}
+Moti::Moti() : base_speed_(0, 0, 0) {}
 
-void Moti::setBaseSpeed(BaseSpeed base_speed){
+void Moti::setBaseSpeed(BaseSpeed base_speed) {
     base_speed_ = base_speed;
 }
-    
-MotorSpeed Moti::getMotorSpeed(){
+
+MotorSpeed Moti::getMotorSpeed() {
     MotorSpeed motor_speed(127, 127);
 
     float rotation_speed_left = 0.0;
@@ -45,4 +44,3 @@ MotorSpeed Moti::getMotorSpeedFromBaseSpeed(BaseSpeed base_speed) {
     setBaseSpeed(base_speed);
     return getMotorSpeed();
 }
-

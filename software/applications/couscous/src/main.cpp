@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
     auto couscous_manager = std::make_shared<CouscousManager>(hali, posi, web_server);
 
     posi->registerPositionListener(couscous_manager);
-    hali->registerSpeedListener(couscous_manager);
+    hali->registerEncodersListener(couscous_manager);
     web_server->registerWebServerRequestListener(couscous_manager);
 
     couscous_manager->start();

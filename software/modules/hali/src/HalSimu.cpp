@@ -2,6 +2,10 @@
 
 #include <iostream>
 #include <string>
+#include <thread>
+
+#include "IHali.h"
+#include "IHaliEncodersListener.h"
 
 HalSimu::HalSimu() {
     grabber_state_ = grabberUndefined;
@@ -9,20 +13,24 @@ HalSimu::HalSimu() {
     timestamp_since_last_encoder_2_update_ = std::chrono::system_clock::now();
 }
 
-void HalSimu::registerSpeedListener(const std::weak_ptr<IHaliSpeedListener> &speed_listener) {
-    speed_listeners_.push_back(speed_listener);
+void HalSimu::registerEncodersListener(
+    const std::weak_ptr<IHaliEncodersListener> &encoders_listener) {
+    encoders_listeners_.push_back(encoders_listener);
 }
 
 void HalSimu::publishToListeners() const {
-    for (auto const &speed_listener_ptr : speed_listeners_) {
-        if (auto speed_listener = speed_listener_ptr.lock()) {
-            speed_listener->onSpeedChanged(encoder_1_, encoder_2_);
+    for (auto const &encoders_listener_ptr : encoders_listeners_) {
+        if (auto encoders_listener = encoders_listener_ptr.lock()) {
+            encoders_listener->onEncodersChanged(encoder_1_, encoder_2_);
         }
     }
 }
 
 void HalSimu::updater() {
-    // empty
+    while (true) {
+        updateEncoder();
+        std::this_thread::sleep_for(std::chrono::milliseconds(INTERVAL_ENCODERS_REFRESH_MS));
+    }
 }
 
 int HalSimu::getMd25Revision() {
@@ -34,16 +42,10 @@ int HalSimu::getBatteryVoltage() {
 }
 
 int HalSimu::getEncoder(MotorIdEnum id_motor) {
-    updateEncoder();
-    if (id_motor == motor1) {
-        return encoder_1_;
-    } else {
-        return encoder_2_;
-    }
+    return id_motor == motor1 ? encoder_1_ : encoder_2_;
 }
 
 void HalSimu::setMd25Speed(int speed_1, int speed_2) {
-    updateEncoder();
     saved_speed_1_ = speed_1;
     saved_speed_2_ = speed_2;
 }
