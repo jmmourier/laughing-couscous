@@ -3,16 +3,19 @@
 
 #include <thread>
 
-#include "Hali.h"
+#include "IHali.h"
+#include "IHaliSpeedListener.h"
 #include "IPositionListener.h"
 #include "IWebServerListener.h"
 #include "Posi.h"
 #include "WebServer.h"
 
-class CouscousManager : public IPositionListener, public IWebServerListener {
+class CouscousManager : public IPositionListener,
+                        public IWebServerListener,
+                        public IHaliSpeedListener {
    public:
     explicit CouscousManager(
-        const std::shared_ptr<Hali> &hali,
+        const std::shared_ptr<IHali> &hali,
         const std::shared_ptr<Posi> &posi,
         const std::shared_ptr<WebServer> &web_server);
 
@@ -32,9 +35,11 @@ class CouscousManager : public IPositionListener, public IWebServerListener {
 
     void onTargetPositionRequested(const double &pos_x, const double &pos_y) override;
 
+    void onSpeedChanged(const int &motor1, const int &motor2) override;
+
    private:
     std::shared_ptr<Posi> posi_;
-    std::shared_ptr<Hali> hali_;
+    std::shared_ptr<IHali> hali_;
     std::shared_ptr<WebServer> web_server_;
     std::thread web_server_thread_;
 };

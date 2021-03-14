@@ -5,7 +5,7 @@
 
 #include "HalReal.h"
 #include "HalSimu.h"
-#include "Hali.h"
+#include "IHali.h"
 
 // #include "../src/Serial.h"
 // #include "../src/MessageParser.h"
@@ -151,7 +151,7 @@
 
 int main(int argc, char *argv[]) {
     try {
-        Hali *hali;
+        IHali *hali;
         if (argc > 1) {
             if (std::string(argv[1]) == "-r") {
                 auto realhali = new HalReal();
@@ -165,7 +165,7 @@ int main(int argc, char *argv[]) {
             hali = realhali;
         }
 
-        std::thread updater_thread(&Hali::updater, hali);
+        std::thread updater_thread(&IHali::updater, hali);
         std::chrono::milliseconds timespan(500);  // or whatever
         bool further = true;
         while (true) {

@@ -2,12 +2,18 @@
 #define HAL_SIMU_H
 
 #include <chrono>
+#include <vector>
 
-#include "Hali.h"
+#include "IHali.h"
+#include "IHaliSpeedListener.h"
 
-class HalSimu : public Hali {
+class HalSimu : public IHali {
    public:
     HalSimu();
+
+    void registerSpeedListener(const std::weak_ptr<IHaliSpeedListener> &speed_listener) override;
+
+    void publishToListeners() const override;
 
     void updater();
 
@@ -35,6 +41,8 @@ class HalSimu : public Hali {
     int encoder_2_ = 0;
 
     const float ratio_speed_time_ = 0.001;
+
+    std::vector<std::weak_ptr<IHaliSpeedListener>> speed_listeners_;
 };
 
 #endif  // HAL_SIMU_H
