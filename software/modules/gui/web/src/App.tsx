@@ -13,7 +13,8 @@ function createData(name: string, value: number) {
 
 const App: FunctionComponent = () => {
   const {
-    state: { x_m: x, y_m: y, orientation_rad: angleRad },
+    state: { robotPosition },
+    proxy,
   } = useContext(stateProvider.context);
 
   const { dispatch: communicationProviderDispatch } = useContext(
@@ -23,25 +24,24 @@ const App: FunctionComponent = () => {
   const rows = [
     createData(
       "Absolute position X",
-      Math.round(x * ROUND_RATIO) / ROUND_RATIO
+      Math.round(robotPosition.x_m * ROUND_RATIO) / ROUND_RATIO
     ),
     createData(
       "Absolute position Y",
-      Math.round(y * ROUND_RATIO) / ROUND_RATIO
+      Math.round(robotPosition.y_m * ROUND_RATIO) / ROUND_RATIO
     ),
     createData(
       "Absolute angle (radian)",
-      Math.round(angleRad * ROUND_RATIO) / ROUND_RATIO
+      Math.round(robotPosition.orientation_rad * ROUND_RATIO) / ROUND_RATIO
     ),
   ];
 
   const [
     selectedPosition,
     setSelectedPosition,
-  ] = useState<stateProvider.IRobotPosition>({
+  ] = useState<stateProvider.IPosition>({
     x_m: 0,
     y_m: 0,
-    orientation_rad: 0,
   });
 
   return (
@@ -79,7 +79,10 @@ const App: FunctionComponent = () => {
                 e.preventDefault();
                 communicationProviderDispatch({
                   type: communicationProvider.Action.SET_ABSOLUTE_POSITION,
-                  position: selectedPosition,
+                  position: {
+                    ...selectedPosition,
+                    orientation_rad: robotPosition.orientation_rad,
+                  },
                 });
               }}
             >
@@ -125,12 +128,28 @@ const App: FunctionComponent = () => {
                   />
                 </label>
               </div>
-              <button
-                type="submit"
-                className="w-full rounded-xl p-4 uppercase bg-gray-700 shadow text-white mt-4"
-              >
-                Apply
-              </button>
+              <div className="flex gap-4">
+                <button
+                  type="submit"
+                  className="w-full rounded-xl p-4 uppercase bg-gray-700 shadow text-white mt-4"
+                >
+                  Apply
+                </button>
+                <button
+                  type="button"
+                  className="w-full rounded-xl p-4 uppercase bg-gray-700 shadow text-white mt-4"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    proxy.setTargetPosition(selectedPosition);
+                    communicationProviderDispatch({
+                      type: communicationProvider.Action.SET_TARGET_POSITION,
+                      position: selectedPosition,
+                    });
+                  }}
+                >
+                  set target
+                </button>
+              </div>
             </form>
           </div>
         </Block>

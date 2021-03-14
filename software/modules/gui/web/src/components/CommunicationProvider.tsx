@@ -1,5 +1,10 @@
 import { PositionPromiseClient } from "generated_grpc_sources/robot_grpc_web_pb";
-import { Empty, PositionMsg, SpeedMsg } from "generated_grpc_sources/robot_pb";
+import {
+  Empty,
+  PositionOrientationRequest,
+  PositionRequest,
+  SpeedRequest,
+} from "generated_grpc_sources/robot_pb";
 import React, {
   Dispatch,
   FunctionComponent,
@@ -16,7 +21,11 @@ type IState = {};
 type IAction =
   | {
       type: Action.SET_ABSOLUTE_POSITION;
-      position: stateProvider.IRobotPosition;
+      position: stateProvider.IPositionOrientation;
+    }
+  | {
+      type: Action.SET_TARGET_POSITION;
+      position: stateProvider.IPosition;
     }
   | { type: Action.SET_SPEED; speed: ISpeed };
 
@@ -32,6 +41,7 @@ const client: PositionPromiseClient = new PositionPromiseClient(serverUrl);
  */
 enum Action {
   SET_ABSOLUTE_POSITION = "SET_ABSOLUTE_POSITION",
+  SET_TARGET_POSITION = "SET_TARGET_POSITION",
   SET_SPEED = "SET_SPEED",
   UPDATE_POSITION = "UPDATE_POSITION",
 }
@@ -41,19 +51,28 @@ const reducer: Reducer<IState, IAction> = async (
   action: IAction
 ) => {
   switch (action.type) {
-    case Action.SET_ABSOLUTE_POSITION:
-      const positionMsg = new PositionMsg();
-      positionMsg.setPosXM(action.position.x_m);
-      positionMsg.setPosYM(action.position.y_m);
-      positionMsg.setOrientationRad(action.position.orientation_rad);
-      await client.setAbsolutePositionRequest(positionMsg);
+    case Action.SET_ABSOLUTE_POSITION: {
+      const positionOrientationRequest = new PositionOrientationRequest();
+      positionOrientationRequest.setPosXM(action.position.x_m);
+      positionOrientationRequest.setPosYM(action.position.y_m);
+      positionOrientationRequest.setOrientationRad(
+        action.position.orientation_rad
+      );
+      await client.setAbsolutePositionRequest(positionOrientationRequest);
       return { ...state };
+    }
+    case Action.SET_TARGET_POSITION: {
+      const positionRequest = new PositionRequest();
+      positionRequest.setPosXM(action.position.x_m);
+      positionRequest.setPosYM(action.position.y_m);
+      await client.setTargetPositionRequest(positionRequest);
+      return { ...state };
+    }
     case Action.SET_SPEED: {
-      const speedMsg = new SpeedMsg();
+      const speedMsg = new SpeedRequest();
       speedMsg.setMotor1(action.speed.motor1);
       speedMsg.setMotor2(action.speed.motor2);
 
-      console.log(action.speed.motor1, action.speed.motor2);
       client.setSpeedRequest(speedMsg);
     }
   }
@@ -85,21 +104,21 @@ const CommunicationProvider: FunctionComponent<ICommunicationProvider> = ({
 
   const { Provider } = context;
 
-  const { dispatch: stateProviderDispatch } = useContext(stateProvider.context);
+  const stateContext = useContext(stateProvider.context);
 
   useEffect(() => {
     const position_stream = client.registerPositionObserver(new Empty());
-    position_stream.on("data", (positionMsg: PositionMsg) => {
-      stateProviderDispatch({
-        type: stateProvider.Action.UPDATE_POSITION,
-        position: {
-          x_m: positionMsg.getPosXM(),
-          y_m: positionMsg.getPosYM(),
-          orientation_rad: positionMsg.getOrientationRad(),
-        },
-      });
-    });
-  }, []);
+    position_stream.on(
+      "data",
+      (positionOrientationRequest: PositionOrientationRequest) => {
+        stateContext.proxy.setRobotPosition({
+          x_m: positionOrientationRequest.getPosXM(),
+          y_m: positionOrientationRequest.getPosYM(),
+          orientation_rad: positionOrientationRequest.getOrientationRad(),
+        });
+      }
+    );
+  }, [stateContext.proxy]);
 
   // type: stateProvider.ActionEnum.UPDATE_POSITION,
   return <Provider value={{ state, dispatch }}>{children}</Provider>;
