@@ -28,5 +28,6 @@ target_link_libraries(${PROJECT_NAME}_exe
         PUBLIC utils_lib
                hali_lib
                posi_lib
-               webserver_lib      
+               webserver_lib     
+               navi_lib
 )
