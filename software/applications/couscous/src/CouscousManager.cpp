@@ -7,9 +7,11 @@
 CouscousManager::CouscousManager(
     const std::shared_ptr<IHali> &hali,
     const std::shared_ptr<Posi> &posi,
-    const std::shared_ptr<WebServer> &web_server)
+    const std::shared_ptr<WebServer> &web_server,
+    const std::shared_ptr<Navi> &navi)
     : hali_(hali),
       posi_(posi),
+      navi_(navi),
       web_server_(web_server) {
     web_server_thread_ = std::thread([&] { web_server_->start(); });
 }
@@ -23,11 +25,13 @@ void CouscousManager::onWebServerPositionRequest(const PositionOrientation &posi
 }
 
 void CouscousManager::onWebServerSpeedRequest(const int &speed_motor1, const int &speed_motor2) {
+    std::cout << "speed" << speed_motor1 << " " << speed_motor2 << std::endl;
     hali_->setMd25Speed(speed_motor1, speed_motor2);
 }
 
 void CouscousManager::onWebServerTargetPositionRequest(const double &pos_x, const double &pos_y) {
     // Will be sent to navi
+    navi_->setTargetPosition(pos_x, pos_y, 0);
 }
 
 void CouscousManager::start() {

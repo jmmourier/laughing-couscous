@@ -12,11 +12,12 @@ int main(int argc, char *argv[]) {
     auto posi = std::make_shared<Posi>(start_position_orientation);
     auto web_server = std::make_shared<WebServer>();
 
-    auto couscous_manager = std::make_shared<CouscousManager>(hali, posi, web_server);
+    auto navi = std::make_shared<Navi>();
+    auto couscous_manager = std::make_shared<CouscousManager>(hali, posi, web_server, navi);
 
     posi->registerPositionListener(couscous_manager);
     web_server->registerWebServerRequestListener(couscous_manager);
-
+    navi->registerNaviRequestListener(couscous_manager);
     couscous_manager->start();
     return 0;
 }
