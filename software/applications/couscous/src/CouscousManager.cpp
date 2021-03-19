@@ -15,22 +15,16 @@ CouscousManager::CouscousManager(
 }
 
 void CouscousManager::onPositionChanged(const PositionOrientation &position_orientation) {
-    web_server_->setPosition(
-        position_orientation.x_m_,
-        position_orientation.y_m_,
-        position_orientation.orientation_rad_);
+    web_server_->setPosition(position_orientation);
 }
 
-void CouscousManager::onWebServerPositionRequest(
-    const double &pos_x_m,
-    const double &pos_y_m,
-    const double &orientation_rad) {
-    posi_->setPosition(PositionOrientation(pos_x_m, pos_y_m, orientation_rad));
+void CouscousManager::onWebServerPositionRequest(const PositionOrientation &position_orientation) {
+    posi_->setPosition(position_orientation);
 }
 
 void CouscousManager::onWebServerSpeedRequest(const int &speed_motor1, const int &speed_motor2) {
     hali_->setMd25Speed(speed_motor1, speed_motor2);
-};
+}
 
 void CouscousManager::onWebServerTargetPositionRequest(const double &pos_x, const double &pos_y) {
     // Will be sent to navi

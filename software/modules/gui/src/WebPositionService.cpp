@@ -4,9 +4,12 @@
 #include <iostream>
 #include <thread>
 
+#include "PositionOrientation.h"
 #include "robot.pb.h"
 
 const int INTERVAL_SENDING_POSITION_REFRESH_MS = 20;
+
+WebPositionService::WebPositionService() : position_orientation_(PositionOrientation(0, 0, 0)) {}
 
 void WebPositionService::registerWebServerRequestListener(
     const std::weak_ptr<IWebServerRequestListener> &webserver_listener) {
@@ -14,12 +17,10 @@ void WebPositionService::registerWebServerRequestListener(
 }
 
 void WebPositionService::publishToWebServerPositionRequestListeners(
-    const double &pos_x,
-    const double &pos_y,
-    const double &orientation) const {
+    const PositionOrientation &position_orientation) const {
     for (auto const &webserver_listener_ptr : webserver_listeners_) {
         if (auto webserver_listener = webserver_listener_ptr.lock()) {
-            webserver_listener->onWebServerPositionRequest(pos_x, pos_y, orientation);
+            webserver_listener->onWebServerPositionRequest(position_orientation);
         }
     }
 }
@@ -56,10 +57,12 @@ void WebPositionService::publishToWebServerTargetPositionListeners(
     ::grpc::ServerContext *context,
     const ::web_service::PositionOrientationRequest *request,
     ::web_service::Empty *response) {
-    publishToWebServerPositionRequestListeners(
+    const PositionOrientation position_orientation(
         request->pos_x_m(),
         request->pos_y_m(),
         request->orientation_rad());
+
+    publishToWebServerPositionRequestListeners(position_orientation);
 
     return ::grpc::Status::OK;
 }
@@ -80,9 +83,9 @@ void WebPositionService::publishToWebServerTargetPositionListeners(
     web_service::PositionOrientationRequest position_orientation_request;
 
     while (true) {
-        position_orientation_request.set_pos_x_m(pos_x_m_);
-        position_orientation_request.set_pos_y_m(pos_y_m_);
-        position_orientation_request.set_orientation_rad(orientation_rad_);
+        position_orientation_request.set_pos_x_m(position_orientation_.x_m_);
+        position_orientation_request.set_pos_y_m(position_orientation_.y_m_);
+        position_orientation_request.set_orientation_rad(position_orientation_.orientation_rad_);
 
         writer->Write(position_orientation_request);
 
@@ -92,13 +95,8 @@ void WebPositionService::publishToWebServerTargetPositionListeners(
     return ::grpc::Status::OK;
 }
 
-void WebPositionService::setPosition(
-    const double &pos_x_m,
-    const double &pos_y_m,
-    const double &orientation_rad) {
-    pos_x_m_ = pos_x_m;
-    pos_y_m_ = pos_y_m;
-    orientation_rad_ = orientation_rad;
+void WebPositionService::setPosition(const PositionOrientation &position_orientation) {
+    position_orientation_ = position_orientation;
 }
 
 void WebPositionService::setSpeed(const int &motor1, const int &motor2) const {

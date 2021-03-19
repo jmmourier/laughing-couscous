@@ -2,6 +2,7 @@
 #define WEB_SERVER_H
 
 #include "IWebServerRequestListener.h"
+#include "PositionOrientation.h"
 #include "WebPositionService.h"
 #include "grpcpp/server.h"
 
@@ -21,7 +22,7 @@ class WebServer {
      */
     void stop();
 
-    void setPosition(const double &pos_x_m, const double &pos_y_m, const double &orientation_rad);
+    void setPosition(const PositionOrientation &position_orientation);
 
     // void setSpeed(const int &motor1, const int &motor2);
 

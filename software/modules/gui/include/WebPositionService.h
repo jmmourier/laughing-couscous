@@ -6,13 +6,13 @@
 
 class WebPositionService final : public web_service::Position::Service {
    public:
+    WebPositionService();
+
     void registerWebServerRequestListener(
         const std::weak_ptr<IWebServerRequestListener> &webserver_listener);
 
     void publishToWebServerPositionRequestListeners(
-        const double &pos_x,
-        const double &pos_y,
-        const double &orientation) const;
+        const PositionOrientation &position_orientation) const;
 
     void publishToWebServerSpeedRequestListeners(const int &motor1, const int &motor2) const;
 
@@ -38,13 +38,11 @@ class WebPositionService final : public web_service::Position::Service {
         const ::web_service::PositionRequest *request,
         ::web_service::Empty *response) override;
 
-    void setPosition(const double &pos_x_m, const double &pos_y_m, const double &orientation_rad);
+    void setPosition(const PositionOrientation &position_orientation);
     void setSpeed(const int &motor1, const int &motor2) const;
 
    private:
-    double pos_x_m_;
-    double pos_y_m_;
-    double orientation_rad_;
+    PositionOrientation position_orientation_;
     std::vector<std::weak_ptr<IWebServerRequestListener>> webserver_listeners_;
 };
 
