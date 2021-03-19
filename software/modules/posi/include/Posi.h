@@ -8,14 +8,13 @@
 
 #include "IBaseTime.h"
 #include "IPositionListener.h"
+#include "PositionOrientation.h"
 
 class Posi {
    public:
     explicit Posi(
         std::shared_ptr<IBaseTime> time_helper,
-        double &start_pos_x,
-        double &start_pos_y,
-        double &start_orientation);
+        const PositionOrientation &start_position_orientation);
 
     void registerPositionListener(const std::weak_ptr<IPositionListener> &position_listener);
 
@@ -24,20 +23,16 @@ class Posi {
     /**
      * @brief Return abs position and orientation
      *
-     * @param pos_x
-     * @param pos_y
-     * @param orientation
+     * @return const PositionOrientation
      */
-    void getPosition(double &pos_x, double &pos_y, double &orientation) const;
+    PositionOrientation getPosition() const;
 
     /**
-     * @brief reset the position to a given point and orientation
+     * @brief Reset the position to a given point and orientation
      *
-     * @param pos_x
-     * @param pos_y
-     * @param orientation
+     * @param position_orientation
      */
-    void setPosition(double pos_x, double pos_y, double orientation);
+    void setPosition(const PositionOrientation &position_orientation);
 
     /**
      * @brief Update the absolute position and orientation based on new encoders
@@ -53,9 +48,7 @@ class Posi {
     std::shared_ptr<IBaseTime> time_helper_;
     long previous_encoder1_;
     long previous_encoder2_;
-    double abs_pos_x_;
-    double abs_pos_y_;
-    double orientation_;
+    PositionOrientation position_orientation_;
     std::chrono::_V2::system_clock::time_point timestamp_;
     std::vector<std::weak_ptr<IPositionListener>> position_listeners_;
 };

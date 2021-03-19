@@ -31,9 +31,9 @@ target_include_directories(
 )
     
 target_link_libraries(${PROJECT_NAME}_lib 
-    PUBLIC 
-    logger_lib 
-    spdlog::spdlog
+    PUBLIC utils_lib
+           logger_lib
+           spdlog::spdlog
 )
 
 # Tests Binaries
