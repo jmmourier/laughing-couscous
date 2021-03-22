@@ -6,15 +6,12 @@
 #include <memory>
 #include <vector>
 
-#include "IBaseTime.h"
 #include "IPositionListener.h"
 #include "PositionOrientation.h"
 
 class Posi {
    public:
-    explicit Posi(
-        std::shared_ptr<IBaseTime> time_helper,
-        const PositionOrientation &start_position_orientation);
+    explicit Posi(const PositionOrientation &start_position_orientation);
 
     void registerPositionListener(const std::weak_ptr<IPositionListener> &position_listener);
 
@@ -45,11 +42,9 @@ class Posi {
 
    private:
     std::shared_ptr<spdlog::logger> logger_;
-    std::shared_ptr<IBaseTime> time_helper_;
     long previous_encoder1_;
     long previous_encoder2_;
     PositionOrientation position_orientation_;
-    std::chrono::_V2::system_clock::time_point timestamp_;
     std::vector<std::weak_ptr<IPositionListener>> position_listeners_;
 };
 
