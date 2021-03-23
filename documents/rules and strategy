@@ -1,0 +1,65 @@
+regles 
+
+espace : 3m*2m 
+bordure : 7cm
+
+zone de depart = bateau 
+x = [530,1070], y = [0,400] [2600,3000]
+interdit d'aller dans la zone de depart adversse
+
+
+Missions
+
+•Créer des chenaux pour rétablir la circulation maritime.
+	50 bouée, 25 rouges / 25 vertes, diam 72/54 mm h115 mm
+	12 bouées fixe, couleurs connues 
+	2 ports 1 grand (plus long), 1 petit (plus large)
+	- 1 point par bouée dans le port
+	- 1 point supplementaire par bouée sur la bonne ligne de chenal
+	- 2 point par paire bien placées 
+
+•Relever les manches à airqui ont été balayées par la tempête.
+	+7 cm du sol
+	Bascullé la manche a air 
+	5 point pour 1, 15 points pour 2
+
+•Allumer le phare pour que les bateaux égarés puissent rentrer au port en toute sécurité.
+	materiel deposé par l'equipe avant le debut du match
+	allumé pendant le match avec un contact physique avec le robot
+	activé si chanbgement de forme 
+	- 2 point pour déposer un phare (sans rien faire avec)
+	- 3 point su activé pendant le match 
+	- 10 point si deployé et allumé avant fin du match 
+	- securisé avec une tige fileté 8mm et un ecrou papillon 
+
+•Arriver à bon port, afin de mettre les robots au mouillage, à l’abri du vent, à la fin de leur voyage.
+	fin du match s'arreter dans la bonne zone de mouillage (en fonction de la girouette)
+	- 20 point si bonne zone de mouillage
+	- 6 point si mauvaise zone 
+
+
+•Hisser vos pavillonspour transmettre des messages aux autres navires.
+	entre la 95e et 100e seconde le robot leve un drapeau
+	pavillon de type lettre; 30cm², recto verso (6x6 cm)
+	2 pavillons 
+	hisser au dela de 35 cm 
+	- 10 point si reussi
+
+•Estimer votre performance.
+	Bonus = (0.3 x Score) - Écart
+
+
+info 
+
+- poster A1  pour explications technique + nom d'equipe, nom des membre, nationalité, drapeau
+- interdit de defoncer les elements de la table
+- non deployé 120cm, deployé 130cm
+- hauteur max 35cm (mat balise non compris)
+- 3 match d'affilé possible > penser au batteries 
+- sac inifugé pour la batterie
+- pour autocollant d'equipe -> surface rigide et pleine de 100 x 70 mm
+- le robot est démarré depuis un cordon de 50cm
+- bouton d'arret d'urgence de 20mm de diametre rouge (doit arreter les actioneurs)
+- arret de tout apres 100 secondes 
+- il faut un systeme qui permet d'eviter le robot adverse 
+- il faut un mat de support balise (70mm diametre), surface superieur a 430mm, avec velcro face crochet
