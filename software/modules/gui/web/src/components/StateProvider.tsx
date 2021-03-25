@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useMemo, useState } from "react";
 
 export const TICKS_PER_ROTATION = 360;
-export const WHEEL_WIDTH = 0.02;
-export const WHEEL_RADIUS_M = 0.05;
+export const WHEEL_WIDTH = 0.05;
+export const WHEEL_RADIUS_M = 0.1;
 export const WHEEL_PERIMETER = Math.PI * 2 * WHEEL_RADIUS_M;
-export const SPACE_BETWEEN_WHEELS = 0.2;
+export const SPACE_BETWEEN_WHEELS = 0.253;
 
 export type IPosition = {
   x_m: number;

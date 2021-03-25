@@ -8,23 +8,15 @@
 #include "logger/LoggerFactory.h"
 
 const int TICKS_PER_ROTATION = 360;
-const double SPACE_BETWEEN_WHEELS = 0.2;
-const double WHEEL_RADIUS_M = 0.1;
-const double WHEEL_PERIMETER = M_PI * 2 * WHEEL_RADIUS_M;
+const float SPACE_BETWEEN_WHEELS = 0.2;
+const float WHEEL_RADIUS_M = 0.1;
+const float WHEEL_PERIMETER = M_PI * 2 * WHEEL_RADIUS_M;
 
-Posi::Posi(
-    std::shared_ptr<IBaseTime> time_helper,
-    double &start_pos_x,
-    double &start_pos_y,
-    double &start_orientation)
+Posi::Posi(const PositionOrientation &start_position_orientation)
     : logger_(LoggerFactory::registerOrGetLogger("Posi", spdlog::level::level_enum::debug)),
-      time_helper_(std::move(time_helper)),
       previous_encoder1_(0),
       previous_encoder2_(0),
-      abs_pos_x_(start_pos_x),
-      abs_pos_y_(start_pos_y),
-      orientation_(start_orientation),
-      timestamp_(time_helper_->getNow()) {}
+      position_orientation_(start_position_orientation) {}
 
 void Posi::registerPositionListener(const std::weak_ptr<IPositionListener> &position_listener) {
     position_listeners_.push_back(position_listener);
@@ -33,55 +25,43 @@ void Posi::registerPositionListener(const std::weak_ptr<IPositionListener> &posi
 void Posi::publishToListeners() const {
     for (auto const &position_listener_ptr : position_listeners_) {
         if (auto position_listener = position_listener_ptr.lock()) {
-            position_listener->onPositionChanged(abs_pos_x_, abs_pos_y_, orientation_);
+            position_listener->onPositionChanged(position_orientation_);
         }
     }
 }
 
-void Posi::getPosition(double &pos_x, double &pos_y, double &orientation) const {
-    pos_x = abs_pos_x_;
-    pos_y = abs_pos_y_;
-    orientation = orientation_;
+PositionOrientation Posi::getPosition() const {
+    return position_orientation_;
 }
 
-void Posi::setPosition(double pos_x, double pos_y, double orientation) {
-    abs_pos_x_ = pos_x;
-    abs_pos_y_ = pos_y;
-    orientation_ = orientation;
+void Posi::setPosition(const PositionOrientation &position_orientation) {
+    position_orientation_ = position_orientation;
 }
 
 void Posi::updatePosition(int encoder1, int encoder2) {
-    auto time_now = time_helper_->getNow();
-
-    // Diff since last updating position in second
-    double delta_time_s =
-        static_cast<double>(time_helper_->getDeltaTimeMS(time_now - timestamp_)) / 1000;
-
-    // Reset timestamp
-    timestamp_ = time_now;
-
     // Delta encoders
     auto delta_encoder1 = encoder1 - previous_encoder1_;
     auto delta_encoder2 = encoder2 - previous_encoder2_;
 
     // Linear speed
-    double speed_left_wheel_ms = (WHEEL_PERIMETER * delta_encoder1 / TICKS_PER_ROTATION);
-    double speed_right_wheel_ms = (WHEEL_PERIMETER * delta_encoder2 / TICKS_PER_ROTATION);
+    float speed_left_wheel_ms = (WHEEL_PERIMETER * delta_encoder1 / TICKS_PER_ROTATION);
+    float speed_right_wheel_ms = (WHEEL_PERIMETER * delta_encoder2 / TICKS_PER_ROTATION);
 
     // Average speed
-    double average_speed = (speed_left_wheel_ms + speed_right_wheel_ms) / 2;
+    float average_speed = (speed_left_wheel_ms + speed_right_wheel_ms) / 2;
 
     // Delta positions
-    double delta_position_x = std::cos(orientation_) * average_speed;
-    double delta_position_y = std::sin(orientation_) * average_speed;
+    float delta_position_x = std::cos(position_orientation_.orientation_rad_) * average_speed;
+    float delta_position_y = std::sin(position_orientation_.orientation_rad_) * average_speed;
 
     // Delta orientation
-    double delta_orientation = (speed_left_wheel_ms - speed_right_wheel_ms) / SPACE_BETWEEN_WHEELS;
+    float delta_orientation = (speed_left_wheel_ms - speed_right_wheel_ms) / SPACE_BETWEEN_WHEELS;
 
     // Set new absolute positions and orientation
-    abs_pos_x_ = abs_pos_x_ + delta_position_x * delta_time_s;
-    abs_pos_y_ = abs_pos_y_ + delta_position_y * delta_time_s;
-    orientation_ = orientation_ + delta_orientation * delta_time_s;
+    position_orientation_.x_m_ = position_orientation_.x_m_ + delta_position_x;
+    position_orientation_.y_m_ = position_orientation_.y_m_ + delta_position_y;
+    position_orientation_.orientation_rad_ =
+        position_orientation_.orientation_rad_ + delta_orientation;
 
     // Update previous encoders with current ones
     previous_encoder1_ = encoder1;
@@ -90,9 +70,9 @@ void Posi::updatePosition(int encoder1, int encoder2) {
     SPDLOG_LOGGER_INFO(
         logger_,
         "Update position x: {} - y: {} - orientation: {}",
-        abs_pos_x_,
-        abs_pos_y_,
-        orientation_);
+        position_orientation_.x_m_,
+        position_orientation_.y_m_,
+        position_orientation_.orientation_rad_);
 
     // Publish new position to position listeners
     publishToListeners();

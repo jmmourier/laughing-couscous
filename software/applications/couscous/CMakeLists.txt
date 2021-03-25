@@ -25,7 +25,8 @@ target_include_directories(
 )
 
 target_link_libraries(${PROJECT_NAME}_exe
-        PUBLIC hali_lib
+        PUBLIC utils_lib
+               hali_lib
                posi_lib
                webserver_lib      
 )

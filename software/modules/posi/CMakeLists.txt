@@ -9,8 +9,6 @@ file(GLOB_RECURSE HEADERS include/**.h src/**.h test/**.h)
 
 list(APPEND SOURCES 
     src/Posi.cpp
-    src/RealTime.cpp
-    src/FakeTime.cpp
     )
 
 list(APPEND TESTS
@@ -31,9 +29,9 @@ target_include_directories(
 )
     
 target_link_libraries(${PROJECT_NAME}_lib 
-    PUBLIC 
-    logger_lib 
-    spdlog::spdlog
+    PUBLIC utils_lib
+           logger_lib
+           spdlog::spdlog
 )
 
 # Tests Binaries

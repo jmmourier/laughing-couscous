@@ -91,7 +91,8 @@ target_include_directories(
 
 target_link_libraries(
         ${PROJECT_NAME}_lib
-        PUBLIC ${_GRPC_GRPCPP}
+        PUBLIC utils_lib
+        ${_GRPC_GRPCPP}
         ${_REFLECTION}
         ${_PROTOBUF_LIBPROTOBUF}
         Threads::Threads

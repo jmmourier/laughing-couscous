@@ -26,16 +26,9 @@ void WebServer::start() {
     server_->Wait();
 }
 
-void WebServer::setPosition(
-    const double &pos_x_m,
-    const double &pos_y_m,
-    const double &orientation_rad) {
-    web_position_service_.setPosition(pos_x_m, pos_y_m, orientation_rad);
+void WebServer::setPosition(const PositionOrientation &position_orientation) {
+    web_position_service_.setPosition(position_orientation);
 }
-
-// void WebServer::setSpeed(const int &motor1, const int &motor2) {
-//     web_position_service_.setSpeed(motor1, motor2);
-// }
 
 void WebServer::stop() {
     server_->Shutdown();

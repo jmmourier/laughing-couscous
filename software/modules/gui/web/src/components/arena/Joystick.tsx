@@ -1,7 +1,8 @@
 import React, { FunctionComponent, useContext } from "react";
 import * as communicationProvider from "../CommunicationProvider";
 
-const FIX_SEED = 500;
+const FIX_SEED = 127;
+const ZERO_SPEED = 127;
 
 const Joystick: FunctionComponent = () => {
   const { dispatch: communicationProviderDispatch } = useContext(
@@ -15,7 +16,10 @@ const Joystick: FunctionComponent = () => {
         onClick={() => {
           communicationProviderDispatch({
             type: communicationProvider.Action.SET_SPEED,
-            speed: { motor1: FIX_SEED, motor2: FIX_SEED },
+            speed: {
+              motor1: FIX_SEED + ZERO_SPEED,
+              motor2: FIX_SEED + ZERO_SPEED,
+            },
           });
         }}
       >
@@ -39,7 +43,10 @@ const Joystick: FunctionComponent = () => {
           onClick={() => {
             communicationProviderDispatch({
               type: communicationProvider.Action.SET_SPEED,
-              speed: { motor1: -FIX_SEED, motor2: FIX_SEED },
+              speed: {
+                motor1: -ZERO_SPEED + FIX_SEED,
+                motor2: ZERO_SPEED + FIX_SEED,
+              },
             });
           }}
         >
@@ -62,7 +69,10 @@ const Joystick: FunctionComponent = () => {
           onClick={() => {
             communicationProviderDispatch({
               type: communicationProvider.Action.SET_SPEED,
-              speed: { motor1: FIX_SEED, motor2: -FIX_SEED },
+              speed: {
+                motor1: ZERO_SPEED + FIX_SEED,
+                motor2: -ZERO_SPEED + FIX_SEED,
+              },
             });
           }}
         >
@@ -86,7 +96,10 @@ const Joystick: FunctionComponent = () => {
         onClick={() => {
           communicationProviderDispatch({
             type: communicationProvider.Action.SET_SPEED,
-            speed: { motor1: -FIX_SEED, motor2: -FIX_SEED },
+            speed: {
+              motor1: -ZERO_SPEED + FIX_SEED,
+              motor2: -ZERO_SPEED + FIX_SEED,
+            },
           });
         }}
       >

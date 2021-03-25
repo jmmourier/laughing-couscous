@@ -5,14 +5,14 @@ package web_service;
 message Empty {}
 
 message PositionRequest {
-  double pos_x_m = 1;
-  double pos_y_m = 2;
+  float pos_x_m = 1;
+  float pos_y_m = 2;
 }
 
 message PositionOrientationRequest {
-  double pos_x_m = 1;
-  double pos_y_m = 2;
-  double orientation_rad = 3;
+  float pos_x_m = 1;
+  float pos_y_m = 2;
+  float orientation_rad = 3;
 }
 
 message SpeedRequest {
