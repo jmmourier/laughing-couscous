@@ -5,32 +5,19 @@
 #include <thread>
 
 #include "IHali.h"
-#include "IHaliEncodersListener.h"
+#include "logger/LoggerFactory.h"
 
-HalSimu::HalSimu() {
+HalSimu::HalSimu()
+    : logger_(LoggerFactory::registerOrGetLogger("Hali", spdlog::level::level_enum::info)) {
     grabber_state_ = grabberUndefined;
     timestamp_since_last_encoder_1_update_ = std::chrono::system_clock::now();
     timestamp_since_last_encoder_2_update_ = std::chrono::system_clock::now();
 }
 
-void HalSimu::registerEncodersListener(
-    const std::weak_ptr<IHaliEncodersListener> &encoders_listener) {
-    encoders_listeners_.push_back(encoders_listener);
-}
-
-void HalSimu::publishToListeners() const {
-    for (auto const &encoders_listener_ptr : encoders_listeners_) {
-        if (auto encoders_listener = encoders_listener_ptr.lock()) {
-            encoders_listener->onEncodersChanged(encoder_1_, encoder_2_);
-        }
-    }
-}
-
 void HalSimu::updater() {
-    while (true) {
-        updateEncoder();
-        std::this_thread::sleep_for(std::chrono::milliseconds(INTERVAL_ENCODERS_REFRESH_MS));
-    }
+    // while (true) {
+    //     updateEncoder();
+    // }
 }
 
 int HalSimu::getMd25Revision() {
@@ -42,6 +29,7 @@ int HalSimu::getBatteryVoltage() {
 }
 
 int HalSimu::getEncoder(MotorIdEnum id_motor) {
+    updateEncoder();
     return id_motor == motor1 ? encoder_1_ : encoder_2_;
 }
 
@@ -65,7 +53,11 @@ void HalSimu::updateEncoder() {
     timestamp_since_last_encoder_1_update_ = time_update;
     timestamp_since_last_encoder_2_update_ = time_update;
 
-    publishToListeners();
+    SPDLOG_LOGGER_INFO(
+        logger_,
+        "updateEncoder encoder_1_: {} encoder_2_: {}",
+        encoder_1_,
+        encoder_2_);
 }
 
 void HalSimu::setGrabber(GrabberState grabber_state) {

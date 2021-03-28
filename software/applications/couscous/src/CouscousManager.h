@@ -4,15 +4,12 @@
 #include <thread>
 
 #include "IHali.h"
-#include "IHaliEncodersListener.h"
 #include "IPositionListener.h"
 #include "IWebServerRequestListener.h"
 #include "Posi.h"
 #include "WebServer.h"
 
-class CouscousManager : public IPositionListener,
-                        public IWebServerRequestListener,
-                        public IHaliEncodersListener {
+class CouscousManager : public IPositionListener, public IWebServerRequestListener {
    public:
     explicit CouscousManager(
         const std::shared_ptr<IHali> &hali,
@@ -21,8 +18,6 @@ class CouscousManager : public IPositionListener,
 
     void start();
 
-    void onEncodersChanged(const int &encoders_motor1, const int &encoders_motor2) override;
-
     void onPositionChanged(const PositionOrientation &position_orientation) override;
 
     void onWebServerPositionRequest(const PositionOrientation &position_orientation) override;
@@ -30,10 +25,12 @@ class CouscousManager : public IPositionListener,
     void onWebServerTargetPositionRequest(const double &pos_x, const double &pos_y) override;
 
    private:
+    const int INTERVAL_REFRESH_MS = 1000;
     std::shared_ptr<Posi> posi_;
     std::shared_ptr<IHali> hali_;
     std::shared_ptr<WebServer> web_server_;
     std::thread web_server_thread_;
+    std::thread hali_thread_;
 };
 
 #endif  // COUSCOUS_MANAGER_H

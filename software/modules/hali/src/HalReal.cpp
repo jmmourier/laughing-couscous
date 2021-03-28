@@ -3,24 +3,14 @@
 #include <iostream>
 #include <string>
 
+#include "logger/LoggerFactory.h"
+
 HalReal::HalReal()
-    : serial_("/dev/ttyACM0", 9600),
+    : logger_(LoggerFactory::registerOrGetLogger("Hali", spdlog::level::level_enum::info)),
+      serial_("/dev/ttyACM0", 9600),
       message_parser_(),
       command_interpreter_(),
       grabber_state_(grabberUndefined) {}
-
-void HalReal::registerEncodersListener(
-    const std::weak_ptr<IHaliEncodersListener> &encoders_listener) {
-    encoders_listeners_.push_back(encoders_listener);
-}
-
-void HalReal::publishToListeners() const {
-    for (auto const &encoders_listener_ptr : encoders_listeners_) {
-        if (auto encoders_listener = encoders_listener_ptr.lock()) {
-            encoders_listener->onEncodersChanged(md25_encoder_1_, md25_encoder_2_);
-        }
-    }
-}
 
 constexpr unsigned int hash(const char *str, int h = 0) {
     return !str[h] ? 5381 : (hash(str, h + 1) * 33) ^ str[h];
@@ -83,6 +73,7 @@ int HalReal::getEncoder(MotorIdEnum id_motor) {
 }
 
 void HalReal::setMd25Speed(int speed_1, int speed_2) {
+    SPDLOG_LOGGER_INFO(logger_, "setMd25Speed speed1: {} speed2: {}", speed_1, speed_2);
     serial_.writeString(
         message_parser_.createMessage(CommandData("md25speed1", std::to_string(speed_1))));
     serial_.writeString(

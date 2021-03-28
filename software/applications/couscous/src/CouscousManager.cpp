@@ -1,6 +1,7 @@
 
 #include "CouscousManager.h"
 
+#include "IHali.h"
 #include "Posi.h"
 
 CouscousManager::CouscousManager(
@@ -29,12 +30,17 @@ void CouscousManager::onWebServerTargetPositionRequest(const double &pos_x, cons
     // Will be sent to navi
 }
 
-void CouscousManager::onEncodersChanged(const int &encoders_motor1, const int &encoders_motor2) {
-    // Will be sent to navi
-    posi_->updatePosition(encoders_motor1, encoders_motor2);
-}
-
 void CouscousManager::start() {
-    hali_->updater();
+    hali_thread_ = std::thread([&] { hali_->updater(); });
+
+    while (true) {
+        auto encoders_motor1 = hali_->getEncoder(MotorIdEnum::motor1);
+        auto encoders_motor2 = hali_->getEncoder(MotorIdEnum::motor2);
+
+        posi_->updatePosition(encoders_motor1, encoders_motor2);
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(INTERVAL_REFRESH_MS));
+    }
     web_server_thread_.join();
+    hali_thread_.join();
 }
