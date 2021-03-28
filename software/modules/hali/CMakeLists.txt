@@ -30,12 +30,14 @@ target_include_directories(
     ${PROJECT_NAME}_lib
     PUBLIC 
     include
-    ${Boost_INCLUDE_DIRS}
     PRIVATE
     src
 )
 
-target_link_libraries(${PROJECT_NAME}_lib ${Boost_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_lib 
+    PUBLIC logger_lib
+           spdlog::spdlog
+)
 
 
 # Tests Binaries

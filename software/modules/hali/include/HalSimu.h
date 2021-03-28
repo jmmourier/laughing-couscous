@@ -1,20 +1,16 @@
 #ifndef HAL_SIMU_H
 #define HAL_SIMU_H
 
+#include <spdlog/logger.h>
+
 #include <chrono>
 #include <vector>
 
 #include "IHali.h"
-#include "IHaliEncodersListener.h"
 
 class HalSimu : public IHali {
    public:
     HalSimu();
-
-    void registerEncodersListener(
-        const std::weak_ptr<IHaliEncodersListener> &encoders_listener) override;
-
-    void publishToListeners() const override;
 
     void updater() override;
 
@@ -29,6 +25,7 @@ class HalSimu : public IHali {
 
    private:
     const int INTERVAL_ENCODERS_REFRESH_MS = 50;
+    std::shared_ptr<spdlog::logger> logger_;
     void updateEncoder();
 
     GrabberState grabber_state_;
@@ -43,8 +40,6 @@ class HalSimu : public IHali {
     int encoder_2_ = 0;
 
     const float ratio_speed_time_ = 0.001;
-
-    std::vector<std::weak_ptr<IHaliEncodersListener>> encoders_listeners_;
 };
 
 #endif  // HAL_SIMU_H
