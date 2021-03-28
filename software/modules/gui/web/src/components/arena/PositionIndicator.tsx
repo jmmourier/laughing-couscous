@@ -48,7 +48,9 @@ const PositionIndicator: FunctionComponent<IPositionIndicators> = ({
           stroke={STROKE_COLOR}
         />
         <text fontSize={LABEL_FONT_SIZE} x={0} y={-LABEL_PADDING}>
-          {Math.round(mouseAbsolutePositionYM * ROUND_RATIO) / ROUND_RATIO} m
+          {Math.round((ARENA_HEIGHT - mouseAbsolutePositionYM) * ROUND_RATIO) /
+            ROUND_RATIO}
+          m
         </text>
       </g>
     </>

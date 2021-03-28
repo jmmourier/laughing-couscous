@@ -5,6 +5,7 @@ import {
   WHEEL_RADIUS_M,
   WHEEL_WIDTH,
 } from "../StateProvider";
+import { ARENA_HEIGHT } from "./Arena";
 
 const Robot: FunctionComponent = () => {
   const { state } = useContext(context);
@@ -12,9 +13,9 @@ const Robot: FunctionComponent = () => {
   return (
     <g
       transform={`translate(${state.robotPosition.x_m},${
-        state.robotPosition.y_m
+        ARENA_HEIGHT - state.robotPosition.y_m
       })
-        rotate(${(state.robotPosition.orientation_rad * 180) / Math.PI})`}
+      rotate(${(-state.robotPosition.orientation_rad * 180) / Math.PI})`}
     >
       <rect
         x={-WHEEL_RADIUS_M}
