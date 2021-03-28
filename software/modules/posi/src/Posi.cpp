@@ -8,12 +8,12 @@
 #include "logger/LoggerFactory.h"
 
 const int TICKS_PER_ROTATION = 360;
-const float SPACE_BETWEEN_WHEELS = 0.2;
-const float WHEEL_RADIUS_M = 0.1;
+const float SPACE_BETWEEN_WHEELS = 0.25;
+const float WHEEL_RADIUS_M = 0.05;
 const float WHEEL_PERIMETER = M_PI * 2 * WHEEL_RADIUS_M;
 
 Posi::Posi(const PositionOrientation &start_position_orientation)
-    : logger_(LoggerFactory::registerOrGetLogger("Posi", spdlog::level::level_enum::debug)),
+    : logger_(LoggerFactory::registerOrGetLogger("Posi", spdlog::level::level_enum::info)),
       previous_encoder1_(0),
       previous_encoder2_(0),
       position_orientation_(start_position_orientation) {}
@@ -55,7 +55,7 @@ void Posi::updatePosition(int encoder1, int encoder2) {
     float delta_position_y = std::sin(position_orientation_.orientation_rad_) * average_speed;
 
     // Delta orientation
-    float delta_orientation = (speed_left_wheel_ms - speed_right_wheel_ms) / SPACE_BETWEEN_WHEELS;
+    float delta_orientation = -(speed_left_wheel_ms - speed_right_wheel_ms) / SPACE_BETWEEN_WHEELS;
 
     // Set new absolute positions and orientation
     position_orientation_.x_m_ = position_orientation_.x_m_ + delta_position_x;
@@ -69,7 +69,7 @@ void Posi::updatePosition(int encoder1, int encoder2) {
 
     SPDLOG_LOGGER_INFO(
         logger_,
-        "Update position x: {} - y: {} - orientation: {}",
+        "Update position x: {} y: {} orientation: {}",
         position_orientation_.x_m_,
         position_orientation_.y_m_,
         position_orientation_.orientation_rad_);
