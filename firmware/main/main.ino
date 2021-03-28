@@ -93,9 +93,9 @@ void HandleCommands(CommandData command_data){
         Serial.println(";");
     }    
     else if(command_data.command_ == grabberPositionRequested){
-        if(command_data.argument_ == grabberOpen){
+        if(command_data.argument_ == grabberOpened){
             grabber_.open();
-        }else if(command_data.argument_ == grabberClose){
+        }else if(command_data.argument_ == grabberClosed){
             grabber_.close();
         }
     }
