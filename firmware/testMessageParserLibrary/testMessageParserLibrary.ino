@@ -1,6 +1,6 @@
 #include "MessageParser/MessageParser.cpp"
 
-MessageParser message_parser;
+MessageParser message_parser_;
 const int buffer_size = 80;
 char buffer_[buffer_size];
 int buffer_fullfillness = 0;
@@ -22,8 +22,8 @@ void loop() {
             memset(buffer_, 0, sizeof(buffer_));
             buffer_fullfillness = 0;
         }
-        if(input_char == message_parser.getEndChar()){
-            CommandData command_data = message_parser.parse(buffer_);
+        if(input_char == message_parser_.getEndChar()){
+            CommandData command_data = message_parser_.parse(buffer_);
             memset(buffer_, 0, sizeof(buffer_));
             buffer_fullfillness = 0;
 
