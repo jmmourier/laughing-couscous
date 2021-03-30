@@ -10,7 +10,7 @@ void Moti::setBaseSpeed(BaseSpeed base_speed) {
 }
 
 MotorSpeed Moti::getMotorSpeed() {
-    MotorSpeed motor_speed(127, 127);
+    MotorSpeed motor_speed(128, 128);
 
     float rotation_speed_left = 0.0;
     float rotation_speed_right = 0.0;
@@ -34,8 +34,8 @@ MotorSpeed Moti::getMotorSpeed() {
     rotation_speed_right = std::max(rotation_speed_right, -max_wheel_speed_radps_);
 
     // convert motor speed to command
-    motor_speed.speed_motor_1_ = 127 + 127 * rotation_speed_left / max_wheel_speed_radps_;
-    motor_speed.speed_motor_2_ = 127 + 127 * rotation_speed_right / max_wheel_speed_radps_;
+    motor_speed.speed_motor_1_ = 128 + 127 * rotation_speed_left / max_wheel_speed_radps_;
+    motor_speed.speed_motor_2_ = 128 + 127 * rotation_speed_right / max_wheel_speed_radps_;
 
     return motor_speed;
 }
