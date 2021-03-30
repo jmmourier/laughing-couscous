@@ -11,7 +11,6 @@
 #include "WebServer.h"
 class CouscousManager : public IPositionListener,
                         public IWebServerRequestListener,
-                        public IHaliEncodersListener,
                         public INaviRequestListener {
    public:
     explicit CouscousManager(
@@ -27,8 +26,8 @@ class CouscousManager : public IPositionListener,
     void onWebServerPositionRequest(const PositionOrientation &position_orientation) override;
     void onWebServerSpeedRequest(const int &motor1, const int &motor2) override;
     void onWebServerTargetPositionRequest(const double &pos_x, const double &pos_y) override;
-    void onNaviSpeedRequest(const int &speed_motor1, const int &speed_motor2) override;
     void onNaviTargetReachedRequest(void) override;
+    void onNaviSpeedRequest(const int &speed_motor1, const int &speed_motor2) override;
 
    private:
     const int INTERVAL_REFRESH_MS = 50;

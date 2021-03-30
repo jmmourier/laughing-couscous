@@ -9,7 +9,7 @@
 #include "INaviRequestListener.h"
 #include "NaviUtils.h"
 
-#define DELTA_ANGLE_TO_STOP_ROTATION_MOVEMENT 0.01
+#define DELTA_ANGLE_TO_STOP_ROTATION_MOVEMENT 0.03
 #define DELTA_DIST_TO_STOP_FW_MOVEMENT 0.01
 
 class NaviStateMachine {
@@ -36,7 +36,7 @@ class NaviStateMachine {
     NaviStateMachineEnum startAlignToTarget(pos_info robot_pos, pos_info target_pos);
     NaviStateMachineEnum alignToTarget(pos_info robot_pos, pos_info target_pos);
     NaviStateMachineEnum waitForMovement();
-    NaviStateMachineEnum startFw();
+    NaviStateMachineEnum startFw(pos_info robot_pos, pos_info target_pos);
     NaviStateMachineEnum drivingToTarget(pos_info robot_pos, pos_info target_pos);
     NaviStateMachineEnum waitForRotation();
     NaviStateMachineEnum startRotationToTargetOrientation(pos_info robot_pos, pos_info target_poss);
@@ -46,6 +46,8 @@ class NaviStateMachine {
     std::vector<std::weak_ptr<INaviRequestListener>> navi_listeners_;
 
    private:
+    double previous_distance_to_target_;
+    double previous_angle_to_target_;
 };
 
 #endif  // COUSCOUS_NAVISTATEMACHINE_H
