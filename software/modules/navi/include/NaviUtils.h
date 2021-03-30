@@ -11,6 +11,22 @@ struct pos_info {
 };
 
 typedef rotation_direction rotdir;
+
+double getAngleBetweenTwoPoints(
+    const double &robot_pos_x,
+    const double &robot_pos_y,
+    const double &target_pos_x,
+    const double &target_pos_y);
+
+double getAngleBetweenTwoAngles(const double &robot_orientation, const double &angle_to_target);
+
+double getShortestAngle(const double &angle);
+rotdir getRotationDir(const double &angle);
+rotdir getRotationDir(const pos_info &robot_pos, const pos_info &target_pos);
+double shortcut_getAngleToTarget(const pos_info &robot_pos, const pos_info &target_pos);
+
+/////old stuffs /////
+
 double getReferenceAngleToTarget(const pos_info &robot_pos, const pos_info &target_pos);
 
 double getReferenceAngleToTarget(
@@ -26,7 +42,7 @@ double getAngleToTarget(
     const double &target_pos_x,
     const double &target_pos_y);
 
-double getAngleToTargetFrom(const pos_info &robot_pos, const pos_info &target_pos);
+double getAngleToTarget(const pos_info &robot_pos, const pos_info &target_pos);
 
 double getAngleDifference(const double &robot_orientation, const double &target_orientation);
 

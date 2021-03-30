@@ -6,6 +6,78 @@
 
 #define ANGLE_ERROR_TOLERANCE 0.001
 
+TEST(NaviUtilsTest, test_getAngleBetweenTwoPoints) {
+    double robot_pos_x;
+    double robot_pos_y;
+    double target_pos_x;
+    double target_pos_y;
+
+    // quarter 1: x pos and y pos
+    robot_pos_x = 1.0;
+    robot_pos_y = 1.0;
+    target_pos_x = 1.2;
+    target_pos_y = 1.2;
+    double angle = getAngleBetweenTwoPoints(robot_pos_x, robot_pos_y, target_pos_x, target_pos_y);
+    EXPECT_NEAR(angle, M_PI / 4, ANGLE_ERROR_TOLERANCE);
+
+    // quarter 2: x neg and y pos
+    target_pos_x = 0.8;
+    target_pos_y = 1.2;
+    angle = getAngleBetweenTwoPoints(robot_pos_x, robot_pos_y, target_pos_x, target_pos_y);
+    EXPECT_NEAR(angle, (3.f / 4.f) * M_PI, ANGLE_ERROR_TOLERANCE);
+
+    // quarter 3: x neg and y neg
+    target_pos_x = 0.8;
+    target_pos_y = 0.8;
+    angle = getAngleBetweenTwoPoints(robot_pos_x, robot_pos_y, target_pos_x, target_pos_y);
+    EXPECT_NEAR(angle, (-3.f / 4.f) * M_PI, ANGLE_ERROR_TOLERANCE);
+
+    // quarter 4: x pos and y neg
+    target_pos_x = 1.2;
+    target_pos_y = 0.8;
+    angle = getAngleBetweenTwoPoints(robot_pos_x, robot_pos_y, target_pos_x, target_pos_y);
+    EXPECT_NEAR(angle, (M_PI / -4.f), ANGLE_ERROR_TOLERANCE);
+
+    // test zero
+    target_pos_x = 1.0;
+    target_pos_y = 1.0;
+    angle = getAngleBetweenTwoPoints(robot_pos_x, robot_pos_y, target_pos_x, target_pos_y);
+    EXPECT_NEAR(angle, 0, ANGLE_ERROR_TOLERANCE);
+}
+
+TEST(NaviUtilsTest, test_getShortestAngle) {
+    // angle smaller than PI
+    double angle = 0;
+    EXPECT_NEAR(angle, getShortestAngle(angle), ANGLE_ERROR_TOLERANCE);
+    angle = M_PI / 2.f;
+    EXPECT_NEAR(angle, getShortestAngle(angle), ANGLE_ERROR_TOLERANCE);
+    angle = -M_PI / 2.f;
+    EXPECT_NEAR(angle, getShortestAngle(angle), ANGLE_ERROR_TOLERANCE);
+    angle = -M_PI;
+    EXPECT_NEAR(M_PI, getShortestAngle(angle), ANGLE_ERROR_TOLERANCE);
+    // agnle exceeding PI
+    angle = M_PI + 0.1;
+    EXPECT_NEAR(-M_PI + 0.1, getShortestAngle(angle), ANGLE_ERROR_TOLERANCE);
+    angle = -M_PI - 0.1;
+    EXPECT_NEAR(M_PI - 0.1, getShortestAngle(angle), ANGLE_ERROR_TOLERANCE);
+}
+
+TEST(NaviUtilsTest, test_getRotationDir) {
+    double angle = M_PI / 2;
+    EXPECT_EQ(rotdir::AntiClockwise,getRotationDir(angle));
+    angle = -M_PI / 2;
+    EXPECT_EQ(rotdir::Clockwise,getRotationDir(angle));
+
+    pos_info robot_pos, target_pos;
+    robot_pos.pos_x = 1.0;
+    robot_pos.pos_y = 1.0;
+    target_pos.pos_x = 1.2;
+    target_pos.pos_y = 1.2;
+    EXPECT_EQ(rotdir::AntiClockwise,getRotationDir(robot_pos, target_pos));
+}
+
+
+/*
 TEST(NaviUtilsTest, compute_angle_with_reference) {
     double robot_pos_x;
     double robot_pos_y;
@@ -166,3 +238,4 @@ TEST(NaviUtilsTest, distance_computation) {
     EXPECT_FLOAT_EQ(getDistanceToTarget(p1, p2), 141.421356237);
     EXPECT_FLOAT_EQ(getDistanceToTarget(p1, p3), 100.0);
 }
+*/

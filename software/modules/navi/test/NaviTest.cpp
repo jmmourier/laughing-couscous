@@ -8,6 +8,7 @@
 
 void dummy_init(float vx, float vy, float omega_rdps) {}
 
+/*
 TEST(NaviTest, standard_path) {
     pos_info target_position, rob_start_position, rob_point_aligned_to_target, rob_point2,
         rob_end_position;
@@ -27,9 +28,7 @@ TEST(NaviTest, standard_path) {
     target_position.pos_y = 1.0;
     target_position.orientation = 0.0;
 
-    /*
-     * test movement using all states
-     */
+
     Navi nav;
 
     // state0: idle
@@ -116,3 +115,4 @@ TEST(NaviTest, standard_path) {
         target_position.orientation);
     EXPECT_EQ(NaviStateMachine::NaviStateMachineEnum::ST0_IDLE, nav.getActualState());
 }
+*/
