@@ -18,6 +18,10 @@ CouscousManager::CouscousManager(
 
 void CouscousManager::onPositionChanged(const PositionOrientation &position_orientation) {
     web_server_->setPosition(position_orientation);
+    navi_->setCurrentPosition(
+        position_orientation.x_m_,
+        position_orientation.y_m_,
+        position_orientation.orientation_rad_);
 }
 
 void CouscousManager::onWebServerPositionRequest(const PositionOrientation &position_orientation) {
@@ -33,7 +37,7 @@ void CouscousManager::onWebServerTargetPositionRequest(const double &pos_x, cons
     // Will be sent to navi
     navi_->setTargetPosition(pos_x, pos_y, 0);
 }
-
+void CouscousManager::onNaviTargetReachedRequest(void) {}
 void CouscousManager::start() {
     hali_thread_ = std::thread([&] { hali_->updater(); });
 

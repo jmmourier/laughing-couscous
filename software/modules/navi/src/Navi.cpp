@@ -46,7 +46,7 @@ void Navi::stateMachine(
             current_navi_state_ = navi_state_machine_.waitForMovement();
             break;
         case NaviStateMachine::NaviStateMachineEnum::ST4_START_FW_MOVEMENT:
-            current_navi_state_ = navi_state_machine_.startFw();
+            current_navi_state_ = navi_state_machine_.startFw(robot_pos, target_pos);
             break;
         case NaviStateMachine::NaviStateMachineEnum::ST5_DRIVING_TO_TARGET:
             current_navi_state_ = navi_state_machine_.drivingToTarget(robot_pos, target_pos);
