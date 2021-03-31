@@ -5,6 +5,7 @@
 #include "Md25/Md25.cpp"
 #include "MessageParser/MessageParser.cpp"
 #include "Switches/Switches.cpp"
+#include "Srf02/Srf02.cpp"
 
 int pin_grabber_ = 4;
 Grabber grabber_(pin_grabber_);
@@ -47,6 +48,12 @@ int pin_start_switch_ = 14;
 unsigned long start_switch_last_update_ = 0;
 unsigned long start_switch_timer_ = 100;
 
+Srf02 srf02_;
+unsigned long srf02_last_update_ = 0;
+unsigned long srf02_timer_ = 30;
+unsigned long srf02_send_value_last_update_ = 0;
+unsigned long srf02_send_value_timer_ = 100;
+
 
 void setup() {
     Serial1.begin(38400);
@@ -66,6 +73,8 @@ void setup() {
     pinMode(pin_start_switch_,INPUT);
 
     leds_.setStatus(waiting);
+
+    srf02_.init();
 }
 
 void loop() {
@@ -85,6 +94,8 @@ void loop() {
     checkSwitchesAndSendStatus();
 
     updateLeds();
+
+    srf02Update();
 
 }
 
@@ -226,5 +237,19 @@ void updateLeds(){
     if (millis() - leds_last_update_ > leds_timer_) {
         leds_.updateLeds();
         leds_last_update_ = millis();
+    }
+}
+
+void srf02Update(){
+    if (millis() - srf02_last_update_ > srf02_timer_) {
+        srf02_.updateSensor();
+        srf02_last_update_ = millis();
+    }
+    if (millis() - srf02_send_value_last_update_ > srf02_send_value_timer_) {
+        
+        Serial.print("distance:");
+        Serial.print(srf02_.getDistance());
+        Serial.println(";");
+        srf02_send_value_last_update_ = millis();
     }
 }
