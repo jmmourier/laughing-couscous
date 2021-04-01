@@ -14,11 +14,7 @@ HalSimu::HalSimu()
     timestamp_since_last_encoder_2_update_ = std::chrono::system_clock::now();
 }
 
-void HalSimu::updater() {
-    // while (true) {
-    //     updateEncoder();
-    // }
-}
+void HalSimu::updater() {}
 
 int HalSimu::getMd25Revision() {
     return 1;
@@ -41,11 +37,11 @@ void HalSimu::setMd25Speed(int speed_1, int speed_2) {
 void HalSimu::updateEncoder() {
     auto time_update = std::chrono::system_clock::now();
 
-    encoder_1_ = encoder_1_ + (saved_speed_1_ - 127) * ratio_speed_time_ *
+    encoder_1_ = encoder_1_ + (saved_speed_1_ - 128) * ratio_speed_time_ *
                                   std::chrono::duration_cast<std::chrono::milliseconds>(
                                       time_update - timestamp_since_last_encoder_1_update_)
                                       .count();
-    encoder_2_ = encoder_2_ + (saved_speed_2_ - 127) * ratio_speed_time_ *
+    encoder_2_ = encoder_2_ + (saved_speed_2_ - 128) * ratio_speed_time_ *
                                   std::chrono::duration_cast<std::chrono::milliseconds>(
                                       time_update - timestamp_since_last_encoder_2_update_)
                                       .count();

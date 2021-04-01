@@ -25,7 +25,7 @@ class CouscousManager : public IPositionListener, public IWebServerRequestListen
     void onWebServerTargetPositionRequest(const double &pos_x, const double &pos_y) override;
 
    private:
-    const int INTERVAL_REFRESH_MS = 1000;
+    const int INTERVAL_REFRESH_MS = 50;
     std::shared_ptr<Posi> posi_;
     std::shared_ptr<IHali> hali_;
     std::shared_ptr<WebServer> web_server_;
