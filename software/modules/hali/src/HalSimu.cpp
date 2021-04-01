@@ -14,11 +14,7 @@ HalSimu::HalSimu()
     timestamp_since_last_encoder_2_update_ = std::chrono::system_clock::now();
 }
 
-void HalSimu::updater() {
-    // while (true) {
-    //     updateEncoder();
-    // }
-}
+void HalSimu::updater() {}
 
 int HalSimu::getMd25Revision() {
     return 1;
