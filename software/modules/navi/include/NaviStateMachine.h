@@ -9,7 +9,7 @@
 #include "INaviRequestListener.h"
 #include "NaviUtils.h"
 
-#define DELTA_ANGLE_TO_STOP_ROTATION_MOVEMENT 0.01
+#define DELTA_ANGLE_TO_STOP_ROTATION_MOVEMENT 0.03
 #define DELTA_DIST_TO_STOP_FW_MOVEMENT 0.01
 
 class NaviStateMachine {

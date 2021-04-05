@@ -1,8 +1,14 @@
 #include "Navi.h"
 
+#include <spdlog/logger.h>
+
 #include <iostream>
 
 #include "NaviUtils.h"
+#include "logger/LoggerFactory.h"
+
+Navi::Navi()
+    : logger_(LoggerFactory::registerOrGetLogger("Navi", spdlog::level::level_enum::info)) {}
 
 void Navi::registerNaviRequestListener(const std::weak_ptr<INaviRequestListener> &navi_listener) {
     navi_state_machine_.registerNaviSMRequestListener(navi_listener);

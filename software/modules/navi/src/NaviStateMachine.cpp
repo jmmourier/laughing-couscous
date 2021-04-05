@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "logger/LoggerFactory.h"
+
 //#define WHEEL_SPEED 1.0
 //#define ROTATION_SPEED 10.0
 

@@ -37,7 +37,15 @@ void CouscousManager::onWebServerTargetPositionRequest(const double &pos_x, cons
     // Will be sent to navi
     navi_->setTargetPosition(pos_x, pos_y, 0);
 }
+
 void CouscousManager::onNaviTargetReachedRequest(void) {}
+
+void CouscousManager::onNaviSpeedRequest(const int &speed_motor1, const int &speed_motor2) {
+    // To be done
+    std::cout << "set speed" << speed_motor1 << " " << speed_motor2 << std::endl;
+    hali_->setMd25Speed(speed_motor1, speed_motor2);
+}
+
 void CouscousManager::start() {
     hali_thread_ = std::thread([&] { hali_->updater(); });
 
@@ -46,7 +54,6 @@ void CouscousManager::start() {
         auto encoders_motor2 = hali_->getEncoder(MotorIdEnum::motor2);
 
         posi_->updatePosition(encoders_motor1, encoders_motor2);
-
         std::this_thread::sleep_for(std::chrono::milliseconds(INTERVAL_REFRESH_MS));
     }
     web_server_thread_.join();

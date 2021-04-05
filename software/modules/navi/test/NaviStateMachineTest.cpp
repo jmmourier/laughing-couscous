@@ -2,8 +2,9 @@
 #include <gtest/gtest.h>
 
 #include <cmath>
-void dummy_lambda(float vx, float vy, float omega_rdps) {}
+//void dummy_lambda(float vx, float vy, float omega_rdps) {}
 NaviStateMachine navi_state_machine_;
+/*
 TEST(NaviStateMachineTest, start_align_to_target_1) {
     pos_info robot_pos, target_pos;
     robot_pos.pos_x = 0.0;
@@ -84,4 +85,4 @@ TEST(NaviStateMachineTest, rotation_to_target_orientation_8) {
     EXPECT_EQ(
         NaviStateMachine::NaviStateMachineEnum::ST9_DONE,
         navi_state_machine_.rotationToTargetOrientation(robot_pos, target_pos));
-}
+}*/
