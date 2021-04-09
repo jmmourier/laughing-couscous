@@ -33,7 +33,7 @@ class Posi {
 
     /**
      * @brief Update the absolute position and orientation based on new encoders
-     * value received from hali moodule
+     * value received from hali module
      *
      * @param encoder1 encoders of left wheel since last update
      * @param encoder2 encoders of right wheel since last update
@@ -46,6 +46,15 @@ class Posi {
     long previous_encoder2_;
     PositionOrientation position_orientation_;
     std::vector<std::weak_ptr<IPositionListener>> position_listeners_;
+
+    /**
+     * @brief Return an orientation rad value between >= 0 and < 2 * M_PI from from a value out of
+     * limit
+     *
+     * @param orientation_rad
+     * @return float
+     */
+    float formatOrientationRad(float orientation_rad);
 };
 
 #endif  // POSI_H

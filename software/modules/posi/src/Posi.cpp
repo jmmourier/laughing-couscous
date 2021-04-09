@@ -5,12 +5,8 @@
 #include <cmath>
 
 #include "IPositionListener.h"
+#include "constant.h"
 #include "logger/LoggerFactory.h"
-
-const int TICKS_PER_ROTATION = 360;
-const float SPACE_BETWEEN_WHEELS = 0.25;
-const float WHEEL_RADIUS_M = 0.05;
-const float WHEEL_PERIMETER = M_PI * 2 * WHEEL_RADIUS_M;
 
 Posi::Posi(const PositionOrientation &start_position_orientation)
     : logger_(LoggerFactory::registerOrGetLogger("Posi", spdlog::level::level_enum::info)),
@@ -44,8 +40,10 @@ void Posi::updatePosition(int encoder1, int encoder2) {
     auto delta_encoder2 = encoder2 - previous_encoder2_;
 
     // Linear speed
-    float speed_left_wheel_ms = (WHEEL_PERIMETER * delta_encoder1 / TICKS_PER_ROTATION);
-    float speed_right_wheel_ms = (WHEEL_PERIMETER * delta_encoder2 / TICKS_PER_ROTATION);
+    float speed_left_wheel_ms =
+        (constant::wheel_perimeter_m * delta_encoder1 / constant::ticks_per_rotation);
+    float speed_right_wheel_ms =
+        (constant::wheel_perimeter_m * delta_encoder2 / constant::ticks_per_rotation);
 
     // Average speed
     float average_speed = (speed_left_wheel_ms + speed_right_wheel_ms) / 2;
@@ -55,13 +53,14 @@ void Posi::updatePosition(int encoder1, int encoder2) {
     float delta_position_y = std::sin(position_orientation_.orientation_rad_) * average_speed;
 
     // Delta orientation
-    float delta_orientation = -(speed_left_wheel_ms - speed_right_wheel_ms) / SPACE_BETWEEN_WHEELS;
+    float delta_orientation =
+        -(speed_left_wheel_ms - speed_right_wheel_ms) / constant::wheel_distance_m_;
 
     // Set new absolute positions and orientation
     position_orientation_.x_m_ = position_orientation_.x_m_ + delta_position_x;
     position_orientation_.y_m_ = position_orientation_.y_m_ + delta_position_y;
     position_orientation_.orientation_rad_ =
-        position_orientation_.orientation_rad_ + delta_orientation;
+        formatOrientationRad(position_orientation_.orientation_rad_ + delta_orientation);
 
     // Update previous encoders with current ones
     previous_encoder1_ = encoder1;
@@ -76,4 +75,14 @@ void Posi::updatePosition(int encoder1, int encoder2) {
 
     // Publish new position to position listeners
     publishToListeners();
+}
+
+float Posi::formatOrientationRad(float orientation_rad) {
+    float formatted_orientation_rad = std::fmod(orientation_rad, constant::whole_rotation_rad);
+
+    if (formatted_orientation_rad < 0) {
+        formatted_orientation_rad += constant::whole_rotation_rad;
+    }
+
+    return formatted_orientation_rad;
 }
