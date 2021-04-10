@@ -49,6 +49,30 @@ void HalReal::updater() {
                 case hash("grabberState"):
                     grabber_state_ = (GrabberState)argument_received;
                     break;
+                case hash("robotStarted"):
+                    if(argument_received == 0) {
+                        is_robot_started_ = false;
+                    } else {
+                        is_robot_started_ = true;
+                    }
+                    break;
+                case hash("switch1"):
+                    if(argument_received == 0) {
+                        switch_1_ = false;
+                    } else {
+                        switch_1_ = true;
+                    }
+                    break;
+                case hash("switch2"):
+                    if(argument_received == 0) {
+                        switch_2_ = false;
+                    } else {
+                        switch_2_ = true;
+                    }
+                    break;
+                case hash("distance"):
+                    distance_obstacle_cm_ = argument_received;
+                    break;
                 default:
                     break;
             }
@@ -83,4 +107,28 @@ void HalReal::setMd25Speed(int speed_1, int speed_2) {
 void HalReal::setGrabber(GrabberState grabber_state) {
     serial_.writeString(message_parser_.createMessage(
         CommandData("grabber", std::to_string(static_cast<int>(grabber_state)))));
+}
+
+GrabberState HalReal::getGrabber(){
+    return grabber_state_;    
+}
+
+
+bool HalReal::getSwitch(SwitchId switch_id){
+    switch(switch_id){
+        case switch1:
+            return switch_1_;
+        case switch2:
+            return switch_2_;
+        default: 
+            return false;
+    }
+}
+
+bool HalReal::isRobotStarted(){
+    return is_robot_started_;
+}
+
+int HalReal::getDistanceObstacleCm(){
+    return distance_obstacle_cm_;
 }
