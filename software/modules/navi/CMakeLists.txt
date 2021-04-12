@@ -9,7 +9,6 @@ file(GLOB_RECURSE HEADERS include/**.h src/**.h test/**.h)
 
 list(APPEND SOURCES
         src/Navi.cpp
-        src/NaviStateMachine.cpp
         src/NaviUtils.cpp
         )
 
@@ -33,8 +32,8 @@ target_include_directories(
 )
 
 target_link_libraries(${PROJECT_NAME}_lib 
-    PUBLIC logger_lib
-           spdlog::spdlog
+        PUBLIC logger_lib
+        spdlog::spdlog
 )
 
 
