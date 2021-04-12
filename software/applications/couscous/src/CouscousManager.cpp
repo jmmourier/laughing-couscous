@@ -40,10 +40,23 @@ void CouscousManager::onWebServerTargetPositionRequest(const double &pos_x, cons
 
 void CouscousManager::onNaviTargetReachedRequest(void) {}
 
-void CouscousManager::onNaviSpeedRequest(const int &speed_motor1, const int &speed_motor2) {
+// void CouscousManager::onNaviSpeedRequest(const int &speed_motor1, const int &speed_motor2) {
+void CouscousManager::onNaviSpeedRequest(
+    const float &v_x_mps,
+    const float &v_y_mps,
+    const float &omega_radps) {
+    // std::cout << "couscous manager: navi set speed" << v_x_mps << std::endl;
     // To be done
-    std::cout << "set speed" << speed_motor1 << " " << speed_motor2 << std::endl;
-    hali_->setMd25Speed(speed_motor1, speed_motor2);
+    /*   std::cout << "set speed" << v_x_mps << " rotation " << omega_radps << std::endl;
+       BaseSpeed bs(v_x_mps, v_y_mps, omega_radps);
+       moti_.setBaseSpeed(bs);
+       MotorSpeed ms = moti_.getMotorSpeed();
+       hali_->setMd25Speed(ms.speed_motor_1_, ms.speed_motor_2_);
+      */
+
+    MotorSpeed motor_speed =
+        moti_.getMotorSpeedFromBaseSpeed(BaseSpeed(v_x_mps, v_y_mps, omega_radps));
+    hali_->setMd25Speed(motor_speed.speed_motor_1_, motor_speed.speed_motor_2_);
 }
 
 void CouscousManager::start() {

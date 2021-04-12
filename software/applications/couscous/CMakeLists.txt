@@ -30,4 +30,5 @@ target_link_libraries(${PROJECT_NAME}_exe
                posi_lib
                webserver_lib     
                navi_lib
+               moti_lib
 )
