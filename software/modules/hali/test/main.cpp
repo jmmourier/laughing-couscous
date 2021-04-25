@@ -169,9 +169,14 @@ int main(int argc, char *argv[]) {
         std::chrono::milliseconds timespan(500);  // or whatever
         bool further = true;
         while (true) {
-            std::cout << "md25 voltage  : " << hali->getBatteryVoltage() << std::endl;
-            std::cout << "md25 encoder1 : " << hali->getEncoder(MotorIdEnum::motor1) << std::endl;
-            std::cout << "md25 encoder2 : " << hali->getEncoder(MotorIdEnum::motor2) << std::endl;
+            std::cout << "md25 voltage  :  "<< hali->getBatteryVoltage() << std::endl;
+            std::cout << "md25 encoder1 :  "<< hali->getEncoder(MotorIdEnum::motor1) << std::endl;
+            std::cout << "md25 encoder2 :  "<< hali->getEncoder(MotorIdEnum::motor2) << std::endl;
+            std::cout << "grabber :        "<< hali->getGrabber()<< std::endl;
+            std::cout << "robot started :  "<< hali->isRobotStarted() << std::endl;
+            std::cout << "switch 1 :       "<< hali->getSwitch(switch1) << std::endl;
+            std::cout << "switch 2 :       "<< hali->getSwitch(switch2) << std::endl;
+            std::cout << "distance  :      "<< hali->getDistanceObstacleCm() << std::endl;
 
             if (further) {
                 if (hali->getEncoder(motor1) < 1000) {

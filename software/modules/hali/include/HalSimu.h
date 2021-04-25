@@ -21,7 +21,17 @@ class HalSimu : public IHali {
     void setMd25Speed(int speed_1, int speed_2) override;
 
     void setGrabber(GrabberState grabber_state) override;
-    GrabberState getGrabber();
+    GrabberState getGrabber() override;
+
+    bool getSwitch(SwitchId switch_id) override;
+    // this method is to artificially set the values, only in simulation
+    void setSwitch(SwitchId switch_id, bool value);
+
+    bool isRobotStarted() override;
+
+    virtual int getDistanceObstacleCm() override;
+    // this method is to artificially set the values, only in simulation
+    void SetDistanceObstacleCm(int distance);
 
    private:
     const int INTERVAL_ENCODERS_REFRESH_MS = 50;
@@ -42,6 +52,14 @@ class HalSimu : public IHali {
     // 1/127 (range of speed) * 170 (tr/min max) * 360 (ticks per revolution) *
     // 1/60 (for seconds) * 1/1000 (for milliseconds)  
     const float ratio_speed_time_ = 0.00803;
+
+    bool switch_1_ = false;
+    bool switch_2_ = false;
+
+    std::chrono::_V2::system_clock::time_point timestamp_since_start_;
+    bool is_robot_started_ = false;
+
+    int distance_obstacle_cm_ = 0;
 };
 
 #endif  // HAL_SIMU_H
