@@ -34,14 +34,17 @@ void Missi::loadMissionFile() {
     for (nlohmann::json::iterator it = json_content.begin(); it != json_content.end(); ++it) {
         nlohmann::json action_as_json(*it);
         Action action_to_add;
-        action_to_add.type = stringToActionType(action_as_json["actionType"]);
-        action_to_add.arguments = action_as_json["arguments"];
         try {
-            std::string timeout_as_string = action_as_json["timeout"];
-            action_to_add.timeout_s = std::stoi(timeout_as_string);
+        action_to_add.type = stringToActionType(action_as_json["actionType"]);
+        if(action_as_json.contains("arguments")) {action_to_add.arguments = action_as_json["arguments"];}
+        if(action_as_json.contains("target_x")) {action_to_add.target_x = action_as_json["target_x"];}
+        if(action_as_json.contains("target_y")) {action_to_add.target_y = action_as_json["target_y"];}
+        if(action_as_json.contains("angle")) {action_to_add.angle = action_as_json["angle"];}
+        if(action_as_json.contains("grabber_state")) {action_to_add.grabber_state = action_as_json["grabber_state"];}
+        if(action_as_json.contains("timeout")) {action_to_add.timeout_s = action_as_json["timeout"];}
         } catch (const std::exception& e) {
-            std::cerr << "Wrong timeout value conversion" << std::endl;
-            action_to_add.timeout_s = 0;
+            std::cerr << e.what() << std::endl;
+            std::cerr << "Wrong value conversion" << std::endl;
         }
         action_list_.emplace_back(action_to_add);
     }

@@ -6,8 +6,12 @@
 enum ActionType { WAIT, GRABBER, MOVE, TURN, UNKNOWN };
 
 struct Action {
-    ActionType type;
-    std::string arguments;
+    ActionType type = UNKNOWN;
+    std::string arguments = "";
+    float target_x = 0.0;
+    float target_y = 0.0;
+    float angle = 0.0;
+    std::string grabber_state = "";
     int timeout_s = 0;
 };
 
