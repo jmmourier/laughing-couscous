@@ -8,20 +8,52 @@ CouscousManager::CouscousManager(
     const std::shared_ptr<IHali> &hali,
     const std::shared_ptr<Posi> &posi,
     const std::shared_ptr<WebServer> &web_server,
-    const std::shared_ptr<Navi> &navi)
+    const std::shared_ptr<Navi> &navi,
+    const std::shared_ptr<Missi> &missi)
     : hali_(hali),
       posi_(posi),
       navi_(navi),
-      web_server_(web_server) {
+      web_server_(web_server),
+      missi_(missi) {
     web_server_thread_ = std::thread([&] { web_server_->start(); });
+
+    // note : the file mission.json shall be present on the same path the app is executed
+    missi->loadMissionFile();
+    
+    // this is temporary and shall be replaced by a a listener on the strart button on the robot
+    missi_->actionHasBeenDone();
 }
 
 void CouscousManager::onPositionChanged(const PositionOrientation &position_orientation) {
     web_server_->setPosition(position_orientation);
+    
     navi_->setCurrentPosition(
         position_orientation.x_m_,
         position_orientation.y_m_,
         position_orientation.orientation_rad_);
+    
+    Action nextAction = missi_->getCurrentAction();
+    if(nextAction.type == WAIT) {
+    std::cout << "[Missi]:wait" << std::endl; 
+        // wait timeout or mission is not started or mission is done
+    } else if (nextAction.type == MOVE) {
+    std::cout << "[Missi]:move" << nextAction.target_x << " " << nextAction.target_y << std::endl; 
+        navi_->setTargetPosition(nextAction.target_x,nextAction.target_y,0);
+    }else if(nextAction.type == GRABBER) {
+    std::cout << "[Missi]:grabber  : " << nextAction.grabber_state << std::endl; 
+        // define how this is read
+        GrabberState grabber_state = 
+        (nextAction.grabber_state.compare("open") == 0)? grabberOpen : grabberClose; 
+        hali_->setGrabber(grabber_state);
+    }else if(nextAction.type == TURN) {
+    std::cout << "[Missi]:turning " << nextAction.angle << std::endl; 
+        // TODO this need to be implemented
+        // navi_->setTargetRotation(nextAction.angle); 
+    }else if(nextAction.type == UNKNOWN) {
+    std::cout << "[Missi]:unknow action" << missi_->actionTypeToString(nextAction.type) << std::endl; 
+        // This is abnormal, let's skip to next action
+        missi_->actionHasBeenDone();
+    }
 }
 
 void CouscousManager::onWebServerPositionRequest(const PositionOrientation &position_orientation) {
@@ -42,7 +74,12 @@ void CouscousManager::onWebServerTargetOrientationRequest(const float &orientati
     navi_->setTargetOrientation(orientation_rad);
 };
 
-void CouscousManager::onNaviTargetReachedRequest(void) {}
+void CouscousManager::onNaviTargetReachedRequest(void) {
+    Action current_action = missi_->getCurrentAction();
+    if (current_action.type == MOVE) {
+        missi_->actionHasBeenDone();
+    }
+}
 
 // void CouscousManager::onNaviSpeedRequest(const int &speed_motor1, const int &speed_motor2) {
 void CouscousManager::onNaviSpeedRequest(
