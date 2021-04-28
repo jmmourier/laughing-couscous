@@ -6,6 +6,7 @@
 #include "IHali.h"
 #include "IPositionListener.h"
 #include "IWebServerRequestListener.h"
+#include "Missi.h"
 #include "Moti.h"
 #include "Navi.h"
 #include "Posi.h"
@@ -18,7 +19,8 @@ class CouscousManager : public IPositionListener,
         const std::shared_ptr<IHali> &hali,
         const std::shared_ptr<Posi> &posi,
         const std::shared_ptr<WebServer> &web_server,
-        const std::shared_ptr<Navi> &navi);
+        const std::shared_ptr<Navi> &navi,
+        const std::shared_ptr<Missi> &missi);
 
     void start();
 
@@ -37,6 +39,7 @@ class CouscousManager : public IPositionListener,
     std::shared_ptr<Posi> posi_;
     std::shared_ptr<IHali> hali_;
     std::shared_ptr<WebServer> web_server_;
+    std::shared_ptr<Missi> missi_;
     std::thread web_server_thread_;
     std::thread hali_thread_;
     std::shared_ptr<Navi> navi_;
