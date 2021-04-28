@@ -76,6 +76,7 @@ void Navi::computeSpeed(const pos_info &robot_pos, const pos_info &target_pos) {
         rotation = 0;
         speed = 0;
         publishToNaviSpeedRequestListeners(0, 0, 0);
+        publishToNaviTargetReachedListeners();
         std::cout << "navi:: target reached" << std::endl;
         return;
     }
