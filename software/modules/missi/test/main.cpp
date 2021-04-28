@@ -12,9 +12,16 @@ int main(int argc, char *argv[]) {
     Action action_to_print;
     for (int i = 0; i < 10; i++) {
         action_to_print = mission.getCurrentAction();
-        std::cout << "Action : " << i << std::endl;
-        std::cout << action_to_print.type << " -- " << action_to_print.arguments << " -- "
-                  << action_to_print.timeout_s << std::endl;
+        std::cout 
+        << "Action : " << i 
+        << "|action type : " << mission.actionTypeToString(action_to_print.type) 
+        << "|argument : " << action_to_print.arguments
+        << "|target x : " << action_to_print.target_x
+        << "|target y : " << action_to_print.target_y
+        << "|angle : " << action_to_print.angle
+        << "|grabber : " << action_to_print.grabber_state
+        << "|timeout : " << action_to_print.timeout_s 
+        << std::endl;
         mission.actionHasBeenDone();
     }
 

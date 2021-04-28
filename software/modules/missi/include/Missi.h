@@ -16,7 +16,6 @@ class Missi {
     std::vector<Action> action_list_;
 
     ActionType stringToActionType(std::string action_type_as_string);
-    std::string actionTypeToString(ActionType action_type);
 
    public:
     Missi();
@@ -25,6 +24,8 @@ class Missi {
 
     void actionHasBeenDone();
     Action getCurrentAction();
+
+    std::string actionTypeToString(ActionType action_type);
 };
 
 #endif  // MISSI_H
