@@ -74,8 +74,9 @@ const Arena: FunctionComponent<IArena> = ({ onPositionSelected }) => {
             (e.clientX - e.currentTarget.getBoundingClientRect().x) *
             ratioPixelToMeter,
           y_m:
+            ARENA_HEIGHT -
             (e.clientY - e.currentTarget.getBoundingClientRect().y) *
-            ratioPixelToMeter,
+              ratioPixelToMeter,
         };
         onPositionSelected(positionSelected);
       }}
