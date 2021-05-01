@@ -11,7 +11,7 @@
 #define TARGET_REACHED_DISTANCE 0.02
 #define MAX_ROTATION 0.35
 #define ANGLE_FOR_ROTATION_ONLY_RAD 0.25
-#define MAX_SPEED 30
+#define MAX_SPEED 0.5
 
 Navi::Navi()
     : logger_(LoggerFactory::registerOrGetLogger("Navi", spdlog::level::level_enum::info)) {}
