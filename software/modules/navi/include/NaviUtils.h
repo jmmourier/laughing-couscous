@@ -23,6 +23,7 @@ double getAngleBetweenTwoAngles(const double &robot_orientation, const double &a
 double getShortestAngle(const double &angle);
 rotdir getRotationDir(const double &angle);
 rotdir getRotationDir(const pos_info &robot_pos, const pos_info &target_pos);
+rotdir getRotationDir(const double robot_orientation, const double target_orientation);
 double shortcut_getAngleToTarget(const pos_info &robot_pos, const pos_info &target_pos);
 
 /////old stuffs /////

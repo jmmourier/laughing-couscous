@@ -9,6 +9,7 @@
 #include "logger/LoggerFactory.h"
 
 #define TARGET_REACHED_DISTANCE 0.02
+#define TARGET_ANGLE_REACHED_RAD 0.02
 #define MAX_ROTATION 0.35
 #define ANGLE_FOR_ROTATION_ONLY_RAD 0.25
 #define MAX_SPEED 0.5
@@ -48,7 +49,15 @@ int Navi::setTargetPosition(
     target_position_.pos_x = target_pos_x;
     target_position_.pos_y = target_pos_y;
     target_position_.orientation = target_orientation;
-    is_idle_ = false;
+    is_position_idle_ = false;
+    return 0;
+}
+
+int Navi::setTargetOrientation(double target_orientation) {
+    std::cout << "[Navi] set orientation" << target_orientation << std::endl;
+    target_position_.orientation = target_orientation;
+
+    is_orientation_idle_ = false;
     return 0;
 }
 
@@ -63,11 +72,14 @@ int Navi::setCurrentPosition(
     actual_robot_position_.pos_x = new_rob_pos_x;
     actual_robot_position_.pos_y = new_rob_pos_y;
     actual_robot_position_.orientation = new_rob_orientation;
-    if (!is_idle_) {
+    if (!is_position_idle_) {
         computeSpeed(actual_robot_position_, target_position_);
     }
+    if (!is_orientation_idle_) {
+        computeRotationSpeed(new_rob_orientation, target_position_.orientation);
+    }
 
-    // std::cout << "set current posisiton" << is_idle_ << std::endl;
+    // std::cout << "set current posisiton" << is_position_idle_ << std::endl;
     return 0;
 }
 
@@ -81,7 +93,7 @@ void Navi::computeSpeed(const pos_info &robot_pos, const pos_info &target_pos) {
         speed = 0;
         publishToNaviSpeedRequestListeners(0, 0, 0);
         publishToNaviTargetReachedListeners();
-        is_idle_ = true;
+        is_position_idle_ = true;
         std::cout << "navi:: target reached" << std::endl;
         is_idle_ = true;
         return;
@@ -110,7 +122,26 @@ void Navi::computeSpeed(const pos_info &robot_pos, const pos_info &target_pos) {
         std::cout << "Navi::update dist :" << distance << " errorCap" << errorCap << std::endl;
         if (speed > MAX_SPEED) speed = MAX_SPEED;
     }
-    //  std::cout << "Navi:: call listeners: speed=" << speed << " rotation=" << rotation <<
-    //  std::endl;
+
     publishToNaviSpeedRequestListeners(speed, 0, rotation);
+}
+
+void Navi::computeRotationSpeed(const double robot_orientation, const double target_orientation) {
+    double errorCap = std::abs(robot_orientation - target_orientation);
+    if (errorCap < TARGET_ANGLE_REACHED_RAD) {
+        std::cout << "angle target reached" << std::endl;
+        publishToNaviSpeedRequestListeners(0, 0, 0);
+        publishToNaviTargetReachedListeners();
+        is_orientation_idle_ = true;
+        return;
+    }
+
+    rotdir rotation_direction = getRotationDir(robot_orientation, target_orientation);
+    if (rotation_direction == rotdir::Clockwise) {
+        publishToNaviSpeedRequestListeners(0, 0, -MAX_SPEED);
+    } else {
+        publishToNaviSpeedRequestListeners(0, 0, MAX_SPEED);
+    }
+    std::cout << "[Navi] robot_orientation: " << robot_orientation << " errorCap= " << errorCap
+              << " " << rotation_direction << std::endl;
 }

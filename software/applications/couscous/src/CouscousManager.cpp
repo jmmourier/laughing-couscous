@@ -65,8 +65,8 @@ void CouscousManager::onWebServerSpeedRequest(const int &speed_motor1, const int
     hali_->setMd25Speed(speed_motor1, speed_motor2);
 }
 
+// webserver send target position
 void CouscousManager::onWebServerTargetPositionRequest(const double &pos_x, const double &pos_y) {
-    // Will be sent to navi
     navi_->setTargetPosition(pos_x, pos_y, 0);
 }
 

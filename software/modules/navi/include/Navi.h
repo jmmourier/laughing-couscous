@@ -43,11 +43,13 @@ class Navi {
 
    private:
     void computeSpeed(const pos_info &robot_pos, const pos_info &target_pos);
+    void computeRotationSpeed(const double robot_orientation, const double target_orientation);
     pos_info target_position_;
     pos_info actual_robot_position_;
     std::shared_ptr<spdlog::logger> logger_;
     std::vector<std::weak_ptr<INaviRequestListener>> navi_listeners_;
-    bool is_idle_ = true;
+    bool is_position_idle_ = true;
+    bool is_orientation_idle_ = true;
 };
 
 #endif  // COUSCOUS_NAVI_H

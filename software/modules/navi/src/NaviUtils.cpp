@@ -57,6 +57,12 @@ rotdir getRotationDir(const pos_info &robot_pos, const pos_info &target_pos) {
     return getRotationDir(shortestAngle);
 }
 
+rotdir getRotationDir(const double robot_orientation, const double target_orientation) {
+    double angleFromRobot = getAngleBetweenTwoAngles(robot_orientation, target_orientation);
+    double shortestAngle = getShortestAngle(angleFromRobot);
+    return getRotationDir(shortestAngle);
+}
+
 /** return angle between robot orientation and target point */
 double shortcut_getAngleToTarget(const pos_info &robot_pos, const pos_info &target_pos) {
     double targetAngle = getAngleBetweenTwoPoints(
@@ -71,6 +77,41 @@ double shortcut_getAngleToTarget(const pos_info &robot_pos, const pos_info &targ
 ///////////////////////////////////////////////////////////////////////
 // old stuffs
 //////////////////////////////////////////////////////////////////////
+
+/**
+ * Compute shortest angle between two angles
+ * @param robot_orientation
+ * @param target_orientation
+ * @return shortest angle bewteen two angles
+ */
+double getAngleDifference(const double &robot_orientation, const double &target_orientation) {
+    double angle = target_orientation - robot_orientation;
+    if (std::abs(angle) > M_PI) {
+        if (angle > 0) {
+            angle = -(2 * M_PI) + angle;
+        } else {
+            angle = (2 * M_PI) + angle;
+        }
+    }
+    // std::cout << "getAngleDiff= " << angle << std::endl;
+    return angle;
+}
+
+/**
+ * Special case, on identical angles, return clockwise.
+ * @param robot_orientation
+ * @param target_orientation
+ * @return
+ */
+rotdir getRotationDirection(const double &robot_orientation, const double &target_orientation) {
+    double angle = getAngleDifference(robot_orientation, target_orientation);
+    if (angle > 0) {
+        return rotdir::Clockwise;
+    } else {
+        return rotdir::AntiClockwise;
+    }
+}
+
 /**
  *
  * @param robot_pos_x
@@ -137,25 +178,6 @@ double getAngleToTarget(const pos_info &robot_pos, const pos_info &target_pos) {
         target_pos.pos_x,
         target_pos.pos_y);
 }
-/**
- * Compute shortest angle between two angles
- * @param robot_orientation
- * @param target_orientation
- * @return shortest angle bewteen two angles
- */
-double getAngleDifference(const double &robot_orientation, const double &target_orientation) {
-    double angle = target_orientation - robot_orientation;
-    if (std::abs(angle) > M_PI) {
-        if (angle > 0) {
-            angle = -(2 * M_PI) + angle;
-        } else {
-            angle = (2 * M_PI) + angle;
-        }
-    }
-    // std::cout << "getAngleDiff= " << angle << std::endl;
-    return angle;
-}
-
 double getAngleDifference(
     const double &robot_pos_x,
     const double &robot_pos_y,
@@ -167,20 +189,6 @@ double getAngleDifference(
         getAngleToTarget(robot_pos_x, robot_pos_y, robot_orientation, target_pos_x, target_pos_y));
 }
 
-/**
- * Special case, on identical angles, return clockwise.
- * @param robot_orientation
- * @param target_orientation
- * @return
- */
-rotdir getRotationDirection(const double &robot_orientation, const double &target_orientation) {
-    double angle = getAngleDifference(robot_orientation, target_orientation);
-    if (angle > 0) {
-        return rotdir::Clockwise;
-    } else {
-        return rotdir::AntiClockwise;
-    }
-}
 double getDistanceToTarget(
     const double &robot_pos_x,
     const double &robot_pos_y,
