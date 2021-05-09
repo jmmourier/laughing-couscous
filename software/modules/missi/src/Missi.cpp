@@ -13,6 +13,7 @@ Missi::Missi()
     current_action_.type = WAIT;
     current_action_.arguments = "Waiting to start";
     current_action_.timeout_s = 0;
+    timestamp_current_action_started_ = std::chrono::system_clock::now();
 }
 
 void Missi::setMissionFilePath(std::string mission_file_path) {
@@ -57,6 +58,8 @@ void Missi::actionHasBeenDone() {
 }
 
 Action Missi::getCurrentAction() {
+    if(hasCurrentActionTimeout()) {previous_action_has_been_done_ = true;}
+
     if (previous_action_has_been_done_ == true && !action_list_.empty()) {
         if (action_list_.size() <= next_action_indice_) {
             // no more action
@@ -65,12 +68,24 @@ Action Missi::getCurrentAction() {
             current_action_.timeout_s = 0;
         } else {
             current_action_ = action_list_.at(next_action_indice_);
+            timestamp_current_action_started_ = std::chrono::system_clock::now();
             next_action_indice_++;
         }
         previous_action_has_been_done_ = false;
     }
     return current_action_;
 }
+
+bool Missi::hasCurrentActionTimeout(){
+    if(current_action_.timeout_s>0 && 
+    std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::system_clock::now() - timestamp_current_action_started_).count() >
+                                      current_action_.timeout_s*1000){
+        return true;
+        }
+    return false;
+}
+
 
 ActionType Missi::stringToActionType(std::string action_type_as_string) {
     if (!action_type_as_string.compare("wait")) return WAIT;
