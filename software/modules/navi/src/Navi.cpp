@@ -83,6 +83,7 @@ void Navi::computeSpeed(const pos_info &robot_pos, const pos_info &target_pos) {
         publishToNaviTargetReachedListeners();
         is_idle_ = true;
         std::cout << "navi:: target reached" << std::endl;
+        is_idle_ = true;
         return;
     }
 
