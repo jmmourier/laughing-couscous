@@ -51,6 +51,11 @@ void Missi::loadMissionFile() {
     }
     std::cout << "[Mission] " << action_list_.size() << " actions have been added from file"
               << std::endl;
+    for (int i = 0; i < action_list_.size(); i++)
+    {
+        std::cout << "[Mission] action " << i << " : " << actionTypeToString(action_list_.at(i).type) << std::endl;
+    }
+    
 }
 
 void Missi::actionHasBeenDone() {
@@ -81,6 +86,7 @@ bool Missi::hasCurrentActionTimeout(){
     std::chrono::duration_cast<std::chrono::milliseconds>(
         std::chrono::system_clock::now() - timestamp_current_action_started_).count() >
                                       current_action_.timeout_s*1000){
+        std::cout << "[Mission] WARNING action has time outted" << std::endl;
         return true;
         }
     return false;
