@@ -27,6 +27,7 @@ class CouscousManager : public IPositionListener,
     void onWebServerPositionRequest(const PositionOrientation &position_orientation) override;
     void onWebServerSpeedRequest(const int &motor1, const int &motor2) override;
     void onWebServerTargetPositionRequest(const double &pos_x, const double &pos_y) override;
+    void onWebServerTargetOrientationRequest(const float &orientation_rad) override;
     void onNaviTargetReachedRequest(void) override;
     void onNaviSpeedRequest(const float &v_x_mps, const float &v_y_mps, const float &omega_radps)
         override;

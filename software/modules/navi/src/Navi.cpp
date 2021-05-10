@@ -52,6 +52,10 @@ int Navi::setTargetPosition(
     return 0;
 }
 
+int Navi::setTargetOrientation(const float &orientation_rad) {
+    target_position_.orientation = orientation_rad;
+}
+
 int Navi::setCurrentPosition(
     const double &new_rob_pos_x,
     const double &new_rob_pos_y,

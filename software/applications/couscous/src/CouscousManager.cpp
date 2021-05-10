@@ -38,6 +38,10 @@ void CouscousManager::onWebServerTargetPositionRequest(const double &pos_x, cons
     navi_->setTargetPosition(pos_x, pos_y, 0);
 }
 
+void CouscousManager::onWebServerTargetOrientationRequest(const float &orientation_rad) {
+    navi_->setTargetOrientation(orientation_rad);
+};
+
 void CouscousManager::onNaviTargetReachedRequest(void) {}
 
 // void CouscousManager::onNaviSpeedRequest(const int &speed_motor1, const int &speed_motor2) {
