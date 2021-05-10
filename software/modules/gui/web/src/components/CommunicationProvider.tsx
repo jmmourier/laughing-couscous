@@ -1,6 +1,7 @@
 import { PositionPromiseClient } from "generated_grpc_sources/robot_grpc_web_pb";
 import {
   Empty,
+  OrientationRequest,
   PositionOrientationRequest,
   PositionRequest,
   SpeedRequest,
@@ -27,6 +28,10 @@ type IAction =
       type: Action.SET_TARGET_POSITION;
       position: stateProvider.IPosition;
     }
+  | {
+      type: Action.SET_TARGET_ORIENTATION;
+      orientation_rad: number;
+    }
   | { type: Action.SET_SPEED; speed: ISpeed };
 
 const serverUrl: string = `${process.env.REACT_APP_PROXY_URL}:${process.env.REACT_APP_PROXY_PORT}`;
@@ -42,6 +47,7 @@ const client: PositionPromiseClient = new PositionPromiseClient(serverUrl);
 enum Action {
   SET_ABSOLUTE_POSITION = "SET_ABSOLUTE_POSITION",
   SET_TARGET_POSITION = "SET_TARGET_POSITION",
+  SET_TARGET_ORIENTATION = "SET_TARGET_ORIENTATION",
   SET_SPEED = "SET_SPEED",
   UPDATE_POSITION = "UPDATE_POSITION",
 }
@@ -66,6 +72,12 @@ const reducer: Reducer<IState, IAction> = async (
       positionRequest.setPosXM(action.position.x_m);
       positionRequest.setPosYM(action.position.y_m);
       await client.setTargetPositionRequest(positionRequest);
+      return { ...state };
+    }
+    case Action.SET_TARGET_ORIENTATION: {
+      const orientationRequest = new OrientationRequest();
+      orientationRequest.setOrientationRad(action.orientation_rad);
+      await client.setTargetOrientationRequest(orientationRequest);
       return { ...state };
     }
     case Action.SET_SPEED: {

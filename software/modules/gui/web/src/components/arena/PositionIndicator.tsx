@@ -23,7 +23,7 @@ const PositionIndicator: FunctionComponent<IPositionIndicators> = ({
     <>
       <g transform={`translate(${mouseAbsolutePositionXM})`}>
         <line
-          stroke-dasharray={STROKE_DASHARRAY_VALUE}
+          strokeDasharray={STROKE_DASHARRAY_VALUE}
           style={{ strokeWidth: STROKE_WITDH_M }}
           width={STROKE_WITDH_M}
           x1={0}
@@ -38,7 +38,7 @@ const PositionIndicator: FunctionComponent<IPositionIndicators> = ({
       </g>
       <g transform={`translate(0,${mouseAbsolutePositionYM})`}>
         <line
-          stroke-dasharray={STROKE_DASHARRAY_VALUE}
+          strokeDasharray={STROKE_DASHARRAY_VALUE}
           style={{ strokeWidth: STROKE_WITDH_M }}
           width={STROKE_WITDH_M}
           x1={0}
