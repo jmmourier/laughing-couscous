@@ -17,6 +17,7 @@ class WebPositionService final : public web_service::Position::Service {
     void publishToWebServerSpeedRequestListeners(const int &motor1, const int &motor2) const;
 
     void publishToWebServerTargetPositionListeners(const double &pos_x, const double &pos_y);
+    void publishToWebServerTargetOrientationListeners(const float &orientation_rad);
 
     ::grpc::Status setSpeedRequest(
         ::grpc::ServerContext *context,
@@ -36,6 +37,11 @@ class WebPositionService final : public web_service::Position::Service {
     ::grpc::Status setTargetPositionRequest(
         ::grpc::ServerContext *context,
         const ::web_service::PositionRequest *request,
+        ::web_service::Empty *response) override;
+
+    ::grpc::Status setTargetOrientationRequest(
+        ::grpc::ServerContext *context,
+        const ::web_service::OrientationRequest *request,
         ::web_service::Empty *response) override;
 
     void setPosition(const PositionOrientation &position_orientation);

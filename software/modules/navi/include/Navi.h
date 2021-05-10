@@ -35,6 +35,7 @@ class Navi {
         const double &target_pos_x,
         const double &target_pos_y,
         const double &target_orientation);
+    int setTargetOrientation(const float &orientation_rad);
     int setCurrentPosition(
         const double &new_rob_pos_x,
         const double &new_rob_pos_y,

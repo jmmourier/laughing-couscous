@@ -44,6 +44,15 @@ void WebPositionService::publishToWebServerTargetPositionListeners(
     }
 }
 
+void WebPositionService::publishToWebServerTargetOrientationListeners(
+    const float &orientation_rad) {
+    for (auto const &webserver_listener_ptr : webserver_listeners_) {
+        if (auto webserver_listener = webserver_listener_ptr.lock()) {
+            webserver_listener->onWebServerTargetOrientationRequest(orientation_rad);
+        }
+    }
+}
+
 ::grpc::Status WebPositionService::setSpeedRequest(
     ::grpc::ServerContext *context,
     const ::web_service::SpeedRequest *request,
@@ -75,6 +84,15 @@ void WebPositionService::publishToWebServerTargetPositionListeners(
 
     return ::grpc::Status::OK;
 };
+
+::grpc::Status WebPositionService::setTargetOrientationRequest(
+    ::grpc::ServerContext *context,
+    const ::web_service::OrientationRequest *request,
+    ::web_service::Empty *response) {
+    publishToWebServerTargetOrientationListeners(request->orientation_rad());
+
+    return ::grpc::Status::OK;
+}
 
 ::grpc::Status WebPositionService::registerPositionObserver(
     ::grpc::ServerContext *context,
