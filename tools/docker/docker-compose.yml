@@ -9,7 +9,7 @@ services:
       dockerfile: Dockerfile
       network: host
     environment:
-      - MISSION_PATH=/workspace/laughing-couscous/software/applications/couscous/mission.json
+      - MISSION_PATH=/workspace/laughing-couscous/software/applications/couscous
     security_opt:
       - seccomp:unconfined
     cap_add:
