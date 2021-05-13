@@ -12,21 +12,20 @@ struct pos_info {
 
 typedef rotation_direction rotdir;
 
+double getDistanceToTarget(const pos_info &robot_pos, const pos_info &target_pos);
+double shortcut_getAngleToTarget(const pos_info &robot_pos, const pos_info &target_pos);
+rotdir getRotationDir(const double robot_orientation, const double target_orientation);
+double getAngleBetweenTwoAngles(const double &robot_orientation, const double &angle_to_target);
+double getShortestAngle(const double &angle);
+
 double getAngleBetweenTwoPoints(
     const double &robot_pos_x,
     const double &robot_pos_y,
     const double &target_pos_x,
     const double &target_pos_y);
 
-double getAngleBetweenTwoAngles(const double &robot_orientation, const double &angle_to_target);
-
-double getShortestAngle(const double &angle);
 rotdir getRotationDir(const double &angle);
 rotdir getRotationDir(const pos_info &robot_pos, const pos_info &target_pos);
-rotdir getRotationDir(const double robot_orientation, const double target_orientation);
-double shortcut_getAngleToTarget(const pos_info &robot_pos, const pos_info &target_pos);
-
-/////old stuffs /////
 
 double getReferenceAngleToTarget(const pos_info &robot_pos, const pos_info &target_pos);
 
@@ -60,7 +59,6 @@ double getDistanceToTarget(
     const double &target_pos_x,
     const double &target_pos_y);
 
-double getDistanceToTarget(const pos_info &robot_pos, const pos_info &target_pos);
-
 rotdir getRotationDirection(const double &robot_orientation, const double &target_orientation);
+
 #endif  // COUSCOUS_NAVIUTILS_H
