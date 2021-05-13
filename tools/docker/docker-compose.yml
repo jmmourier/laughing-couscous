@@ -8,6 +8,8 @@ services:
       context: .
       dockerfile: Dockerfile
       network: host
+    environment:
+      - MISSION_PATH=/workspace/laughing-couscous/software/applications/couscous/mission.json
     security_opt:
       - seccomp:unconfined
     cap_add:
