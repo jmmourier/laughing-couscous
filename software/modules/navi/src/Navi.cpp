@@ -9,6 +9,7 @@
 #include "logger/LoggerFactory.h"
 
 #define TARGET_REACHED_DISTANCE 0.02
+#define TARGET_ANGLE_REACHED_RAD 0.02
 #define MAX_ROTATION 0.35
 #define ANGLE_FOR_ROTATION_ONLY_RAD 0.25
 #define MAX_SPEED 0.5
@@ -44,16 +45,20 @@ int Navi::setTargetPosition(
     const double &target_pos_x,
     const double &target_pos_y,
     const double &target_orientation) {
-    std::cout << "[Navi] set target position" << target_pos_x << " " << target_pos_y << std::endl;
     target_position_.pos_x = target_pos_x;
     target_position_.pos_y = target_pos_y;
     target_position_.orientation = target_orientation;
-    is_idle_ = false;
+    action_in_progress_ = position;
+    SPDLOG_LOGGER_INFO(logger_, "[Navi] set target position x:{} y:{}", target_pos_x, target_pos_y);
     return 0;
 }
 
 int Navi::setTargetOrientation(const float &orientation_rad) {
     target_position_.orientation = orientation_rad;
+
+    action_in_progress_ = rotation;
+    SPDLOG_LOGGER_INFO(logger_, "[Navi] set orientation {}rad", orientation_rad);
+    return 0;
 }
 
 int Navi::setCurrentPosition(
@@ -63,11 +68,16 @@ int Navi::setCurrentPosition(
     actual_robot_position_.pos_x = new_rob_pos_x;
     actual_robot_position_.pos_y = new_rob_pos_y;
     actual_robot_position_.orientation = new_rob_orientation;
-    if (!is_idle_) {
-        computeSpeed(actual_robot_position_, target_position_);
+    switch (action_in_progress_) {
+        case idle:
+            break;
+        case position:
+            computeSpeed(actual_robot_position_, target_position_);
+            break;
+        case rotation:
+            computeRotationSpeed(new_rob_orientation, target_position_.orientation);
+            break;
     }
-
-    // std::cout << "set current posisiton" << is_idle_ << std::endl;
     return 0;
 }
 
@@ -81,9 +91,8 @@ void Navi::computeSpeed(const pos_info &robot_pos, const pos_info &target_pos) {
         speed = 0;
         publishToNaviSpeedRequestListeners(0, 0, 0);
         publishToNaviTargetReachedListeners();
-        is_idle_ = true;
-        std::cout << "navi:: target reached" << std::endl;
-        is_idle_ = true;
+        action_in_progress_ = idle;
+        SPDLOG_LOGGER_INFO(logger_, "[Navi] target reached");
         return;
     }
 
@@ -103,14 +112,36 @@ void Navi::computeSpeed(const pos_info &robot_pos, const pos_info &target_pos) {
 
     // Speed regulation
     if (std::abs(errorCap) > ANGLE_FOR_ROTATION_ONLY_RAD) {
-        std::cout << "Navi::error cap = " << errorCap << std::endl;
+        SPDLOG_LOGGER_INFO(logger_, "[Navi] error cap:{}rad", errorCap);
         speed = 0;
     } else {
         speed = distance;
-        std::cout << "Navi::update dist :" << distance << " errorCap" << errorCap << std::endl;
+        SPDLOG_LOGGER_INFO(logger_, "[Navi] update dist:{} error cap:{}rad", distance, errorCap);
         if (speed > MAX_SPEED) speed = MAX_SPEED;
     }
-    //  std::cout << "Navi:: call listeners: speed=" << speed << " rotation=" << rotation <<
-    //  std::endl;
+
     publishToNaviSpeedRequestListeners(speed, 0, rotation);
+}
+
+void Navi::computeRotationSpeed(const double robot_orientation, const double target_orientation) {
+    double errorCap = std::abs(robot_orientation - target_orientation);
+    if (errorCap < TARGET_ANGLE_REACHED_RAD) {
+        SPDLOG_LOGGER_INFO(logger_, "[Navi] angle reached");
+        publishToNaviSpeedRequestListeners(0, 0, 0);
+        publishToNaviTargetReachedListeners();
+        action_in_progress_ = idle;
+        return;
+    }
+
+    rotdir rotation_direction = getRotationDir(robot_orientation, target_orientation);
+    if (rotation_direction == rotdir::Clockwise) {
+        publishToNaviSpeedRequestListeners(0, 0, -MAX_SPEED);
+    } else {
+        publishToNaviSpeedRequestListeners(0, 0, MAX_SPEED);
+    }
+    SPDLOG_LOGGER_INFO(
+        logger_,
+        "[Navi] robot orientation:{} error cap:{}rad ",
+        robot_orientation,
+        errorCap);
 }
