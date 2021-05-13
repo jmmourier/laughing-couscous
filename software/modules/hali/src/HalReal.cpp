@@ -10,7 +10,9 @@ HalReal::HalReal()
       serial_("/dev/ttyACM0", 9600),
       message_parser_(),
       command_interpreter_(),
-      grabber_state_(grabberUndefined) {}
+      grabber_state_(grabberUndefined) {
+        resetEncoder();
+      }
 
 constexpr unsigned int hash(const char *str, int h = 0) {
     return !str[h] ? 5381 : (hash(str, h + 1) * 33) ^ str[h];
@@ -131,4 +133,10 @@ bool HalReal::isRobotStarted(){
 
 int HalReal::getDistanceObstacleCm(){
     return distance_obstacle_cm_;
+}
+
+void HalReal::resetEncoder(){
+        serial_.writeString(
+        message_parser_.createMessage(CommandData("resetEncoder", "0")));
+    return;
 }
