@@ -31,6 +31,8 @@ class Serial {
      */
     char readChar();
 
+    void flushReceiver();
+
    private:
       serialib serial;
 };

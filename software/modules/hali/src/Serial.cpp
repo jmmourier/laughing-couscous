@@ -39,3 +39,7 @@ char Serial::readChar() {
     }
     return c;
 }
+
+void Serial::flushReceiver(){
+    serial.flushReceiver();
+}
