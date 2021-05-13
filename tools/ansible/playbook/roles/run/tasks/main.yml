@@ -1,12 +1,9 @@
 ---
-- name: Restart nginx
-  service:
-    name: nginx
-    state: restarted
-- name: Restart envoy
-  service:
-    name: grpcwebproxy.service
-    state: restarted
+- name: Push mission.json
+  copy:
+    src: "{{ PROJECT_PATH }}/software/applications/couscous/mission.json"
+    dest: "/home/{{ PI_USERNAME }}"
+    mode: "755"
 - name: Restart couscous_app
   service:
     name: couscous_app.service

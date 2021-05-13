@@ -1,9 +1,4 @@
 ---
-- name: Push mission.json
-  copy:
-    src: "{{ PROJECT_PATH }}/software/applications/couscous/mission.json"
-    dest: "/home/{{ PI_USERNAME }}"
-    mode: "755"
 - name: Push couscous_app_exe
   copy:
     src: "{{ PROJECT_PATH }}/software/build/applications/couscous/couscous_app_exe"
