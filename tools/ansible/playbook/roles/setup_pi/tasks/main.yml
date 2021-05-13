@@ -25,3 +25,11 @@
   copy:
     src: "{{ playbook_dir }}/roles/setup_pi/files/couscous_app.service"
     dest: /etc/systemd/system
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
+- name: Restart envoy
+  service:
+    name: grpcwebproxy.service
+    state: restarted
