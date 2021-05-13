@@ -130,6 +130,9 @@ void HandleCommands(CommandData command_data) {
         Serial.print("md25version:");
         Serial.print(md25_.getRevision());
         Serial.println(";");
+    } else if (command_data.command_ == resetEncoder) {
+        md25_.resetEncoder();
+        delay(10);
     } else if (command_data.command_ == grabberPositionRequested &&
         is_game_finished == false) {
         if (command_data.argument_ == grabberOpened) {

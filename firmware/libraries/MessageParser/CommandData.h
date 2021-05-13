@@ -6,6 +6,7 @@ enum CommandsEnum{
     speedMotor2,
     versionRevisionRequested,
     grabberPositionRequested,
+    resetEncoder,
     //reserved2,
     //reserved3,
     CommandsEnumMax
@@ -22,6 +23,7 @@ struct CommandsMessage{
         Messages_[speedMotor2] = "md25speed2";
         Messages_[versionRevisionRequested] = "version";
         Messages_[grabberPositionRequested] = "grabber";
+        Messages_[resetEncoder] = "resetEncoder";
     }
 };
 

@@ -2,21 +2,32 @@
 
 #include <iostream>
 #include <string>
+#include <chrono>
+#include <thread>
 
 #include "logger/LoggerFactory.h"
+
+
 
 HalReal::HalReal()
     : logger_(LoggerFactory::registerOrGetLogger("Hali", spdlog::level::level_enum::info)),
       serial_("/dev/ttyACM0", 9600),
       message_parser_(),
       command_interpreter_(),
-      grabber_state_(grabberUndefined) {}
+      grabber_state_(grabberUndefined) {
+        resetEncoder();
+        std::cout << "[hali] request reset encoder" << std::endl;
+        std::this_thread::sleep_for(std::chrono::duration<float,std::ratio<1,1000>>(100));
+        std::cout << "[hali] reset encoder considered done" << std::endl;
+        serial_.flushReceiver();
+      }
 
 constexpr unsigned int hash(const char *str, int h = 0) {
     return !str[h] ? 5381 : (hash(str, h + 1) * 33) ^ str[h];
 }
 
 void HalReal::updater() {
+    serial_.flushReceiver(); // just to be sure
     while (true) {
         message_parser_.addCharToBuffer(serial_.readChar());
         CommandData command_data = message_parser_.analyseBuffer();
@@ -131,4 +142,10 @@ bool HalReal::isRobotStarted(){
 
 int HalReal::getDistanceObstacleCm(){
     return distance_obstacle_cm_;
+}
+
+void HalReal::resetEncoder(){
+        serial_.writeString(
+        message_parser_.createMessage(CommandData("resetEncoder", "0")));
+    return;
 }

@@ -30,6 +30,9 @@ class HalReal : public IHali {
     virtual int getDistanceObstacleCm() override;
 
    private:
+
+    void resetEncoder();
+
     Serial serial_;
     MessageParser message_parser_;
     CommandInterpreter command_interpreter_;
