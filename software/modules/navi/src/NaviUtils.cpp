@@ -53,6 +53,13 @@ double getShortestAngle(const double &angle) {
     return final_angle;
 }
 
+rotdir getRotationDir(const double &angle) {
+    if (angle < 0.f) {
+        return rotdir::Clockwise;
+    } else {
+        return rotdir::AntiClockwise;
+    }
+}
 //////////////////////////////////////////////
 
 /** retrun angle between robot position to target position
@@ -66,14 +73,6 @@ double getAngleBetweenTwoPoints(
     double diff_y = target_pos_y - robot_pos_y;
     double angle = atan2(diff_y, diff_x);
     return angle;
-}
-
-rotdir getRotationDir(const double &angle) {
-    if (angle < 0.f) {
-        return rotdir::Clockwise;
-    } else {
-        return rotdir::AntiClockwise;
-    }
 }
 
 rotdir getRotationDir(const pos_info &robot_pos, const pos_info &target_pos) {
@@ -104,84 +103,6 @@ double getAngleDifference(const double &robot_orientation, const double &target_
     }
     // std::cout << "getAngleDiff= " << angle << std::endl;
     return angle;
-}
-
-/**
- *
- * @param robot_pos_x
- * @param robot_pos_y
- * @param target_pos_x
- * @param target_pos_y
- * @return angle between robot pos and target pos.
- */
-double getReferenceAngleToTarget(
-    const double &robot_pos_x,
-    const double &robot_pos_y,
-    const double &target_pos_x,
-    const double &target_pos_y) {
-    double diff_x = target_pos_x - robot_pos_x;
-    double diff_y = (target_pos_y - robot_pos_y);
-    double angle = atan(diff_y / diff_x);
-
-    if (diff_x < 0.f && diff_y > 0.f) {  // quarter 2
-        angle = angle + M_PI;
-    } else if (diff_x < 0.f && diff_y < 0.f) {  // quarter 3
-        angle = angle + M_PI;
-    } else if (diff_x > 0.f && diff_y < 0.f) {  // quarter 4
-        angle = (2 * M_PI) + angle;
-    }
-    return angle;
-}
-
-/**
- * @brief Get the Reference Angle between robot position and target point.
- */
-double getReferenceAngleToTarget(const pos_info &robot_pos, const pos_info &target_pos) {
-    return getReferenceAngleToTarget(
-        robot_pos.pos_x,
-        robot_pos.pos_y,
-        target_pos.pos_x,
-        target_pos.pos_y);
-}
-
-/**
- * @brief Get the angle between robot orientation and target point.
- *
- */
-double getAngleToTarget(
-    const double &robot_pos_x,
-    const double &robot_pos_y,
-    const double &robot_orientation,
-    const double &target_pos_x,
-    const double &target_pos_y) {
-    double angle = getAngleDifference(
-        robot_orientation,
-        getReferenceAngleToTarget(robot_pos_x, robot_pos_y, target_pos_x, target_pos_y));
-    return angle;
-}
-
-/**
- * @brief Get the Angle between robot orientation and target point.
- *
- */
-double getAngleToTarget(const pos_info &robot_pos, const pos_info &target_pos) {
-    return getAngleToTarget(
-        robot_pos.pos_x,
-        robot_pos.pos_y,
-        robot_pos.orientation,
-        target_pos.pos_x,
-        target_pos.pos_y);
-}
-
-double getAngleDifference(
-    const double &robot_pos_x,
-    const double &robot_pos_y,
-    const double &robot_orientation,
-    const double &target_pos_x,
-    const double &target_pos_y) {
-    return getAngleDifference(
-        robot_orientation,
-        getAngleToTarget(robot_pos_x, robot_pos_y, robot_orientation, target_pos_x, target_pos_y));
 }
 
 double getDistanceToTarget(
