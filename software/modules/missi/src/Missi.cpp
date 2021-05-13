@@ -7,7 +7,8 @@
 #include "json.hpp"
 
 Missi::Missi()
-    : mission_file_path_("mission.json"),
+    : mission_file_path_(
+          std::string(std::getenv("MISSION_PATH")).append("/").append("mission.json")),
       previous_action_has_been_done_(false),
       next_action_indice_(0) {
     current_action_.type = WAIT;

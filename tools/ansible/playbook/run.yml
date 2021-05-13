@@ -1,0 +1,6 @@
+---
+- hosts: pi
+  roles:
+    - include_role:
+      name: run
+      become: true
