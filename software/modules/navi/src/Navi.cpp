@@ -49,20 +49,16 @@ int Navi::setTargetPosition(
     target_position_.pos_x = target_pos_x;
     target_position_.pos_y = target_pos_y;
     target_position_.orientation = target_orientation;
-    is_position_idle_ = false;
-    return 0;
-}
-
-int Navi::setTargetOrientation(double target_orientation) {
-    std::cout << "[Navi] set orientation" << target_orientation << std::endl;
-    target_position_.orientation = target_orientation;
-
-    is_orientation_idle_ = false;
+    action_in_progress_ = position;
     return 0;
 }
 
 int Navi::setTargetOrientation(const float &orientation_rad) {
+    std::cout << "[Navi] set orientation" << orientation_rad << std::endl;
     target_position_.orientation = orientation_rad;
+
+    action_in_progress_ = rotation;
+    return 0;
 }
 
 int Navi::setCurrentPosition(
@@ -72,11 +68,15 @@ int Navi::setCurrentPosition(
     actual_robot_position_.pos_x = new_rob_pos_x;
     actual_robot_position_.pos_y = new_rob_pos_y;
     actual_robot_position_.orientation = new_rob_orientation;
-    if (!is_position_idle_) {
-        computeSpeed(actual_robot_position_, target_position_);
-    }
-    if (!is_orientation_idle_) {
-        computeRotationSpeed(new_rob_orientation, target_position_.orientation);
+    switch (action_in_progress_) {
+        case idle:
+            break;
+        case position:
+            computeSpeed(actual_robot_position_, target_position_);
+            break;
+        case rotation:
+            computeRotationSpeed(new_rob_orientation, target_position_.orientation);
+            break;
     }
 
     // std::cout << "set current posisiton" << is_position_idle_ << std::endl;
@@ -93,9 +93,8 @@ void Navi::computeSpeed(const pos_info &robot_pos, const pos_info &target_pos) {
         speed = 0;
         publishToNaviSpeedRequestListeners(0, 0, 0);
         publishToNaviTargetReachedListeners();
-        is_position_idle_ = true;
+        action_in_progress_ = idle;
         std::cout << "navi:: target reached" << std::endl;
-        is_idle_ = true;
         return;
     }
 
@@ -132,7 +131,7 @@ void Navi::computeRotationSpeed(const double robot_orientation, const double tar
         std::cout << "angle target reached" << std::endl;
         publishToNaviSpeedRequestListeners(0, 0, 0);
         publishToNaviTargetReachedListeners();
-        is_orientation_idle_ = true;
+        action_in_progress_ = idle;
         return;
     }
 

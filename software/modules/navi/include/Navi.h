@@ -7,18 +7,7 @@
 #include <memory>
 
 #include "INaviRequestListener.h"
-//#include "NaviRegulator.h"
-//#include "NaviStateMachine.h"
 #include "NaviUtils.h"
-/*
-struct RobotBaseSpeed
-{
-    RobotBaseSpeed(float v_x_mps,float v_y_mps,float omega_radps) :
-            v_x_mps_(v_x_mps),
-            v_y_mps_(v_y_mps),
-            omega_radps_(omega_radps) {};
-    float v_x_mps_, v_y_mps_, omega_radps_;
-};*/
 
 class Navi {
    public:
@@ -48,8 +37,10 @@ class Navi {
     pos_info actual_robot_position_;
     std::shared_ptr<spdlog::logger> logger_;
     std::vector<std::weak_ptr<INaviRequestListener>> navi_listeners_;
-    bool is_position_idle_ = true;
-    bool is_orientation_idle_ = true;
+    // bool is_position_idle_ = true;
+    // bool is_orientation_idle_ = true;
+    enum action_in_progress { position, rotation, idle };
+    action_in_progress action_in_progress_ = idle;
 };
 
 #endif  // COUSCOUS_NAVI_H
