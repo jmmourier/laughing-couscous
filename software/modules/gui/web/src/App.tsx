@@ -36,13 +36,11 @@ const App: FunctionComponent = () => {
     ),
   ];
 
-  const [
-    selectedPosition,
-    setSelectedPosition,
-  ] = useState<stateProvider.IPosition>({
-    x_m: 0,
-    y_m: 0,
-  });
+  const [selectedPosition, setSelectedPosition] =
+    useState<stateProvider.IPosition>({
+      x_m: 0,
+      y_m: 0,
+    });
   const [selectedOrientation, setSelectedOrientation] = useState<number>(0);
 
   return (
@@ -51,7 +49,7 @@ const App: FunctionComponent = () => {
         <Arena onPositionSelected={setSelectedPosition} />
       </div>
       <div className={"flex-1 rounded-xl flex flex-col gap-4"}>
-        <Block title="position">
+        {/* <Block title="position">
           <table className="table-auto w-full whitespace-no-wrap table-striped relative">
             <tbody>
               {rows.map((row, index) => (
@@ -70,7 +68,7 @@ const App: FunctionComponent = () => {
               ))}
             </tbody>
           </table>
-        </Block>
+        </Block> */}
         <Block title="set position">
           <div className="flex">
             <div className="p-4">
