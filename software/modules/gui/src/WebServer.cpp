@@ -30,6 +30,10 @@ void WebServer::setPosition(const PositionOrientation &position_orientation) {
     web_position_service_.setPosition(position_orientation);
 }
 
+void WebServer::setBattery(const float &battery_v) {
+    web_position_service_.setBattery(battery_v);
+}
+
 void WebServer::stop() {
     server_->Shutdown();
 }

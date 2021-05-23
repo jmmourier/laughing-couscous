@@ -9,7 +9,9 @@
 
 const int INTERVAL_SENDING_POSITION_REFRESH_MS = 20;
 
-WebPositionService::WebPositionService() : position_orientation_(PositionOrientation(0, 0, 0)) {}
+WebPositionService::WebPositionService()
+    : position_orientation_(PositionOrientation(0, 0, 0)),
+      battery_v_(0) {}
 
 void WebPositionService::registerWebServerRequestListener(
     const std::weak_ptr<IWebServerRequestListener> &webserver_listener) {
@@ -64,7 +66,7 @@ void WebPositionService::publishToWebServerTargetOrientationListeners(
 
 ::grpc::Status WebPositionService::setAbsolutePositionRequest(
     ::grpc::ServerContext *context,
-    const ::web_service::PositionOrientationRequest *request,
+    const ::web_service::RobotDataRequest *request,
     ::web_service::Empty *response) {
     const PositionOrientation position_orientation(
         request->pos_x_m(),
@@ -94,24 +96,25 @@ void WebPositionService::publishToWebServerTargetOrientationListeners(
     return ::grpc::Status::OK;
 }
 
-::grpc::Status WebPositionService::registerPositionObserver(
+::grpc::Status WebPositionService::registerRobotDataObserver(
     ::grpc::ServerContext *context,
     const ::web_service::Empty *request,
-    ::grpc::ServerWriter<::web_service::PositionOrientationRequest> *writer) {
-    web_service::PositionOrientationRequest position_orientation_request;
+    ::grpc::ServerWriter<::web_service::RobotDataRequest> *writer) {
+    web_service::RobotDataRequest robot_data_request;
 
     while (true) {
-        position_orientation_request.set_pos_x_m(position_orientation_.x_m_);
-        position_orientation_request.set_pos_y_m(position_orientation_.y_m_);
-        position_orientation_request.set_orientation_rad(position_orientation_.orientation_rad_);
+        robot_data_request.set_pos_x_m(position_orientation_.x_m_);
+        robot_data_request.set_pos_y_m(position_orientation_.y_m_);
+        robot_data_request.set_orientation_rad(position_orientation_.orientation_rad_);
+        robot_data_request.set_battery_v(battery_v_);
 
-        writer->Write(position_orientation_request);
+        writer->Write(robot_data_request);
 
         std::this_thread::sleep_for(
             std::chrono::milliseconds(INTERVAL_SENDING_POSITION_REFRESH_MS));
     }
     return ::grpc::Status::OK;
-}
+};
 
 void WebPositionService::setPosition(const PositionOrientation &position_orientation) {
     position_orientation_ = position_orientation;
@@ -120,4 +123,8 @@ void WebPositionService::setPosition(const PositionOrientation &position_orienta
 void WebPositionService::setSpeed(const int &motor1, const int &motor2) const {
     std::cout << motor1 << " " << motor2 << std::endl;
     publishToWebServerSpeedRequestListeners(motor1, motor2);
+}
+
+void WebPositionService::setBattery(const float &battery_v) {
+    battery_v_ = battery_v;
 }

@@ -23,6 +23,7 @@ class WebServer {
     void stop();
 
     void setPosition(const PositionOrientation &position_orientation);
+    void setBattery(const float &battery_v);
 
     // void setSpeed(const int &motor1, const int &motor2);
 

@@ -97,11 +97,18 @@ void CouscousManager::onNaviSpeedRequest(
 void CouscousManager::start() {
     hali_thread_ = std::thread([&] { hali_->updater(); });
 
+    long rounds = 0;
+
     while (true) {
         auto encoders_motor1 = hali_->getEncoder(MotorIdEnum::motor1);
         auto encoders_motor2 = hali_->getEncoder(MotorIdEnum::motor2);
 
         posi_->updatePosition(encoders_motor1, encoders_motor2);
+
+        if (rounds % INTERVAL_REFRESH_BATTERY_MS == 0) {
+            web_server_->setBattery(static_cast<float>(hali_->getBatteryVoltage()) / 10);
+        }
+
         std::this_thread::sleep_for(std::chrono::milliseconds(INTERVAL_REFRESH_MS));
     }
     web_server_thread_.join();

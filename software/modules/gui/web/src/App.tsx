@@ -13,7 +13,7 @@ function createData(name: string, value: number) {
 
 const App: FunctionComponent = () => {
   const {
-    state: { robotPosition },
+    state: { robotData },
     proxy,
   } = useContext(stateProvider.context);
 
@@ -24,15 +24,15 @@ const App: FunctionComponent = () => {
   const rows = [
     createData(
       "Absolute position X",
-      Math.round(robotPosition.x_m * ROUND_RATIO) / ROUND_RATIO
+      Math.round(robotData.x_m * ROUND_RATIO) / ROUND_RATIO
     ),
     createData(
       "Absolute position Y",
-      Math.round(robotPosition.y_m * ROUND_RATIO) / ROUND_RATIO
+      Math.round(robotData.y_m * ROUND_RATIO) / ROUND_RATIO
     ),
     createData(
       "Absolute angle (radian)",
-      Math.round(robotPosition.orientation_rad * ROUND_RATIO) / ROUND_RATIO
+      Math.round(robotData.orientation_rad * ROUND_RATIO) / ROUND_RATIO
     ),
   ];
 
@@ -79,9 +79,9 @@ const App: FunctionComponent = () => {
                   e.preventDefault();
                   communicationProviderDispatch({
                     type: communicationProvider.Action.SET_ABSOLUTE_POSITION,
-                    position: {
-                      ...selectedPosition,
-                      orientation_rad: robotPosition.orientation_rad,
+                    robotData: {
+                      ...robotData,
+                      orientation_rad: robotData.orientation_rad,
                     },
                   });
                 }}

@@ -136,24 +136,20 @@ const Arena: FunctionComponent<IArena> = ({ onPositionSelected }) => {
 
         <UnitLabel
           label="X"
-          value={
-            Math.round(state.robotPosition.x_m * ROUND_RATIO) / ROUND_RATIO
-          }
+          value={Math.round(state.robotData.x_m * ROUND_RATIO) / ROUND_RATIO}
           x={ARENA_WIDTH - 0.2}
           y={ARENA_HEIGHT - 0.2}
         />
         <UnitLabel
           label="Y"
-          value={
-            Math.round(state.robotPosition.y_m * ROUND_RATIO) / ROUND_RATIO
-          }
+          value={Math.round(state.robotData.y_m * ROUND_RATIO) / ROUND_RATIO}
           x={ARENA_WIDTH - 0.2}
           y={ARENA_HEIGHT - 0.15}
         />
         <UnitLabel
           label="Orientation"
           value={
-            Math.round(state.robotPosition.orientation_rad * ROUND_RATIO) /
+            Math.round(state.robotData.orientation_rad * ROUND_RATIO) /
             ROUND_RATIO
           }
           x={ARENA_WIDTH - 0.2}
@@ -161,7 +157,7 @@ const Arena: FunctionComponent<IArena> = ({ onPositionSelected }) => {
         />
         <UnitLabel
           label="Battery"
-          value={12}
+          value={Math.round(state.robotData.battery_v)}
           x={ARENA_WIDTH - 0.2}
           y={ARENA_HEIGHT - 0.05}
         />

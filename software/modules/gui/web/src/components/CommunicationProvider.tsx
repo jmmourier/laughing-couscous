@@ -2,7 +2,7 @@ import { PositionPromiseClient } from "generated_grpc_sources/robot_grpc_web_pb"
 import {
   Empty,
   OrientationRequest,
-  PositionOrientationRequest,
+  RobotDataRequest,
   PositionRequest,
   SpeedRequest,
 } from "generated_grpc_sources/robot_pb";
@@ -22,7 +22,7 @@ type IState = {};
 type IAction =
   | {
       type: Action.SET_ABSOLUTE_POSITION;
-      position: stateProvider.IPositionOrientation;
+      robotData: stateProvider.IRobotData;
     }
   | {
       type: Action.SET_TARGET_POSITION;
@@ -58,13 +58,11 @@ const reducer: Reducer<IState, IAction> = async (
 ) => {
   switch (action.type) {
     case Action.SET_ABSOLUTE_POSITION: {
-      const positionOrientationRequest = new PositionOrientationRequest();
-      positionOrientationRequest.setPosXM(action.position.x_m);
-      positionOrientationRequest.setPosYM(action.position.y_m);
-      positionOrientationRequest.setOrientationRad(
-        action.position.orientation_rad
-      );
-      await client.setAbsolutePositionRequest(positionOrientationRequest);
+      const robotDataRequest = new RobotDataRequest();
+      robotDataRequest.setPosXM(action.robotData.x_m);
+      robotDataRequest.setPosYM(action.robotData.y_m);
+      robotDataRequest.setOrientationRad(action.robotData.orientation_rad);
+      await client.setAbsolutePositionRequest(robotDataRequest);
       return { ...state };
     }
     case Action.SET_TARGET_POSITION: {
@@ -119,17 +117,15 @@ const CommunicationProvider: FunctionComponent<ICommunicationProvider> = ({
   const stateContext = useContext(stateProvider.context);
 
   useEffect(() => {
-    const position_stream = client.registerPositionObserver(new Empty());
-    position_stream.on(
-      "data",
-      (positionOrientationRequest: PositionOrientationRequest) => {
-        stateContext.proxy.setRobotPosition({
-          x_m: positionOrientationRequest.getPosXM(),
-          y_m: positionOrientationRequest.getPosYM(),
-          orientation_rad: positionOrientationRequest.getOrientationRad(),
-        });
-      }
-    );
+    const position_stream = client.registerRobotDataObserver(new Empty());
+    position_stream.on("data", (robotDataRequest: RobotDataRequest) => {
+      stateContext.proxy.setRobotPosition({
+        x_m: robotDataRequest.getPosXM(),
+        y_m: robotDataRequest.getPosYM(),
+        orientation_rad: robotDataRequest.getOrientationRad(),
+        battery_v: robotDataRequest.getBatteryV(),
+      });
+    });
   }, [stateContext.proxy]);
 
   // type: stateProvider.ActionEnum.UPDATE_POSITION,
