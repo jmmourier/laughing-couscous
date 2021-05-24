@@ -10,12 +10,12 @@ void Grabber::init(){
 }
 
 void Grabber::open(){
-	servo_.write(100);
+	servo_.write(155);
 	grabber_state_ = grabberOpened;
 }
 
 void Grabber::close(){
-	servo_.write(120);
+	servo_.write(80);
 	grabber_state_ = grabberClosed;
 }
 
