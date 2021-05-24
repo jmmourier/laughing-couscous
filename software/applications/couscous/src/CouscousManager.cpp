@@ -2,6 +2,7 @@
 #include "CouscousManager.h"
 
 #include "IHali.h"
+#include "IHaliListener.h"
 #include "Posi.h"
 
 CouscousManager::CouscousManager(
@@ -43,8 +44,9 @@ void CouscousManager::onPositionChanged(const PositionOrientation &position_orie
     } else if (nextAction.type == GRABBER) {
         std::cout << "[Missi]:grabber  : " << nextAction.grabber_state << std::endl;
         // define how this is read
-        GrabberState grabber_state =
-            (nextAction.grabber_state.compare("open") == 0) ? grabberOpen : grabberClose;
+        IHaliListener::GrabberState grabber_state = (nextAction.grabber_state.compare("open") == 0)
+                                                        ? IHaliListener::GrabberState::grabberOpen
+                                                        : IHaliListener::GrabberState::grabberClose;
         hali_->setGrabber(grabber_state);
     } else if (nextAction.type == TURN) {
         std::cout << "[Missi]:turning " << nextAction.angle << std::endl;
