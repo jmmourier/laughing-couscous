@@ -105,9 +105,11 @@ void CouscousManager::start() {
 
         posi_->updatePosition(encoders_motor1, encoders_motor2);
 
-        if (rounds % INTERVAL_REFRESH_BATTERY_MS == 0) {
+        if (rounds % (INTERVAL_REFRESH_BATTERY_MS / INTERVAL_REFRESH_MS) == 0) {
             web_server_->setBattery(static_cast<float>(hali_->getBatteryVoltage()) / 10);
         }
+
+        rounds++;
 
         std::this_thread::sleep_for(std::chrono::milliseconds(INTERVAL_REFRESH_MS));
     }
