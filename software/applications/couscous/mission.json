@@ -1,40 +1,21 @@
 {
-  "01_go_to_center" :{
+  "01_ini_position" :{
     "actionType": "move",
-    "target_x": 1.0,
-    "target_y": 0.0,
+    "target_x": 0.3,
+    "target_y": 1.6,
     "timeout": 20
   },
-  "02_open_grabber_1" :{
-    "actionType": "grabber",
-    "grabber_state" : "open",
-    "timeout": 1
-  },
-  "03_move_first_balise" :{
+
+  "02_exit_start_area":{
     "actionType": "move",
-    "arguments": "dummy argument 3",
-    "target_x": 1.2,
-    "target_y": 0.0,
+    "target_x": 0.7,
+    "target_y": 1.485,
     "timeout": 20
   },
-  "04_close_grabber_1" :{
-    "actionType": "grabber",
-    "grabber_state" : "close",
-    "timeout": 1
-  },
-  "05_wait_for_no_reason" :{
-    "actionType": "wait",
-    "timeout": 4
-  },
-  "10_turn" :{
+
+  "03_align_to_green_cup":{
     "actionType": "turn",
-    "angle": 0.2,
+    "angle": 3.14,
     "timeout": 3
-  },
-  "11_go_home" :{
-    "actionType": "move",
-    "target_x": 0.0,
-    "target_y": 0.0,
-    "timeout": 20
   }
 }
