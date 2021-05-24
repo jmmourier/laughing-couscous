@@ -79,6 +79,10 @@ void CouscousManager::onWebServerTargetOrientationRequest(const float &orientati
     navi_->setTargetOrientation(orientation_rad);
 };
 
+void CouscousManager::onGrabberStateChanged(const GrabberState &graberState) {
+    web_server_->setGrabberState(graberState == GrabberState::grabberOpen);
+};
+
 void CouscousManager::onNaviTargetReachedRequest(void) {
     Action current_action = missi_->getCurrentAction();
     if (current_action.type == MOVE) {
