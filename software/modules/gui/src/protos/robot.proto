@@ -13,10 +13,11 @@ message OrientationRequest {
   float orientation_rad = 1;
 }
 
-message PositionOrientationRequest {
+message RobotDataRequest {
   float pos_x_m = 1;
   float pos_y_m = 2;
   float orientation_rad = 3;
+  float battery_v = 4;
 }
 
 message SpeedRequest {
@@ -26,8 +27,8 @@ message SpeedRequest {
 
 service Position{
   rpc setSpeedRequest(SpeedRequest) returns (Empty) {}
-  rpc setAbsolutePositionRequest(PositionOrientationRequest) returns (Empty) {}
+  rpc setAbsolutePositionRequest(RobotDataRequest) returns (Empty) {}
   rpc setTargetPositionRequest(PositionRequest) returns (Empty) {}
   rpc setTargetOrientationRequest(OrientationRequest) returns (Empty) {}
-  rpc registerPositionObserver(Empty) returns (stream PositionOrientationRequest) {}
+  rpc registerRobotDataObserver(Empty) returns (stream RobotDataRequest) {}
 }

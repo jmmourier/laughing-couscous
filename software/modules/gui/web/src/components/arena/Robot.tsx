@@ -12,10 +12,10 @@ const Robot: FunctionComponent = () => {
 
   return (
     <g
-      transform={`translate(${state.robotPosition.x_m},${
-        ARENA_HEIGHT - state.robotPosition.y_m
+      transform={`translate(${state.robotData.x_m},${
+        ARENA_HEIGHT - state.robotData.y_m
       })
-      rotate(${(-state.robotPosition.orientation_rad * 180) / Math.PI})`}
+      rotate(${(-state.robotData.orientation_rad * 180) / Math.PI})`}
     >
       <rect
         x={-WHEEL_RADIUS_M}

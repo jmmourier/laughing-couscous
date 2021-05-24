@@ -11,22 +11,24 @@ export type IPosition = {
   y_m: number;
 };
 
-export type IPositionOrientation = {
+export type IRobotData = {
   x_m: number;
   y_m: number;
   orientation_rad: number;
+  battery_v: number;
 };
 
 interface IState {
-  robotPosition: IPositionOrientation;
+  robotData: IRobotData;
   targetPosition?: IPosition;
 }
 
 const defaultState: IState = {
-  robotPosition: {
+  robotData: {
     x_m: 0,
     y_m: 0,
     orientation_rad: 0,
+    battery_v: 0,
   },
 };
 
@@ -39,7 +41,7 @@ enum Action {
 }
 
 interface IProxy {
-  setRobotPosition: (robotPosition: IPositionOrientation) => void;
+  setRobotPosition: (robotPosition: IRobotData) => void;
   setTargetPosition: (targetPosition: IPosition) => void;
   removeTargetPosition: () => void;
 }
@@ -75,10 +77,10 @@ const StateProvider: FunctionComponent<IStateProvider> = ({
 
   const proxy: IProxy = useMemo(
     () => ({
-      setRobotPosition: (robotPosition: IPositionOrientation) =>
+      setRobotPosition: (robotPosition: IRobotData) =>
         setState((previousState) => ({
           ...previousState,
-          robotPosition,
+          robotData: robotPosition,
         })),
       setTargetPosition: (targetPosition: IPosition) =>
         setState((previousState) => ({

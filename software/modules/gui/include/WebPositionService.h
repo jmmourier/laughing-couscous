@@ -24,14 +24,14 @@ class WebPositionService final : public web_service::Position::Service {
         const ::web_service::SpeedRequest *request,
         ::web_service::Empty *response) override;
 
-    ::grpc::Status registerPositionObserver(
+    ::grpc::Status registerRobotDataObserver(
         ::grpc::ServerContext *context,
         const ::web_service::Empty *request,
-        ::grpc::ServerWriter<::web_service::PositionOrientationRequest> *writer) override;
+        ::grpc::ServerWriter<::web_service::RobotDataRequest> *writer) override;
 
     ::grpc::Status setAbsolutePositionRequest(
         ::grpc::ServerContext *context,
-        const ::web_service::PositionOrientationRequest *request,
+        const ::web_service::RobotDataRequest *request,
         ::web_service::Empty *response) override;
 
     ::grpc::Status setTargetPositionRequest(
@@ -46,9 +46,11 @@ class WebPositionService final : public web_service::Position::Service {
 
     void setPosition(const PositionOrientation &position_orientation);
     void setSpeed(const int &motor1, const int &motor2) const;
+    void setBattery(const float &battery_v);
 
    private:
     PositionOrientation position_orientation_;
+    float battery_v_;
     std::vector<std::weak_ptr<IWebServerRequestListener>> webserver_listeners_;
 };
 

@@ -14,7 +14,8 @@ import Target from "./Target";
 
 const ARENA_HEIGHT = 2;
 const ARENA_WIDTH = 3;
-
+const ROUND_RATIO = 1000;
+const LABEL_FONT_SIZE = 0.05;
 interface IArena {
   onPositionSelected(position: stateProvider.IPosition): void;
 }
@@ -34,6 +35,35 @@ const getRatioPixelToMeter = (areaSize: ISize): number => {
   );
   return meterAreaDiagonal / pixelAreaDiagonal;
 };
+
+const UnitLabel: FunctionComponent<{
+  label: string;
+  value: number;
+  x: number;
+  y: number;
+}> = ({ label, value, x, y }) => (
+  <g>
+    <text
+      fontWeight={"bold"}
+      className={"fill-current text-gray-700"}
+      fontSize={LABEL_FONT_SIZE}
+      textAnchor={"end"}
+      x={x}
+      y={y}
+    >
+      {label + ":"}
+    </text>
+    <text
+      className={"fill-current text-gray-700"}
+      fontSize={LABEL_FONT_SIZE}
+      textAnchor={"end"}
+      x={x + 0.15}
+      y={y}
+    >
+      {value}
+    </text>
+  </g>
+);
 
 const Arena: FunctionComponent<IArena> = ({ onPositionSelected }) => {
   const [areaSize, setAreaSize] = useState<ISize>({ width: 0, height: 0 });
@@ -103,6 +133,34 @@ const Arena: FunctionComponent<IArena> = ({ onPositionSelected }) => {
             y_m={state.targetPosition.y_m}
           />
         )}
+
+        <UnitLabel
+          label="X"
+          value={Math.round(state.robotData.x_m * ROUND_RATIO) / ROUND_RATIO}
+          x={ARENA_WIDTH - 0.2}
+          y={ARENA_HEIGHT - 0.2}
+        />
+        <UnitLabel
+          label="Y"
+          value={Math.round(state.robotData.y_m * ROUND_RATIO) / ROUND_RATIO}
+          x={ARENA_WIDTH - 0.2}
+          y={ARENA_HEIGHT - 0.15}
+        />
+        <UnitLabel
+          label="Orientation"
+          value={
+            Math.round(state.robotData.orientation_rad * ROUND_RATIO) /
+            ROUND_RATIO
+          }
+          x={ARENA_WIDTH - 0.2}
+          y={ARENA_HEIGHT - 0.1}
+        />
+        <UnitLabel
+          label="Battery"
+          value={Math.round(state.robotData.battery_v)}
+          x={ARENA_WIDTH - 0.2}
+          y={ARENA_HEIGHT - 0.05}
+        />
       </g>
     </svg>
   );

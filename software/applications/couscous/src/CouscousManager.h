@@ -36,6 +36,7 @@ class CouscousManager : public IPositionListener,
 
    private:
     const int INTERVAL_REFRESH_MS = 50;
+    const int INTERVAL_REFRESH_BATTERY_MS = 1000;
     std::shared_ptr<Posi> posi_;
     std::shared_ptr<IHali> hali_;
     std::shared_ptr<WebServer> web_server_;

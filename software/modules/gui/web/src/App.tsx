@@ -13,7 +13,7 @@ function createData(name: string, value: number) {
 
 const App: FunctionComponent = () => {
   const {
-    state: { robotPosition },
+    state: { robotData },
     proxy,
   } = useContext(stateProvider.context);
 
@@ -24,25 +24,23 @@ const App: FunctionComponent = () => {
   const rows = [
     createData(
       "Absolute position X",
-      Math.round(robotPosition.x_m * ROUND_RATIO) / ROUND_RATIO
+      Math.round(robotData.x_m * ROUND_RATIO) / ROUND_RATIO
     ),
     createData(
       "Absolute position Y",
-      Math.round(robotPosition.y_m * ROUND_RATIO) / ROUND_RATIO
+      Math.round(robotData.y_m * ROUND_RATIO) / ROUND_RATIO
     ),
     createData(
       "Absolute angle (radian)",
-      Math.round(robotPosition.orientation_rad * ROUND_RATIO) / ROUND_RATIO
+      Math.round(robotData.orientation_rad * ROUND_RATIO) / ROUND_RATIO
     ),
   ];
 
-  const [
-    selectedPosition,
-    setSelectedPosition,
-  ] = useState<stateProvider.IPosition>({
-    x_m: 0,
-    y_m: 0,
-  });
+  const [selectedPosition, setSelectedPosition] =
+    useState<stateProvider.IPosition>({
+      x_m: 0,
+      y_m: 0,
+    });
   const [selectedOrientation, setSelectedOrientation] = useState<number>(0);
 
   return (
@@ -51,7 +49,7 @@ const App: FunctionComponent = () => {
         <Arena onPositionSelected={setSelectedPosition} />
       </div>
       <div className={"flex-1 rounded-xl flex flex-col gap-4"}>
-        <Block title="position">
+        {/* <Block title="position">
           <table className="table-auto w-full whitespace-no-wrap table-striped relative">
             <tbody>
               {rows.map((row, index) => (
@@ -70,7 +68,7 @@ const App: FunctionComponent = () => {
               ))}
             </tbody>
           </table>
-        </Block>
+        </Block> */}
         <Block title="set position">
           <div className="flex">
             <div className="p-4">
@@ -81,9 +79,9 @@ const App: FunctionComponent = () => {
                   e.preventDefault();
                   communicationProviderDispatch({
                     type: communicationProvider.Action.SET_ABSOLUTE_POSITION,
-                    position: {
-                      ...selectedPosition,
-                      orientation_rad: robotPosition.orientation_rad,
+                    robotData: {
+                      ...robotData,
+                      orientation_rad: robotData.orientation_rad,
                     },
                   });
                 }}
