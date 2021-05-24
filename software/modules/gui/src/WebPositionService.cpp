@@ -11,7 +11,8 @@ const int INTERVAL_SENDING_POSITION_REFRESH_MS = 20;
 
 WebPositionService::WebPositionService()
     : position_orientation_(PositionOrientation(0, 0, 0)),
-      battery_v_(0) {}
+      battery_v_(0),
+      is_grabber_open_(true) {}
 
 void WebPositionService::registerWebServerRequestListener(
     const std::weak_ptr<IWebServerRequestListener> &webserver_listener) {
@@ -127,4 +128,8 @@ void WebPositionService::setSpeed(const int &motor1, const int &motor2) const {
 
 void WebPositionService::setBattery(const float &battery_v) {
     battery_v_ = battery_v;
+}
+
+void WebPositionService::setGrabberState(const bool &is_grabber_open) {
+    is_grabber_open_ = is_grabber_open;
 }
