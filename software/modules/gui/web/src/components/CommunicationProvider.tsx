@@ -124,6 +124,7 @@ const CommunicationProvider: FunctionComponent<ICommunicationProvider> = ({
         y_m: robotDataRequest.getPosYM(),
         orientation_rad: robotDataRequest.getOrientationRad(),
         battery_v: robotDataRequest.getBatteryV(),
+        is_grabber_open: robotDataRequest.getIsGrabberOpen(),
       });
     });
   }, [stateContext.proxy]);
