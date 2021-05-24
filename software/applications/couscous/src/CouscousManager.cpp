@@ -51,7 +51,7 @@ void CouscousManager::onPositionChanged(const PositionOrientation &position_orie
     } else if (nextAction.type == TURN) {
         std::cout << "[Missi]:turning " << nextAction.angle << std::endl;
         // TODO this need to be implemented
-        // navi_->setTargetRotation(nextAction.angle);
+        navi_->setTargetOrientation(nextAction.angle);
     } else if (nextAction.type == UNKNOWN) {
         std::cout << "[Missi]:unknow action" << missi_->actionTypeToString(nextAction.type)
                   << std::endl;
@@ -85,7 +85,7 @@ void CouscousManager::onGrabberStateChanged(const GrabberState &graberState) {
 
 void CouscousManager::onNaviTargetReachedRequest(void) {
     Action current_action = missi_->getCurrentAction();
-    if (current_action.type == MOVE) {
+    if (current_action.type == MOVE || current_action.type == TURN) {
         missi_->actionHasBeenDone();
     }
 }
