@@ -34,6 +34,10 @@ void WebServer::setBattery(const float &battery_v) {
     web_position_service_.setBattery(battery_v);
 }
 
+void WebServer::setGrabberState(const bool &is_grabber_open) {
+    web_position_service_.setGrabberState(is_grabber_open);
+}
+
 void WebServer::stop() {
     server_->Shutdown();
 }

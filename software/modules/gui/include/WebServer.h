@@ -24,6 +24,7 @@ class WebServer {
 
     void setPosition(const PositionOrientation &position_orientation);
     void setBattery(const float &battery_v);
+    void setGrabberState(const bool &is_grabber_open);
 
     // void setSpeed(const int &motor1, const int &motor2);
 
