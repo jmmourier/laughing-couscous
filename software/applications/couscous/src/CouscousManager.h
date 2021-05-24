@@ -4,6 +4,7 @@
 #include <thread>
 
 #include "IHali.h"
+#include "IHaliListener.h"
 #include "IPositionListener.h"
 #include "IWebServerRequestListener.h"
 #include "Missi.h"
@@ -13,7 +14,8 @@
 #include "WebServer.h"
 class CouscousManager : public IPositionListener,
                         public IWebServerRequestListener,
-                        public INaviRequestListener {
+                        public INaviRequestListener,
+                        public IHaliListener {
    public:
     explicit CouscousManager(
         const std::shared_ptr<IHali> &hali,
@@ -33,6 +35,7 @@ class CouscousManager : public IPositionListener,
     void onNaviTargetReachedRequest(void) override;
     void onNaviSpeedRequest(const float &v_x_mps, const float &v_y_mps, const float &omega_radps)
         override;
+    void onGrabberStateChanged(const GrabberState &graberState) override;
 
    private:
     const int INTERVAL_REFRESH_MS = 50;

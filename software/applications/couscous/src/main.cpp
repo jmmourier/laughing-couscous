@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
     posi->registerPositionListener(couscous_manager);
     web_server->registerWebServerRequestListener(couscous_manager);
     navi->registerNaviRequestListener(couscous_manager);
+    hali->registerHaliListener(couscous_manager);
     couscous_manager->start();
     return 0;
 }
