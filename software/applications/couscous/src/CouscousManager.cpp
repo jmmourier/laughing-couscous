@@ -141,8 +141,8 @@ void CouscousManager::start() {
 
             // Setting starting position according to robot's color
             posi_->setPosition(
-                robot_color == RobotColor::YELLOW ? PositionOrientation(0.2, 1.2, 0)
-                                                  : PositionOrientation(2.8, 1.2, M_PI));
+                robot_color == RobotColor::YELLOW ? PositionOrientation(2.8, 1.2, M_PI)
+                                                  : PositionOrientation(0.2, 1.2, 0));
             is_robot_ready_ = true;
         }
 
