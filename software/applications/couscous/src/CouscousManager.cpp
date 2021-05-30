@@ -1,10 +1,13 @@
 
 #include "CouscousManager.h"
 
-#include "Action.h"
+#include <atomic>
+#include <cmath>
+
 #include "IHali.h"
 #include "IHaliListener.h"
 #include "Posi.h"
+#include "PositionOrientation.h"
 
 CouscousManager::CouscousManager(
     const std::shared_ptr<IHali> &hali,
@@ -16,17 +19,18 @@ CouscousManager::CouscousManager(
       posi_(posi),
       navi_(navi),
       web_server_(web_server),
-      missi_(missi) {
+      missi_(missi),
+      is_robot_ready_(false) {
     web_server_thread_ = std::thread([&] { web_server_->start(); });
-
-    // note : the file mission.json shall be present on the same path the app is executed
-    missi->loadMissionFile();
 
     // this is temporary and shall be replaced by a a listener on the strart button on the robot
     missi_->actionHasBeenDone();
 }
 
 void CouscousManager::onPositionChanged(const PositionOrientation &position_orientation) {
+    if (!is_robot_ready_) {
+        return;
+    }
     web_server_->setPosition(position_orientation);
 
     navi_->setCurrentPosition(
@@ -111,16 +115,36 @@ void CouscousManager::start() {
     long rounds = 0;
 
     while (true) {
-        auto encoders_motor1 = hali_->getEncoder(MotorIdEnum::motor1);
-        auto encoders_motor2 = hali_->getEncoder(MotorIdEnum::motor2);
+        if (is_robot_ready_) {
+            auto encoders_motor1 = hali_->getEncoder(MotorIdEnum::motor1);
+            auto encoders_motor2 = hali_->getEncoder(MotorIdEnum::motor2);
 
-        posi_->updatePosition(encoders_motor1, encoders_motor2);
+            posi_->updatePosition(encoders_motor1, encoders_motor2);
 
-        if (rounds % (INTERVAL_REFRESH_BATTERY_MS / INTERVAL_REFRESH_MS) == 0) {
-            web_server_->setBattery(static_cast<float>(hali_->getBatteryVoltage()) / 10);
+            if (rounds % (INTERVAL_REFRESH_BATTERY_MS / INTERVAL_REFRESH_MS) == 0) {
+                web_server_->setBattery(static_cast<float>(hali_->getBatteryVoltage()) / 10);
+            }
+
+            rounds++;
+        } else if (hali_->isRobotStarted()) {
+            IHaliListener::RobotColor robot_color =
+                hali_->getSwitch(SwitchId::switch1) ? RobotColor::YELLOW : RobotColor::BLUE;
+
+            // Setting mission file according to robot's color
+            std::string mission_file = std::string(std::getenv("MISSION_PATH")).append("/");
+            missi_->setMissionFilePath(
+                robot_color == RobotColor::YELLOW ? mission_file.append("mission_yellow.json")
+                                                  : mission_file.append("mission_blue.json"));
+
+            // note : the file mission.json shall be present on the same path the app is executed
+            missi_->loadMissionFile();
+
+            // Setting starting position according to robot's color
+            posi_->setPosition(
+                robot_color == RobotColor::YELLOW ? PositionOrientation(0.2, 1.2, 0)
+                                                  : PositionOrientation(2.8, 1.2, M_PI));
+            is_robot_ready_ = true;
         }
-
-        rounds++;
 
         std::this_thread::sleep_for(std::chrono::milliseconds(INTERVAL_REFRESH_MS));
     }

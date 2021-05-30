@@ -1,0 +1,7 @@
+{
+  "01_go_down": {
+    "actionType": "move",
+    "target_x": 1.5,
+    "target_y": 0.5
+  }
+}
