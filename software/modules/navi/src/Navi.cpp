@@ -61,6 +61,15 @@ int Navi::setTargetOrientation(const float &orientation_rad) {
     return 0;
 }
 
+int Navi::setBackwardDistance(const double &dist) {
+    backward_dist_ = dist;
+    current_pos_before_backward_move_.pos_x = actual_robot_position_.pos_x;
+    current_pos_before_backward_move_.pos_y = actual_robot_position_.pos_y;
+    action_in_progress_ = backward;
+    SPDLOG_LOGGER_INFO(logger_, "[Navi] set backwared position dist:{}", backward_dist_);
+    return 0;
+}
+
 int Navi::setCurrentPosition(
     const double &new_rob_pos_x,
     const double &new_rob_pos_y,
@@ -76,6 +85,9 @@ int Navi::setCurrentPosition(
             break;
         case rotation:
             computeRotationSpeed(new_rob_orientation, target_position_.orientation);
+            break;
+        case backward:
+            computeBackwardSpeed(actual_robot_position_, current_pos_before_backward_move_);
             break;
     }
     return 0;
@@ -144,4 +156,27 @@ void Navi::computeRotationSpeed(const double robot_orientation, const double tar
         "[Navi] robot orientation:{} error cap:{}rad ",
         robot_orientation,
         errorCap);
+}
+
+/*
+dist
+prev_pos, actual_pos
+
+*/
+void Navi::computeBackwardSpeed(
+    const pos_info &current_robot_pos,
+    const pos_info &previous_robot_pos) {
+    double distance_to_target =
+        backward_dist_ - getDistanceToTarget(current_robot_pos, previous_robot_pos);
+    double speed = 0;
+    if (std::abs(distance_to_target) < TARGET_REACHED_DISTANCE) {
+        speed = 0;
+        publishToNaviSpeedRequestListeners(0, 0, 0);
+        publishToNaviTargetReachedListeners();
+        action_in_progress_ = idle;
+        SPDLOG_LOGGER_INFO(logger_, "[Navi] target reached");
+        return;
+    }
+
+    publishToNaviSpeedRequestListeners(-MAX_SPEED, 0, 0);
 }
