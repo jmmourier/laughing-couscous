@@ -8,6 +8,7 @@ import useWindow from "../../hooks/window";
 import { ISize } from "../../interfaces/size";
 import * as stateProvider from "../StateProvider";
 import { context } from "../StateProvider";
+import Buoy, { BuoyColor, buoyList } from "./Buoy";
 import PositionIndicator from "./PositionIndicator";
 import Robot from "./Robot";
 import Target from "./Target";
@@ -161,6 +162,9 @@ const Arena: FunctionComponent<IArena> = ({ onPositionSelected }) => {
           x={ARENA_WIDTH - 0.2}
           y={ARENA_HEIGHT - 0.05}
         />
+        {buoyList.map((buoy) => (
+          <Buoy color={buoy.color} x={buoy.x} y={buoy.y} />
+        ))}
       </g>
     </svg>
   );

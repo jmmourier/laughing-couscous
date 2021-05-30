@@ -7,6 +7,7 @@ import {
   WHEEL_WIDTH,
 } from "../StateProvider";
 import { ARENA_HEIGHT } from "./Arena";
+import Buoy, { buoyList } from "./Buoy";
 
 const GRABBER_Y_POSITION_FROM_CENTER = 0.025;
 
