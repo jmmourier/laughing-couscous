@@ -163,8 +163,7 @@ void Navi::computeRotationSpeed(const double robot_orientation, const double tar
 void Navi::computeBackwardSpeed(
     const pos_info &current_robot_pos,
     const pos_info &previous_robot_pos) {
-    double distance_to_target =
-        backward_dist_ - getDistanceToTarget(current_robot_pos, previous_robot_pos);
+    double distance_to_target = getDistanceToTarget(current_robot_pos, previous_robot_pos);
     double speed = 0;
     SPDLOG_LOGGER_INFO(
         logger_,
@@ -172,7 +171,7 @@ void Navi::computeBackwardSpeed(
         getDistanceToTarget(current_robot_pos, previous_robot_pos),
         current_robot_pos.pos_x,
         current_robot_pos.pos_y);
-    if (std::abs(distance_to_target) < TARGET_REACHED_DISTANCE) {
+    if (std::abs(distance_to_target) > std::abs(backward_dist_ - TARGET_REACHED_DISTANCE)) {
         speed = 0;
         publishToNaviSpeedRequestListeners(0, 0, 0);
         publishToNaviTargetReachedListeners();
