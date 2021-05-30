@@ -1,6 +1,7 @@
 #ifndef COUSCOUS_MANAGER_H
 #define COUSCOUS_MANAGER_H
 
+#include <atomic>
 #include <thread>
 
 #include "IHali.h"
@@ -40,6 +41,8 @@ class CouscousManager : public IPositionListener,
    private:
     const int INTERVAL_REFRESH_MS = 50;
     const int INTERVAL_REFRESH_BATTERY_MS = 1000;
+    std::atomic<bool> is_robot_ready_;
+
     std::shared_ptr<Posi> posi_;
     std::shared_ptr<IHali> hali_;
     std::shared_ptr<WebServer> web_server_;

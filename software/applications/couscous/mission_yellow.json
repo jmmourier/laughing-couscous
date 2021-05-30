@@ -1,0 +1,7 @@
+{
+  "01_go_up": {
+    "actionType": "move",
+    "target_x": 1.5,
+    "target_y": 1.5
+  }
+}
