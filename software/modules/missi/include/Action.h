@@ -3,7 +3,7 @@
 
 #include <string>
 
-enum ActionType { WAIT, GRABBER, MOVE, TURN, UNKNOWN };
+enum ActionType { WAIT, GRABBER, MOVE, TURN, MOVE_BACKWARD, UNKNOWN };
 
 struct Action {
     ActionType type = UNKNOWN;
@@ -12,6 +12,7 @@ struct Action {
     float target_y = 0.0;
     float angle = 0.0;
     std::string grabber_state = "";
+    float backward_distance = 0.0;
     int timeout_s = 0;
 };
 
