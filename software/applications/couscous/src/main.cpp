@@ -1,14 +1,23 @@
 
+#include <cstring>
+#include <iostream>
 #include <memory>
+#include <string>
 
 #include "CouscousManager.h"
+#include "HalReal.h"
 #include "HalSimu.h"
+#include "IHali.h"
 
 int main(int argc, char *argv[]) {
     // Robot starting position
     PositionOrientation start_position_orientation(1, 1, 0);
 
-    auto hali = std::make_shared<HalSimu>();
+    std::shared_ptr<IHali> hali;
+
+    (argc > 1 && std::strcmp(argv[1], "--halreal") == 0) ? hali = std::make_shared<HalReal>()
+                                                         : hali = std::make_shared<HalSimu>();
+
     auto posi = std::make_shared<Posi>(start_position_orientation);
     auto web_server = std::make_shared<WebServer>();
 
