@@ -3,6 +3,6 @@ Description=Couscous app service
 
 [Service]
 User={{ PI_USERNAME }}
-ExecStart=/home/{{ PI_USERNAME }}/couscous_app_exe
+ExecStart=/home/{{ PI_USERNAME }}/couscous_app_exe --halreal
 Environment="MISSION_PATH=/home/{{ PI_USERNAME }}/"
 Restart=always
