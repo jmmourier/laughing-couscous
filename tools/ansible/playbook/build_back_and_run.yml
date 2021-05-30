@@ -11,5 +11,8 @@
       name: push_back
       become: true
     - include_role:
+      name: push_missions
+      become: true
+    - include_role:
       name: run
       become: true
