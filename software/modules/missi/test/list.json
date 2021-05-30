@@ -1,31 +1,37 @@
 {
-  "action1" :{
+  "action1": {
     "actionType": "wait",
     "arguments": "dummy argument 1",
     "timeout": 2
   },
-  "action2" :{
+  "action2": {
     "actionType": "turn",
     "arguments": "dummy argument 2",
     "angle": 0.2,
     "timeout": 1
   },
-  "action3" :{
+  "action3": {
     "actionType": "move",
     "arguments": "dummy argument 3",
     "target_x": 1.3,
     "target_y": 0.0,
     "timeout": 5
   },
-  "action4" :{
-    "actionType": "grabber",
+  "action4": {
+    "actionType": "move_backward",
     "arguments": "dummy argument 4",
-    "grabber_state" : "open",
+    "backward_distance": 0.3,
+    "timeout": 5
+  },
+  "action5": {
+    "actionType": "grabber",
+    "arguments": "dummy argument 5",
+    "grabber_state": "open",
     "timeout": 1
   },
-  "action5" :{
+  "action6": {
     "actionType": "dummyType",
-    "arguments": "dummy argument 5",
+    "arguments": "dummy argument 6",
     "timeout": 2
   }
 }
