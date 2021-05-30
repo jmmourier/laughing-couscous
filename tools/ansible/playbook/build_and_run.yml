@@ -1,13 +1,13 @@
 ---
-- hosts: all
-  gather_facts: no
 - hosts: localhost
+  gather_facts: no
   roles:
     - include_role:
       name: build_back
     - include_role:
       name: build_front
 - hosts: pi
+  gather_facts: no
   roles:
     - include_role:
       name: push_back

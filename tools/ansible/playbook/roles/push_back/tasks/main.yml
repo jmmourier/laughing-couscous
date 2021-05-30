@@ -1,6 +1,5 @@
 ---
 - name: Push couscous_app_exe
-  copy:
+  synchronize:
     src: "{{ PROJECT_PATH }}/software/build/applications/couscous/couscous_app_exe"
     dest: "/home/{{ PI_USERNAME }}"
-    mode: "755"

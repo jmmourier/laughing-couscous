@@ -1,0 +1,9 @@
+---
+- name: Push mission_yellow.json
+  synchronize:
+    src: "{{ PROJECT_PATH }}/software/applications/couscous/mission_yellow.json"
+    dest: "/home/{{ PI_USERNAME }}"
+- name: Push mission_blue.json
+  synchronize:
+    src: "{{ PROJECT_PATH }}/software/applications/couscous/mission_blue.json"
+    dest: "/home/{{ PI_USERNAME }}"

@@ -9,7 +9,7 @@
     name: nginx
     update_cache: yes
 - name: copy the nginx config file and restart nginx
-  copy:
+  synchronize:
     src: "{{ PROJECT_PATH }}/tools/ansible/static_site.cfg"
     dest: /etc/nginx/sites-available/static_site.cfg
 - name: create symlink
@@ -18,11 +18,11 @@
     dest: /etc/nginx/sites-enabled/default
     state: link
 - name: Push grpcwebproxy service
-  copy:
+  synchronize:
     src: "{{ playbook_dir }}/roles/setup_pi/files/grpcwebproxy.service"
     dest: /etc/systemd/system
 - name: Push couscous_app service
-  copy:
+  synchronize:
     src: "{{ playbook_dir }}/roles/setup_pi/files/couscous_app.service"
     dest: /etc/systemd/system
 - name: Restart nginx

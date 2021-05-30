@@ -4,6 +4,6 @@
     path: "/home/{{ PI_USERNAME }}/web"
     state: directory
 - name: Push front sources
-  copy:
+  synchronize:
     src: "{{ PROJECT_PATH }}/software/modules/gui/web/build"
     dest: "/home/{{ PI_USERNAME }}/web"
