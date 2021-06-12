@@ -143,7 +143,7 @@ void Navi::computeRegulatorSpeed(const pos_info &robot_pos, const pos_info &targ
         speed = 0;
     } else {
         speed = distance;
-        SPDLOG_LOGGER_INFO(logger_, "[Navi] update dist:{} error cap:{}rad", distance, errorCap);
+        SPDLOG_LOGGER_INFO(logger_, "[Navi] update dist:{} error cap:{} rad", distance, errorCap);
         if (speed > MAX_SPEED) speed = MAX_SPEED;
     }
 
