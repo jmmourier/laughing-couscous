@@ -11,6 +11,7 @@ struct Action {
     float target_x = 0.0;
     float target_y = 0.0;
     float angle = 0.0;
+    bool hasActionStarted = false;
     std::string grabber_state = "";
     float backward_distance = 0.0;
     int timeout_s = 0;

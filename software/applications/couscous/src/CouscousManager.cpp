@@ -81,27 +81,37 @@ void CouscousManager::onPositionChanged(const PositionOrientation &position_orie
     } else if (nextAction.type == MOVE) {
         std::cout << "[Missi]:move" << nextAction.target_x << " " << nextAction.target_y
                   << std::endl;
-        navi_->setTargetPosition(nextAction.target_x, nextAction.target_y, 0);
+        if (!nextAction.hasActionStarted) {
+            navi_->setTargetPosition(nextAction.target_x, nextAction.target_y, 0);
+        }
     } else if (nextAction.type == GRABBER) {
         std::cout << "[Missi]:grabber  : " << nextAction.grabber_state << std::endl;
         // define how this is read
         IHaliListener::GrabberState grabber_state = (nextAction.grabber_state.compare("open") == 0)
                                                         ? IHaliListener::GrabberState::grabberOpen
                                                         : IHaliListener::GrabberState::grabberClose;
-        hali_->setGrabber(grabber_state);
+        if (hali_->getGrabber() != grabber_state) {
+            hali_->setGrabber(grabber_state);
+        }
     } else if (nextAction.type == TURN) {
         std::cout << "[Missi]:turning " << nextAction.angle << std::endl;
         // TODO this need to be implemented
-        navi_->setTargetOrientation(nextAction.angle);
+        if (!nextAction.hasActionStarted) {
+            navi_->setTargetOrientation(nextAction.angle);
+        }
     } else if (nextAction.type == MOVE_BACKWARD) {
         std::cout << "[Missi]:moving backward: " << nextAction.backward_distance << std::endl;
-        navi_->setBackwardDistance(nextAction.backward_distance);
+        if (!nextAction.hasActionStarted) {
+            navi_->setBackwardDistance(nextAction.backward_distance);
+        }
     } else if (nextAction.type == UNKNOWN) {
         std::cout << "[Missi]:unknow action" << missi_->actionTypeToString(nextAction.type)
                   << std::endl;
         // This is abnormal, let's skip to next action
         missi_->actionHasBeenDone();
     }
+
+    nextAction.hasActionStarted = true;
 }
 
 void CouscousManager::onWebServerPositionRequest(const PositionOrientation &position_orientation) {
