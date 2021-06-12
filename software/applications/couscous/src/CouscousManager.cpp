@@ -5,6 +5,7 @@
 #include <chrono>
 #include <cmath>
 
+#include "Action.h"
 #include "IHali.h"
 #include "IHaliListener.h"
 #include "Posi.h"
@@ -127,7 +128,7 @@ void CouscousManager::onGrabberStateChanged(const GrabberState &graberState) {
     web_server_->setRobotState(RobotState(
         currentState.position_orientation_,
         currentState.battery_,
-        graberState,
+        graberState == GrabberState::grabberOpen,
         currentState.mission_started_at_,
         currentState.mission_ended_at_,
         currentState.current_action_));
