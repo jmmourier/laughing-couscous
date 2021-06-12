@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Action.h"
+#include "spdlog/logger.h"
 
 class Missi {
    public:
@@ -19,6 +20,7 @@ class Missi {
     std::string actionTypeToString(ActionType action_type);
 
    private:
+    std::shared_ptr<spdlog::logger> logger_;
     std::string mission_file_path_;
     bool previous_action_has_been_done_;
 
@@ -30,7 +32,6 @@ class Missi {
 
     ActionType stringToActionType(std::string action_type_as_string);
     bool hasCurrentActionTimeout();
-
 };
 
 #endif  // MISSI_H
