@@ -53,6 +53,7 @@ unsigned long srf02_last_update_ = 0;
 unsigned long srf02_timer_ = 30;
 unsigned long srf02_send_value_last_update_ = 0;
 unsigned long srf02_send_value_timer_ = 100;
+bool obstacle_detected = false;
 
 
 void setup() {
@@ -60,6 +61,7 @@ void setup() {
     Serial.begin(9600);
 
     md25_.setMode(0);
+    md25_.setAcceleration(2);
     md25_.resetEncoder();
 
     grabber_.init();
@@ -119,10 +121,12 @@ void readSerial() {
 
 void HandleCommands(CommandData command_data) {
     if (command_data.command_ == speedMotor1 &&
-        is_game_finished == false) {
+        is_game_finished == false &&
+        obstacle_detected == false) {
         md25_.setSpeed(motor1, command_data.argument_);
     } else if (command_data.command_ == speedMotor2 &&
-        is_game_finished == false) {
+        is_game_finished == false && 
+        obstacle_detected == false) {
         md25_.setSpeed(motor2, command_data.argument_);
     } else if (command_data.command_ == versionRevisionRequested) {
         md25_.updateRevision();
@@ -145,20 +149,20 @@ void HandleCommands(CommandData command_data) {
 
 void updateMd25(){
     if (millis() - md25_last_update_ > md25_timer_) {
-    md25_.updateElectricalData();
-    delay(10);
-    md25_.updateEncorder();
-    delay(10);
-    Serial.print("md25voltage:");
-    Serial.print(md25_.getVoltage());
-    Serial.println(";");
-    Serial.print("md25encoder1:");
-    Serial.print(md25_.getEncoder(motor1));
-    Serial.println(";");
-    Serial.print("md25encoder2:");
-    Serial.print(md25_.getEncoder(motor2));
-    Serial.println(";");
-    md25_last_update_ = millis();
+        md25_.updateElectricalData();
+        delay(10);
+        md25_.updateEncorder();
+        delay(10);
+        Serial.print("md25voltage:");
+        Serial.print(md25_.getVoltage());
+        Serial.println(";");
+        Serial.print("md25encoder1:");
+        Serial.print(md25_.getEncoder(motor1));
+        Serial.println(";");
+        Serial.print("md25encoder2:");
+        Serial.print(md25_.getEncoder(motor2));
+        Serial.println(";");
+        md25_last_update_ = millis();
     }
 }
 
@@ -248,8 +252,19 @@ void srf02Update(){
         srf02_.updateSensor();
         srf02_last_update_ = millis();
     }
+    int distance = srf02_.getDistance(); 
+    if ( distance <= 30 && distance != 0)
+    {
+        obstacle_detected = true;
+        md25_.setSpeed(motor1, 128);
+        md25_.setSpeed(motor2, 128);
+    }
+    else 
+    {
+        obstacle_detected = false;
+    }
+    
     if (millis() - srf02_send_value_last_update_ > srf02_send_value_timer_) {
-        
         Serial.print("distance:");
         Serial.print(srf02_.getDistance());
         Serial.println(";");

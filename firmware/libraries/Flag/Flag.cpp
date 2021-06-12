@@ -12,6 +12,6 @@ void Flag::setFlag(FlagState state) {
     if (state == flagUp) {
         servo_.write(0);
     } else {  // flagDown
-        servo_.write(100);
+        servo_.write(180);
 	}
 }
