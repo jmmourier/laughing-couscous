@@ -72,6 +72,17 @@ int Navi::setBackwardDistance(const double &dist) {
     return 0;
 }
 
+int Navi::setForwardDistance(const double &dist) {
+    if (action_in_progress_ != forward) {
+        forward_dist_ = dist;
+        current_pos_before_forward_move_.pos_x = actual_robot_position_.pos_x;
+        current_pos_before_forward_move_.pos_y = actual_robot_position_.pos_y;
+        action_in_progress_ = forward;
+        SPDLOG_LOGGER_INFO(logger_, "[Navi] set backwared position dist:{}", backward_dist_);
+    }
+    return 0;
+}
+
 int Navi::setCurrentPosition(
     const double &new_rob_pos_x,
     const double &new_rob_pos_y,
@@ -83,7 +94,7 @@ int Navi::setCurrentPosition(
         case idle:
             break;
         case position:
-            computeSpeed(actual_robot_position_, target_position_);
+            computeRegulatorSpeed(actual_robot_position_, target_position_);
             break;
         case rotation:
             computeRotationSpeed(new_rob_orientation, target_position_.orientation);
@@ -95,7 +106,7 @@ int Navi::setCurrentPosition(
     return 0;
 }
 
-void Navi::computeSpeed(const pos_info &robot_pos, const pos_info &target_pos) {
+void Navi::computeRegulatorSpeed(const pos_info &robot_pos, const pos_info &target_pos) {
     // std::cout << "compute speed" << std::endl;
     double distance = getDistanceToTarget(robot_pos, target_pos);
     double rotation, speed = 0;
