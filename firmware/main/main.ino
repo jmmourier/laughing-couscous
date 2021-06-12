@@ -60,6 +60,7 @@ void setup() {
     Serial.begin(9600);
 
     md25_.setMode(0);
+    md25_.setAcceleration(2);
     md25_.resetEncoder();
 
     grabber_.init();
