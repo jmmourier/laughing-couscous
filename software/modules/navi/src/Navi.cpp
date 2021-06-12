@@ -8,10 +8,10 @@
 #include "NaviUtils.h"
 #include "logger/LoggerFactory.h"
 
-#define TARGET_REACHED_DISTANCE 0.02
+#define TARGET_REACHED_DISTANCE 0.007
 #define TARGET_ANGLE_REACHED_RAD 0.02
 #define MAX_ROTATION 0.35
-#define ANGLE_FOR_ROTATION_ONLY_RAD 0.25
+#define ANGLE_FOR_ROTATION_ONLY_RAD 0.07
 #define MAX_SPEED 0.5
 
 Navi::Navi()
@@ -139,6 +139,7 @@ void Navi::computeSpeed(const pos_info &robot_pos, const pos_info &target_pos) {
 
 void Navi::computeRotationSpeed(const double robot_orientation, const double target_orientation) {
     double errorCap = std::abs(robot_orientation - target_orientation);
+
     if (errorCap < TARGET_ANGLE_REACHED_RAD) {
         SPDLOG_LOGGER_INFO(logger_, "[Navi] angle reached");
         publishToNaviSpeedRequestListeners(0, 0, 0);
@@ -147,11 +148,22 @@ void Navi::computeRotationSpeed(const double robot_orientation, const double tar
         return;
     }
 
+    if (errorCap > M_PI) {
+        errorCap = errorCap - (2 * M_PI);
+    }
+    if (errorCap < -M_PI) {
+        errorCap = errorCap + (2 * M_PI);
+    }
+
+    double rotation = 0.3 * errorCap;
+    if (rotation > MAX_ROTATION) rotation = MAX_ROTATION;
+    if (rotation < -MAX_ROTATION) rotation = -MAX_ROTATION;
+
     rotdir rotation_direction = getRotationDir(robot_orientation, target_orientation);
     if (rotation_direction == rotdir::Clockwise) {
-        publishToNaviSpeedRequestListeners(0, 0, -MAX_SPEED);
+        publishToNaviSpeedRequestListeners(0, 0, -rotation);
     } else {
-        publishToNaviSpeedRequestListeners(0, 0, MAX_SPEED);
+        publishToNaviSpeedRequestListeners(0, 0, rotation);
     }
     SPDLOG_LOGGER_INFO(
         logger_,

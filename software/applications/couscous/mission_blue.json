@@ -1,7 +1,66 @@
 {
-  "01_go_down": {
+  "01_exit_start_pos": {
+    "actionType": "move",
+    "target_x": 0.8,
+    "target_y": 1.2,
+    "timeout": 10
+  },
+
+  "02_align_y_first_bouy": {
+    "actionType": "move",
+    "target_x": 0.8,
+    "target_y": 0.92,
+    "timeout": 10
+  },
+
+  "03_orientate_first_bouy": {
+    "actionType": "turn",
+    "angle": 3.1415,
+    "timeout": 3
+  },
+
+  "04_open_grabber": {
+    "actionType": "grabber",
+    "grabber_state": "open",
+    "timeout": 4
+  },
+
+  "05_go_close_to_first_bouy": {
+    "actionType": "move",
+    "target_x": 0.66,
+    "target_y": 0.92,
+    "timeout": 10
+  },
+
+  "06_close_grabber": {
+    "actionType": "grabber",
+    "grabber_state": "close",
+    "timeout": 4
+  },
+
+  "07_get_one_point_with_first_bouy": {
+    "actionType": "move",
+    "target_x": 0.3,
+    "target_y": 0.92,
+    "timeout": 10
+  },
+
+  "08_open_grabber": {
+    "actionType": "grabber",
+    "grabber_state": "open",
+    "timeout": 4
+  },
+
+  "09_move_backward": {
+    "actionType": "move_backward",
+    "backward_distance": 0.2,
+    "timeout": 10
+  },
+
+  "99_escape": {
     "actionType": "move",
     "target_x": 1.5,
-    "target_y": 0.5
+    "target_y": 1.5,
+    "timeout": 10
   }
 }
