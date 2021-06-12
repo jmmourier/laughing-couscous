@@ -67,7 +67,7 @@ int Navi::setBackwardDistance(const double &dist) {
         current_pos_before_backward_move_.pos_x = actual_robot_position_.pos_x;
         current_pos_before_backward_move_.pos_y = actual_robot_position_.pos_y;
         action_in_progress_ = backward;
-        SPDLOG_LOGGER_INFO(logger_, "[Navi] set backwared position dist:{}", backward_dist_);
+        SPDLOG_LOGGER_INFO(logger_, "[Navi] set backward position dist:{}", backward_dist_);
     }
     return 0;
 }
@@ -78,7 +78,7 @@ int Navi::setForwardDistance(const double &dist) {
         current_pos_before_forward_move_.pos_x = actual_robot_position_.pos_x;
         current_pos_before_forward_move_.pos_y = actual_robot_position_.pos_y;
         action_in_progress_ = forward;
-        SPDLOG_LOGGER_INFO(logger_, "[Navi] set backwared position dist:{}", backward_dist_);
+        SPDLOG_LOGGER_INFO(logger_, "[Navi] set forward position dist:{}", forward_dist_);
     }
     return 0;
 }
@@ -102,6 +102,8 @@ int Navi::setCurrentPosition(
         case backward:
             computeBackwardSpeed(actual_robot_position_, current_pos_before_backward_move_);
             break;
+        case forward:
+            computeForwardSpeed(actual_robot_position_, current_pos_before_forward_move_);
     }
     return 0;
 }
@@ -204,4 +206,27 @@ void Navi::computeBackwardSpeed(
     }
 
     publishToNaviSpeedRequestListeners(-MAX_SPEED, 0, 0);
+}
+
+void Navi::computeForwardSpeed(
+    const pos_info &current_robot_pos,
+    const pos_info &previous_robot_pos) {
+    double distance_to_target = getDistanceToTarget(current_robot_pos, previous_robot_pos);
+    double speed = 0;
+    SPDLOG_LOGGER_INFO(
+        logger_,
+        "[Navi] moving forward dist:{} posX:{} posY:{}",
+        getDistanceToTarget(current_robot_pos, previous_robot_pos),
+        current_robot_pos.pos_x,
+        current_robot_pos.pos_y);
+    if (std::abs(distance_to_target) > std::abs(forward_dist_ - TARGET_REACHED_DISTANCE)) {
+        speed = 0;
+        publishToNaviSpeedRequestListeners(0, 0, 0);
+        publishToNaviTargetReachedListeners();
+        action_in_progress_ = idle;
+        SPDLOG_LOGGER_INFO(logger_, "[Navi] target reached");
+        return;
+    }
+
+    publishToNaviSpeedRequestListeners(MAX_SPEED, 0, 0);
 }

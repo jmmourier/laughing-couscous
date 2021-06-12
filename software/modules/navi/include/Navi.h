@@ -38,6 +38,7 @@ class Navi {
     void computeBackwardSpeed(
         const pos_info &current_robot_pos,
         const pos_info &previous_robot_pos);
+    void computeForwardSpeed(const pos_info &current_robot_pos, const pos_info &previous_robot_pos);
     pos_info target_position_;
     pos_info actual_robot_position_;
     double backward_dist_;

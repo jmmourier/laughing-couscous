@@ -104,6 +104,11 @@ void CouscousManager::onPositionChanged(const PositionOrientation &position_orie
         if (!nextAction.hasActionStarted) {
             navi_->setBackwardDistance(nextAction.backward_distance);
         }
+    } else if (nextAction.type == MOVE_FORWARD) {
+        std::cout << "[Missi]:moving forward: " << nextAction.forward_distance << std::endl;
+        if (!nextAction.hasActionStarted) {
+            navi_->setForwardDistance(nextAction.forward_distance);
+        }
     } else if (nextAction.type == UNKNOWN) {
         std::cout << "[Missi]:unknow action" << missi_->actionTypeToString(nextAction.type)
                   << std::endl;
@@ -147,7 +152,7 @@ void CouscousManager::onGrabberStateChanged(const GrabberState &graberState) {
 void CouscousManager::onNaviTargetReachedRequest(void) {
     Action current_action = missi_->getCurrentAction();
     if (current_action.type == MOVE || current_action.type == TURN ||
-        current_action.type == MOVE_BACKWARD) {
+        current_action.type == MOVE_BACKWARD || current_action.type == MOVE_FORWARD) {
         missi_->actionHasBeenDone();
     }
 }

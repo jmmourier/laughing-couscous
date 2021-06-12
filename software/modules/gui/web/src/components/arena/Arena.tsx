@@ -104,6 +104,8 @@ const Arena: FunctionComponent<IArena> = ({ onPositionSelected }) => {
         return "GRABBER";
       case ActionType.MOVE:
         return "MOVE";
+      case ActionType.MOVE_FORWARD:
+        return "MOVE_FORWARD";
       case ActionType.MOVE_BACKWARD:
         return "MOVE_BACKWARD";
       case ActionType.TURN:
