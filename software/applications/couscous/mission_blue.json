@@ -17,37 +17,76 @@
     "timeout": 10
   },
 
-
-  "04_A_green_close_grabber":{
+  "04_A_green_close_grabber": {
     "actionType": "grabber",
     "grabber_state": "close",
     "timeout": 4
   },
 
-   "05_A_green_move_back":{
+  "05_A_green_move_back": {
     "actionType": "move_backward",
     "backward_distance": 0.22,
     "timeout": 10
   },
 
-  
   "06_greedA_turn_to_DropPos": {
     "actionType": "turn",
     "angle": 3.14,
     "timeout": 10
   },
 
-  "08_A_green_open_grabber":{
+  "08_A_green_open_grabber": {
     "actionType": "grabber",
     "grabber_state": "open",
     "timeout": 4
   },
 
-  "09_A_green_move_backToOrigin":{
+  "09_A_green_move_backToOrigin": {
     "actionType": "move_backward",
-    "backward_distance": 0.1,
+    "backward_distance": 0.6,
+    "timeout": 10
+  },
+
+  "13_0": {
+    "actionType": "move",
+    "target_x": 0.825,
+    "target_y": 1.485,
+    "timeout": 15
+  },
+
+  "14_0_greedA_turn_to_A": {
+    "actionType": "turn",
+    "angle": 3.14,
+    "timeout": 10
+  },
+
+  "15_0_get_to_A": {
+    "actionType": "move_forward",
+    "forward_distance": 0.2,
+    "timeout": 10
+  },
+
+  "16_A_close_grabber": {
+    "actionType": "grabber",
+    "grabber_state": "close",
+    "timeout": 4
+  },
+
+  "17_0_get_toA_drop_zone": {
+    "actionType": "move_forward",
+    "forward_distance": 0.2,
+    "timeout": 10
+  },
+
+  "18_A_green_open_grabber": {
+    "actionType": "grabber",
+    "grabber_state": "open",
+    "timeout": 4
+  },
+
+  "19_A_green_move_backToOrigin": {
+    "actionType": "move_backward",
+    "backward_distance": 0.6,
     "timeout": 10
   }
-
-
 }
