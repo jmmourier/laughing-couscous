@@ -9,6 +9,7 @@
 #include "IHaliListener.h"
 #include "Posi.h"
 #include "PositionOrientation.h"
+#include "RobotState.h"
 
 CouscousManager::CouscousManager(
     const std::shared_ptr<IHali> &hali,
@@ -42,7 +43,7 @@ void CouscousManager::onPositionChanged(const PositionOrientation &position_orie
     if (!pre_launch_test_done_ || !is_robot_ready_) {
         return;
     }
-    web_server_->setPosition(position_orientation);
+    RobotState currentState = web_server_->getRobotState();
 
     navi_->setCurrentPosition(
         position_orientation.x_m_,
@@ -50,12 +51,26 @@ void CouscousManager::onPositionChanged(const PositionOrientation &position_orie
         position_orientation.orientation_rad_);
 
     Action nextAction = missi_->getCurrentAction();
+    web_server_->setRobotState(RobotState(
+        position_orientation,
+        currentState.battery_,
+        currentState.is_grabber_open_,
+        currentState.mission_started_at_,
+        currentState.mission_ended_at_,
+        nextAction.type));
+
     if (nextAction.arguments == "mission done" && mission_finished_ == false) {
         const auto now = std::chrono::system_clock::now();
         const auto end_mission_timestamp =
             std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
 
-        web_server_->setMissionEndedAt(end_mission_timestamp);
+        web_server_->setRobotState(RobotState(
+            currentState.position_orientation_,
+            currentState.battery_,
+            currentState.is_grabber_open_,
+            currentState.mission_started_at_,
+            end_mission_timestamp,
+            currentState.current_action_));
         mission_finished_ = true;
     }
 
@@ -108,7 +123,14 @@ void CouscousManager::onWebServerTargetOrientationRequest(const float &orientati
 };
 
 void CouscousManager::onGrabberStateChanged(const GrabberState &graberState) {
-    web_server_->setGrabberState(graberState == GrabberState::grabberOpen);
+    RobotState currentState = web_server_->getRobotState();
+    web_server_->setRobotState(RobotState(
+        currentState.position_orientation_,
+        currentState.battery_,
+        graberState,
+        currentState.mission_started_at_,
+        currentState.mission_ended_at_,
+        currentState.current_action_));
 };
 
 void CouscousManager::onNaviTargetReachedRequest(void) {
@@ -142,7 +164,14 @@ void CouscousManager::start() {
             posi_->updatePosition(encoders_motor1, encoders_motor2);
 
             if (rounds % (INTERVAL_REFRESH_BATTERY_MS / INTERVAL_REFRESH_MS) == 0) {
-                web_server_->setBattery(static_cast<float>(hali_->getBatteryVoltage()) / 10);
+                RobotState currentState = web_server_->getRobotState();
+                web_server_->setRobotState(RobotState(
+                    currentState.position_orientation_,
+                    static_cast<float>(hali_->getBatteryVoltage()) / 10,
+                    currentState.is_grabber_open_,
+                    currentState.mission_started_at_,
+                    currentState.mission_ended_at_,
+                    currentState.current_action_));
             }
 
             rounds++;
@@ -170,7 +199,15 @@ void CouscousManager::start() {
             const auto now = std::chrono::system_clock::now();
             const auto start_mission_timestamp =
                 std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
-            web_server_->setMissionStartedAt(start_mission_timestamp);
+
+            RobotState currentState = web_server_->getRobotState();
+            web_server_->setRobotState(RobotState(
+                currentState.position_orientation_,
+                currentState.battery_,
+                currentState.is_grabber_open_,
+                start_mission_timestamp,
+                currentState.mission_ended_at_,
+                currentState.current_action_));
 
             posi_->setPosition(starting_position);
 
