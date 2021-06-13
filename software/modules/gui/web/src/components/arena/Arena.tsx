@@ -1,3 +1,4 @@
+import { ActionType } from "generated_grpc_sources/robot_pb";
 import React, {
   FunctionComponent,
   useCallback,
@@ -8,7 +9,7 @@ import useWindow from "../../hooks/window";
 import { ISize } from "../../interfaces/size";
 import * as stateProvider from "../StateProvider";
 import { context } from "../StateProvider";
-import Buoy, { BuoyColor, buoyList } from "./Buoy";
+import Buoy, { buoyList } from "./Buoy";
 import PositionIndicator from "./PositionIndicator";
 import Robot from "./Robot";
 import Target from "./Target";
@@ -39,7 +40,7 @@ const getRatioPixelToMeter = (areaSize: ISize): number => {
 
 const UnitLabel: FunctionComponent<{
   label: string;
-  value: number;
+  value: string;
   x: number;
   y: number;
 }> = ({ label, value, x, y }) => (
@@ -58,7 +59,7 @@ const UnitLabel: FunctionComponent<{
       className={"fill-current text-gray-700"}
       fontSize={LABEL_FONT_SIZE}
       textAnchor={"end"}
-      x={x + 0.15}
+      x={x + 0.3}
       y={y}
     >
       {value}
@@ -94,6 +95,23 @@ const Arena: FunctionComponent<IArena> = ({ onPositionSelected }) => {
   const ratioPixelToMeter = getRatioPixelToMeter(areaSize);
 
   const { state } = useContext(context);
+
+  const getActionTypeTranslation = (): string => {
+    switch (state.robotData.current_action) {
+      case ActionType.WAIT:
+        return "WAIT";
+      case ActionType.GRABBER:
+        return "GRABBER";
+      case ActionType.MOVE:
+        return "MOVE";
+      case ActionType.MOVE_BACKWARD:
+        return "MOVE_BACKWARD";
+      case ActionType.TURN:
+        return "TURN";
+      case ActionType.UNKNOWN:
+        return "UNKNOWN";
+    }
+  };
 
   const getDiffCount = () => {
     if (!state.robotData.mission_started_at) {
@@ -148,35 +166,45 @@ const Arena: FunctionComponent<IArena> = ({ onPositionSelected }) => {
             y_m={state.targetPosition.y_m}
           />
         )}
-
-        <UnitLabel
-          label="X"
-          value={Math.round(state.robotData.x_m * ROUND_RATIO) / ROUND_RATIO}
-          x={ARENA_WIDTH - 0.2}
-          y={ARENA_HEIGHT - 0.2}
-        />
-        <UnitLabel
-          label="Y"
-          value={Math.round(state.robotData.y_m * ROUND_RATIO) / ROUND_RATIO}
-          x={ARENA_WIDTH - 0.2}
-          y={ARENA_HEIGHT - 0.15}
-        />
-        <UnitLabel
-          label="Orientation"
-          value={
-            Math.round(state.robotData.orientation_rad * ROUND_RATIO) /
-            ROUND_RATIO
-          }
-          x={ARENA_WIDTH - 0.2}
-          y={ARENA_HEIGHT - 0.1}
-        />
-        <UnitLabel
-          label="Battery"
-          value={Math.round(state.robotData.battery_v)}
-          x={ARENA_WIDTH - 0.2}
-          y={ARENA_HEIGHT - 0.05}
-        />
-
+        <g transform="translate(-0.15,-0.1)">
+          <UnitLabel
+            label="X"
+            value={(
+              Math.round(state.robotData.x_m * ROUND_RATIO) / ROUND_RATIO
+            ).toString()}
+            x={ARENA_WIDTH - 0.2}
+            y={ARENA_HEIGHT - 0.2}
+          />
+          <UnitLabel
+            label="Y"
+            value={(
+              Math.round(state.robotData.y_m * ROUND_RATIO) / ROUND_RATIO
+            ).toString()}
+            x={ARENA_WIDTH - 0.2}
+            y={ARENA_HEIGHT - 0.15}
+          />
+          <UnitLabel
+            label="Orientation"
+            value={(
+              Math.round(state.robotData.orientation_rad * ROUND_RATIO) /
+              ROUND_RATIO
+            ).toString()}
+            x={ARENA_WIDTH - 0.2}
+            y={ARENA_HEIGHT - 0.1}
+          />
+          <UnitLabel
+            label="Battery"
+            value={Math.round(state.robotData.battery_v).toString()}
+            x={ARENA_WIDTH - 0.2}
+            y={ARENA_HEIGHT - 0.05}
+          />
+          <UnitLabel
+            label="Current Action"
+            value={getActionTypeTranslation()}
+            x={ARENA_WIDTH - 0.2}
+            y={ARENA_HEIGHT - 0.0}
+          />
+        </g>
         <text
           x={ARENA_WIDTH / 2}
           y={0.1}

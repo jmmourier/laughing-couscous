@@ -127,11 +127,11 @@ const CommunicationProvider: FunctionComponent<ICommunicationProvider> = ({
         is_grabber_open: robotDataRequest.getIsGrabberOpen(),
         mission_started_at: robotDataRequest.getMissionStartedAt(),
         mission_ended_at: robotDataRequest.getMissionEndedAt(),
+        current_action: robotDataRequest.getActionType(),
       });
     });
   }, [stateContext.proxy]);
 
-  // type: stateProvider.ActionEnum.UPDATE_POSITION,
   return <Provider value={{ state, dispatch }}>{children}</Provider>;
 };
 
