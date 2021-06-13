@@ -1,4 +1,12 @@
 import React, { FunctionComponent, useMemo, useState } from "react";
+import {
+  Empty,
+  OrientationRequest,
+  RobotDataRequest,
+  PositionRequest,
+  SpeedRequest,
+  ActionType,
+} from "generated_grpc_sources/robot_pb";
 
 export const TICKS_PER_ROTATION = 360;
 export const WHEEL_WIDTH = 0.05;
@@ -21,6 +29,7 @@ export type IRobotData = {
   is_grabber_open: boolean;
   mission_started_at: number;
   mission_ended_at: number;
+  current_action: ActionType;
 };
 
 interface IState {
@@ -37,6 +46,7 @@ const defaultState: IState = {
     is_grabber_open: true,
     mission_started_at: 0,
     mission_ended_at: 0,
+    current_action: ActionType.UNKNOWN,
   },
 };
 
