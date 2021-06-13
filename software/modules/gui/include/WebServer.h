@@ -3,6 +3,8 @@
 
 #include "IWebServerRequestListener.h"
 #include "PositionOrientation.h"
+#include "RobotState.h"
+#include "Types.h"
 #include "WebPositionService.h"
 #include "grpcpp/server.h"
 
@@ -22,13 +24,8 @@ class WebServer {
      */
     void stop();
 
-    void setPosition(const PositionOrientation &position_orientation);
-    void setBattery(const float &battery_v);
-    void setGrabberState(const bool &is_grabber_open);
-    void setMissionStartedAt(const long &mission_started_at);
-    void setMissionEndedAt(const long &mission_ended_at);
-
-    // void setSpeed(const int &motor1, const int &motor2);
+    void setRobotState(const RobotState &robot_state);
+    RobotState getRobotState();
 
    private:
     std::shared_ptr<grpc::Server> server_;

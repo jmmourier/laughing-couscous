@@ -5,16 +5,14 @@
 #include <thread>
 
 #include "PositionOrientation.h"
+#include "RobotState.h"
+#include "Types.h"
 #include "robot.pb.h"
 
 const int INTERVAL_SENDING_POSITION_REFRESH_MS = 20;
 
 WebPositionService::WebPositionService()
-    : position_orientation_(PositionOrientation(0, 0, 0)),
-      battery_v_(0),
-      is_grabber_open_(true),
-      mission_started_at_(0),
-      mission_ended_at_(0) {}
+    : robot_state_(RobotState(PositionOrientation(0, 0, 0), 0, true, 0, 0, ActionType::WAIT)) {}
 
 void WebPositionService::registerWebServerRequestListener(
     const std::weak_ptr<IWebServerRequestListener> &webserver_listener) {
@@ -106,12 +104,37 @@ void WebPositionService::publishToWebServerTargetOrientationListeners(
     web_service::RobotDataRequest robot_data_request;
 
     while (true) {
-        robot_data_request.set_pos_x_m(position_orientation_.x_m_);
-        robot_data_request.set_pos_y_m(position_orientation_.y_m_);
-        robot_data_request.set_orientation_rad(position_orientation_.orientation_rad_);
-        robot_data_request.set_is_grabber_open(is_grabber_open_);
-        robot_data_request.set_mission_started_at(mission_started_at_);
-        robot_data_request.set_mission_ended_at(mission_ended_at_);
+        robot_data_request.set_pos_x_m(robot_state_.position_orientation_.x_m_);
+        robot_data_request.set_pos_y_m(robot_state_.position_orientation_.y_m_);
+        robot_data_request.set_orientation_rad(robot_state_.position_orientation_.orientation_rad_);
+        robot_data_request.set_is_grabber_open(robot_state_.is_grabber_open_);
+        robot_data_request.set_mission_started_at(robot_state_.mission_started_at_);
+        robot_data_request.set_mission_ended_at(robot_state_.mission_ended_at_);
+
+        web_service::ActionType action_type = web_service::ActionType::UNKNOWN;
+
+        switch (robot_state_.current_action_) {
+            case ActionType::WAIT:
+                action_type = web_service::ActionType::WAIT;
+                break;
+            case ActionType::GRABBER:
+                action_type = web_service::ActionType::GRABBER;
+                break;
+            case ActionType::MOVE:
+                action_type = web_service::ActionType::MOVE;
+                break;
+            case ActionType::MOVE_BACKWARD:
+                action_type = web_service::ActionType::MOVE_BACKWARD;
+                break;
+            case ActionType::TURN:
+                action_type = web_service::ActionType::TURN;
+                break;
+            case ActionType::UNKNOWN:
+                action_type = web_service::ActionType::UNKNOWN;
+                break;
+        }
+
+        robot_data_request.set_action_type(action_type);
 
         writer->Write(robot_data_request);
 
@@ -121,27 +144,10 @@ void WebPositionService::publishToWebServerTargetOrientationListeners(
     return ::grpc::Status::OK;
 };
 
-void WebPositionService::setPosition(const PositionOrientation &position_orientation) {
-    position_orientation_ = position_orientation;
+void WebPositionService::setRobotState(const RobotState &robot_state) {
+    robot_state_ = robot_state;
 }
 
-void WebPositionService::setSpeed(const int &motor1, const int &motor2) const {
-    std::cout << motor1 << " " << motor2 << std::endl;
-    publishToWebServerSpeedRequestListeners(motor1, motor2);
-}
-
-void WebPositionService::setBattery(const float &battery_v) {
-    battery_v_ = battery_v;
-}
-
-void WebPositionService::setGrabberState(const bool &is_grabber_open) {
-    is_grabber_open_ = is_grabber_open;
-}
-
-void WebPositionService::setMissionStartedAt(const long &mission_started_at) {
-    mission_started_at_ = mission_started_at;
-}
-
-void WebPositionService::setMissionEndedAt(const long &mission_ended_at) {
-    mission_ended_at_ = mission_ended_at;
+RobotState WebPositionService::getRobotState() {
+    return robot_state_;
 }

@@ -26,25 +26,13 @@ void WebServer::start() {
     server_->Wait();
 }
 
-void WebServer::setPosition(const PositionOrientation &position_orientation) {
-    web_position_service_.setPosition(position_orientation);
+void WebServer::setRobotState(const RobotState &robot_state) {
+    web_position_service_.setRobotState(robot_state);
 }
 
-void WebServer::setBattery(const float &battery_v) {
-    web_position_service_.setBattery(battery_v);
-}
-
-void WebServer::setGrabberState(const bool &is_grabber_open) {
-    web_position_service_.setGrabberState(is_grabber_open);
-}
-
-void WebServer::setMissionStartedAt(const long &mission_started_at) {
-    web_position_service_.setMissionStartedAt(mission_started_at);
-}
-
-void WebServer::setMissionEndedAt(const long &mission_ended_at) {
-    web_position_service_.setMissionEndedAt(mission_ended_at);
-}
+RobotState WebServer::getRobotState() {
+    return web_position_service_.getRobotState();
+};
 
 void WebServer::stop() {
     server_->Shutdown();

@@ -4,6 +4,15 @@ package web_service;
 
 message Empty {}
 
+enum ActionType { 
+  WAIT = 0;
+  GRABBER = 1;
+  MOVE = 2;
+  TURN = 3;
+  MOVE_BACKWARD = 4;
+  UNKNOWN = 5; 
+};
+
 message PositionRequest {
   float pos_x_m = 1;
   float pos_y_m = 2;
@@ -21,6 +30,7 @@ message RobotDataRequest {
   bool is_grabber_open = 5; 
   int32 mission_started_at = 6;
   int32 mission_ended_at = 7;
+  ActionType action_type = 8;
 }
 
 message SpeedRequest {
