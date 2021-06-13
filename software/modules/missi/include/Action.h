@@ -3,7 +3,7 @@
 
 #include <string>
 
-enum ActionType { WAIT, GRABBER, MOVE, TURN, MOVE_BACKWARD, UNKNOWN };
+#include "Types.h"
 
 struct Action {
     ActionType type = UNKNOWN;
