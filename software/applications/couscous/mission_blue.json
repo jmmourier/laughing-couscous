@@ -86,7 +86,58 @@
 
   "19_A_green_move_backToOrigin": {
     "actionType": "move_backward",
+    "backward_distance": 0.73,
+    "timeout": 10
+  },
+
+  "20_0_turn_to_target": {
+    "actionType": "turn",
+    "angle": 4.71,
+    "timeout": 10
+  },
+
+  "21_0_get_to_next_cup": {
+    "actionType": "move_forward",
+    "forward_distance": 0.26,
+    "timeout": 10
+  },
+  "22_A_green_open_grabber": {
+    "actionType": "grabber",
+    "grabber_state": "close",
+    "timeout": 4
+  },
+
+  "23_0_turn_to_target": {
+    "actionType": "turn",
+    "angle": 3.14,
+    "timeout": 10
+  },
+  "24_0_go_to_drop": {
+    "actionType": "move",
+    "target_x": 0.32,
+    "target_y": 1.2,
+    "timeout": 15
+  },
+  "25_A_green_open_grabber": {
+    "actionType": "grabber",
+    "grabber_state": "open",
+    "timeout": 4
+  },
+  "26_A_green_move_back": {
+    "actionType": "move_backward",
     "backward_distance": 0.6,
     "timeout": 10
+  },
+  "98_0_get_ready_to_go_home": {
+    "actionType": "move",
+    "target_x": 0.8,
+    "target_y": 0.8,
+    "timeout": 15
+  },
+  "99_0_go_home": {
+    "actionType": "move",
+    "target_x": 0.253,
+    "target_y": 0.8,
+    "timeout": 15
   }
 }
