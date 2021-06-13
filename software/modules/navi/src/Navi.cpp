@@ -151,9 +151,9 @@ void Navi::computeRegulatorSpeed(const pos_info &robot_pos, const pos_info &targ
 }
 
 void Navi::computeRotationSpeed(const double robot_orientation, const double target_orientation) {
-    double errorCap = std::abs(robot_orientation - target_orientation);
-
-    if (errorCap < TARGET_ANGLE_REACHED_RAD) {
+    // double errorCap = std::abs(robot_orientation - target_orientation);
+    double errorCap = getAngleBetweenTwoAngles(robot_orientation, target_orientation);
+    if (std::abs(errorCap) < TARGET_ANGLE_REACHED_RAD) {
         SPDLOG_LOGGER_INFO(logger_, "[Navi] angle reached");
         publishToNaviSpeedRequestListeners(0, 0, 0);
         publishToNaviTargetReachedListeners();
@@ -172,12 +172,15 @@ void Navi::computeRotationSpeed(const double robot_orientation, const double tar
     if (rotation > MAX_ROTATION) rotation = MAX_ROTATION;
     if (rotation < -MAX_ROTATION) rotation = -MAX_ROTATION;
 
-    rotdir rotation_direction = getRotationDir(robot_orientation, target_orientation);
+    publishToNaviSpeedRequestListeners(0, 0, rotation * 2);
+    /*rotdir rotation_direction = getRotationDir(robot_orientation, target_orientation);
     if (rotation_direction == rotdir::Clockwise) {
-        publishToNaviSpeedRequestListeners(0, 0, -rotation);
-    } else {
+        SPDLOG_LOGGER_INFO(logger_, "[Navi] rotate clockwise :{}", rotation);
         publishToNaviSpeedRequestListeners(0, 0, rotation);
-    }
+    } else {
+        SPDLOG_LOGGER_INFO(logger_, "[Navi] rotate anti-clockwise :{} ", rotation);
+        publishToNaviSpeedRequestListeners(0, 0, rotation);
+    }*/
     SPDLOG_LOGGER_INFO(
         logger_,
         "[Navi] robot orientation:{} error cap:{}rad ",
