@@ -39,9 +39,11 @@ class CouscousManager : public IPositionListener,
     void onGrabberStateChanged(const GrabberState &graberState) override;
 
    private:
+    void runPreLaunchTest();
     const int INTERVAL_REFRESH_MS = 50;
     const int INTERVAL_REFRESH_BATTERY_MS = 1000;
     std::atomic<bool> is_robot_ready_;
+    std::atomic<bool> pre_launch_test_done_;
 
     std::shared_ptr<Posi> posi_;
     std::shared_ptr<IHali> hali_;
