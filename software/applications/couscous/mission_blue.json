@@ -1,59 +1,52 @@
 {
-  "01_greenA_move_back":{
-    "actionType": "move_backward",
-    "backward_distance": 0.0,
-    "timeout": 10
-  },
-
-  "02_greedA_align": {
-    "actionType": "turn",
-    "angle": 0.85,
-    "timeout": 10
-  },
-
-  "03_greedA_goto": {
+  "01_C_goto": {
     "actionType": "move_forward",
-    "forward_distance": 0.2,
+    "forward_distance": 0.03,
     "timeout": 10
   },
 
-  "03_greenA_wait":{
-    "actionType": "wait",
-    "timeout": 1
+  "02_C_align": {
+    "actionType": "turn",
+    "angle": 1.57,
+    "timeout": 10
   },
 
-  "04_greenA_close_grabber":{
+  "03_A_green_goto": {
+    "actionType": "move_forward",
+    "forward_distance": 0.22,
+    "timeout": 10
+  },
+
+
+  "04_A_green_close_grabber":{
     "actionType": "grabber",
     "grabber_state": "close",
     "timeout": 4
   },
 
-  "04_greenA_wait":{
-    "actionType": "wait",
-    "timeout": 1
-  },
-
-  "05_greenA_move_back":{
+   "05_A_green_move_back":{
     "actionType": "move_backward",
-    "backward_distance": 0.2,
+    "backward_distance": 0.22,
     "timeout": 10
   },
 
-  "05_greenA_wait":{
-    "actionType": "wait",
-    "timeout": 1
-  },
-
-  "06_greedA_turn": {
+  
+  "06_greedA_turn_to_DropPos": {
     "actionType": "turn",
-    "angle": 2.36,
+    "angle": 3.14,
     "timeout": 10
   },
 
-  "07_greenA_open_grabber":{
+  "08_A_green_open_grabber":{
     "actionType": "grabber",
     "grabber_state": "open",
     "timeout": 4
+  },
+
+  "09_A_green_move_backToOrigin":{
+    "actionType": "move_backward",
+    "backward_distance": 0.1,
+    "timeout": 10
   }
 
 
