@@ -1,66 +1,60 @@
 {
-  "01_exit_start_pos": {
-    "actionType": "move",
-    "target_x": 0.8,
-    "target_y": 1.2,
+  "01_greenA_move_back":{
+    "actionType": "move_backward",
+    "backward_distance": 0.0,
     "timeout": 10
   },
 
-  "02_align_y_first_bouy": {
-    "actionType": "move",
-    "target_x": 0.8,
-    "target_y": 0.92,
-    "timeout": 10
-  },
-
-  "03_orientate_first_bouy": {
+  "02_greedA_align": {
     "actionType": "turn",
-    "angle": 3.1415,
-    "timeout": 3
-  },
-
-  "04_open_grabber": {
-    "actionType": "grabber",
-    "grabber_state": "open",
-    "timeout": 4
-  },
-
-  "05_go_close_to_first_bouy": {
-    "actionType": "move",
-    "target_x": 0.66,
-    "target_y": 0.92,
+    "angle": 0.85,
     "timeout": 10
   },
 
-  "06_close_grabber": {
+  "03_greedA_goto": {
+    "actionType": "move_forward",
+    "forward_distance": 0.2,
+    "timeout": 10
+  },
+
+  "03_greenA_wait":{
+    "actionType": "wait",
+    "timeout": 1
+  },
+
+  "04_greenA_close_grabber":{
     "actionType": "grabber",
     "grabber_state": "close",
     "timeout": 4
   },
 
-  "07_get_one_point_with_first_bouy": {
-    "actionType": "move",
-    "target_x": 0.3,
-    "target_y": 0.92,
-    "timeout": 10
+  "04_greenA_wait":{
+    "actionType": "wait",
+    "timeout": 1
   },
 
-  "08_open_grabber": {
-    "actionType": "grabber",
-    "grabber_state": "open",
-    "timeout": 4
-  },
-
-  "09_move_backward": {
+  "05_greenA_move_back":{
     "actionType": "move_backward",
     "backward_distance": 0.2,
     "timeout": 10
   },
 
-  "99_escape": {
-    "actionType": "move",
-    "target_x": 1.5,
-    "target_y": 1.5,
+  "05_greenA_wait":{
+    "actionType": "wait",
+    "timeout": 1
+  },
+
+  "06_greedA_turn": {
+    "actionType": "turn",
+    "angle": 2.36,
     "timeout": 10
+  },
+
+  "07_greenA_open_grabber":{
+    "actionType": "grabber",
+    "grabber_state": "open",
+    "timeout": 4
   }
+
+
 }

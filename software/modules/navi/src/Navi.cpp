@@ -13,7 +13,7 @@
 #define MAX_ROTATION 0.35
 #define ANGLE_FOR_ROTATION_ONLY_RAD 0.07
 #define MAX_SPEED 0.5
-
+#define SIM_SPEED_FACTOR 1
 Navi::Navi()
     : logger_(LoggerFactory::registerOrGetLogger("Navi", spdlog::level::level_enum::info)) {}
 
@@ -172,7 +172,7 @@ void Navi::computeRotationSpeed(const double robot_orientation, const double tar
     if (rotation > MAX_ROTATION) rotation = MAX_ROTATION;
     if (rotation < -MAX_ROTATION) rotation = -MAX_ROTATION;
 
-    publishToNaviSpeedRequestListeners(0, 0, rotation * 2);
+    publishToNaviSpeedRequestListeners(0, 0, rotation * SIM_SPEED_FACTOR);
     /*rotdir rotation_direction = getRotationDir(robot_orientation, target_orientation);
     if (rotation_direction == rotdir::Clockwise) {
         SPDLOG_LOGGER_INFO(logger_, "[Navi] rotate clockwise :{}", rotation);
