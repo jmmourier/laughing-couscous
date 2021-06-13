@@ -19,6 +19,8 @@ message RobotDataRequest {
   float orientation_rad = 3;
   float battery_v = 4;
   bool is_grabber_open = 5; 
+  int32 mission_started_at = 6;
+  int32 mission_ended_at = 7;
 }
 
 message SpeedRequest {

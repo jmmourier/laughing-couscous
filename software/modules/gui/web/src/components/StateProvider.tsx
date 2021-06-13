@@ -19,6 +19,8 @@ export type IRobotData = {
   orientation_rad: number;
   battery_v: number;
   is_grabber_open: boolean;
+  mission_started_at: number;
+  mission_ended_at: number;
 };
 
 interface IState {
@@ -33,6 +35,8 @@ const defaultState: IState = {
     orientation_rad: 0,
     battery_v: 0,
     is_grabber_open: true,
+    mission_started_at: 0,
+    mission_ended_at: 0,
   },
 };
 

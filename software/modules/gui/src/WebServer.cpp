@@ -38,6 +38,14 @@ void WebServer::setGrabberState(const bool &is_grabber_open) {
     web_position_service_.setGrabberState(is_grabber_open);
 }
 
+void WebServer::setMissionStartedAt(const long &mission_started_at) {
+    web_position_service_.setMissionStartedAt(mission_started_at);
+}
+
+void WebServer::setMissionEndedAt(const long &mission_ended_at) {
+    web_position_service_.setMissionEndedAt(mission_ended_at);
+}
+
 void WebServer::stop() {
     server_->Shutdown();
 }
