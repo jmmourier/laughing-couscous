@@ -20,15 +20,24 @@ CouscousManager::CouscousManager(
       navi_(navi),
       web_server_(web_server),
       missi_(missi),
-      is_robot_ready_(false) {
+      is_robot_ready_(false),
+      pre_launch_test_done_(false) {
     web_server_thread_ = std::thread([&] { web_server_->start(); });
 
     // this is temporary and shall be replaced by a a listener on the strart button on the robot
     missi_->actionHasBeenDone();
 }
 
+void CouscousManager::runPreLaunchTest() {
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    hali_->setGrabber(GrabberState::grabberClose);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    hali_->setGrabber(GrabberState::grabberOpen);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+}
+
 void CouscousManager::onPositionChanged(const PositionOrientation &position_orientation) {
-    if (!is_robot_ready_) {
+    if (!pre_launch_test_done_ || !is_robot_ready_) {
         return;
     }
     web_server_->setPosition(position_orientation);
@@ -126,7 +135,10 @@ void CouscousManager::start() {
             }
 
             rounds++;
-        } else if (hali_->isRobotStarted()) {
+        } else if (!pre_launch_test_done_) {
+            runPreLaunchTest();
+            pre_launch_test_done_ = true;
+        } else if (pre_launch_test_done_ && hali_->isRobotStarted()) {
             IHaliListener::RobotColor robot_color =
                 hali_->getSwitch(SwitchId::switch1) ? RobotColor::YELLOW : RobotColor::BLUE;
 
@@ -140,9 +152,13 @@ void CouscousManager::start() {
             missi_->loadMissionFile();
 
             // Setting starting position according to robot's color
-            posi_->setPosition(
-                robot_color == RobotColor::YELLOW ? PositionOrientation(2.8, 1.2, M_PI)
-                                                  : PositionOrientation(0.2, 1.2, 0));
+            auto starting_position = robot_color == RobotColor::YELLOW
+                                         ? PositionOrientation(2.8, 1.2, M_PI)
+                                         : PositionOrientation(0.2, 1.2, 0);
+
+            posi_->setPosition(starting_position);
+            web_server_->setPosition(starting_position);
+
             is_robot_ready_ = true;
         }
 

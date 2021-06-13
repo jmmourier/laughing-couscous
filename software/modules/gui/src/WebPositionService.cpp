@@ -107,6 +107,7 @@ void WebPositionService::publishToWebServerTargetOrientationListeners(
         robot_data_request.set_pos_x_m(position_orientation_.x_m_);
         robot_data_request.set_pos_y_m(position_orientation_.y_m_);
         robot_data_request.set_orientation_rad(position_orientation_.orientation_rad_);
+        robot_data_request.set_is_grabber_open(is_grabber_open_);
         robot_data_request.set_battery_v(battery_v_);
 
         writer->Write(robot_data_request);
