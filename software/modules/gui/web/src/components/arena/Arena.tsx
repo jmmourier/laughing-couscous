@@ -94,6 +94,20 @@ const Arena: FunctionComponent<IArena> = ({ onPositionSelected }) => {
   const ratioPixelToMeter = getRatioPixelToMeter(areaSize);
 
   const { state } = useContext(context);
+
+  const getDiffCount = () => {
+    if (!state.robotData.mission_started_at) {
+      return 0;
+    }
+
+    if (state.robotData.mission_ended_at) {
+      return (
+        state.robotData.mission_ended_at - state.robotData.mission_started_at
+      );
+    }
+
+    return new Date().getTime() / 1000 - state.robotData.mission_started_at;
+  };
   return (
     <svg
       className="bg-gradient-to-r from-gray-100 via-gray-50 to-gray-100 rounded-md shadow"
@@ -162,6 +176,19 @@ const Arena: FunctionComponent<IArena> = ({ onPositionSelected }) => {
           x={ARENA_WIDTH - 0.2}
           y={ARENA_HEIGHT - 0.05}
         />
+
+        <text
+          x={ARENA_WIDTH / 2}
+          y={0.1}
+          fontWeight={"bold"}
+          className={`fill-current ${
+            getDiffCount() >= 30 ? "text-red-500" : "text-gray-700"
+          }`}
+          fontSize={0.1}
+          textAnchor={"end"}
+        >
+          {Math.round(getDiffCount())}
+        </text>
         {buoyList.map((buoy) => (
           <Buoy color={buoy.color} x={buoy.x} y={buoy.y} />
         ))}

@@ -47,12 +47,16 @@ class WebPositionService final : public web_service::Position::Service {
     void setPosition(const PositionOrientation &position_orientation);
     void setSpeed(const int &motor1, const int &motor2) const;
     void setBattery(const float &battery_v);
+    void setMissionStartedAt(const long &mission_started_at);
+    void setMissionEndedAt(const long &mission_ended_at);
     void setGrabberState(const bool &is_grabber_open);
 
    private:
     PositionOrientation position_orientation_;
     float battery_v_;
     bool is_grabber_open_;
+    long mission_started_at_;
+    long mission_ended_at_;
     std::vector<std::weak_ptr<IWebServerRequestListener>> webserver_listeners_;
 };
 

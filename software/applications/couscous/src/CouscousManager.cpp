@@ -2,6 +2,7 @@
 #include "CouscousManager.h"
 
 #include <atomic>
+#include <chrono>
 #include <cmath>
 
 #include "IHali.h"
@@ -21,7 +22,8 @@ CouscousManager::CouscousManager(
       web_server_(web_server),
       missi_(missi),
       is_robot_ready_(false),
-      pre_launch_test_done_(false) {
+      pre_launch_test_done_(false),
+      mission_finished_(false) {
     web_server_thread_ = std::thread([&] { web_server_->start(); });
 
     // this is temporary and shall be replaced by a a listener on the strart button on the robot
@@ -48,6 +50,15 @@ void CouscousManager::onPositionChanged(const PositionOrientation &position_orie
         position_orientation.orientation_rad_);
 
     Action nextAction = missi_->getCurrentAction();
+    if (nextAction.arguments == "mission done" && mission_finished_ == false) {
+        const auto now = std::chrono::system_clock::now();
+        const auto end_mission_timestamp =
+            std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
+
+        web_server_->setMissionEndedAt(end_mission_timestamp);
+        mission_finished_ = true;
+    }
+
     if (nextAction.type == WAIT) {
         std::cout << "[Missi]:wait" << std::endl;
         // wait timeout or mission is not started or mission is done
@@ -156,8 +167,12 @@ void CouscousManager::start() {
                                          ? PositionOrientation(2.8, 1.2, M_PI)
                                          : PositionOrientation(0.2, 1.2, 0);
 
+            const auto now = std::chrono::system_clock::now();
+            const auto start_mission_timestamp =
+                std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
+            web_server_->setMissionStartedAt(start_mission_timestamp);
+
             posi_->setPosition(starting_position);
-            web_server_->setPosition(starting_position);
 
             is_robot_ready_ = true;
         }
