@@ -10,7 +10,7 @@
 
 #define TARGET_REACHED_DISTANCE 0.007
 #define TARGET_ANGLE_REACHED_RAD 0.02
-#define MAX_ROTATION 0.35
+#define MAX_ROTATION 0.75
 #define ANGLE_FOR_ROTATION_ONLY_RAD 0.07
 #define MAX_SPEED 0.5
 #define SLOW_MOVE_SPEED 0.1
@@ -134,7 +134,7 @@ void Navi::computeRegulatorSpeed(const pos_info &robot_pos, const pos_info &targ
         errorCap = errorCap + (2 * M_PI);
     }
 
-    rotation = errorCap;
+    rotation = 1.2*errorCap;
     if (rotation > MAX_ROTATION) rotation = MAX_ROTATION;
     if (rotation < -MAX_ROTATION) rotation = -MAX_ROTATION;
 
@@ -169,11 +169,11 @@ void Navi::computeRotationSpeed(const double robot_orientation, const double tar
         errorCap = errorCap + (2 * M_PI);
     }
 
-    double rotation = 0.3 * errorCap;
+    double rotation = 1.2 * errorCap;
     if (rotation > MAX_ROTATION) rotation = MAX_ROTATION;
     if (rotation < -MAX_ROTATION) rotation = -MAX_ROTATION;
 
-    publishToNaviSpeedRequestListeners(0, 0, rotation * SIM_SPEED_FACTOR);
+    publishToNaviSpeedRequestListeners(0, 0, rotation);
     /*rotdir rotation_direction = getRotationDir(robot_orientation, target_orientation);
     if (rotation_direction == rotdir::Clockwise) {
         SPDLOG_LOGGER_INFO(logger_, "[Navi] rotate clockwise :{}", rotation);

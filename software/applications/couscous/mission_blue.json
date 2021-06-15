@@ -20,7 +20,7 @@
   "04_A_green_close_grabber": {
     "actionType": "grabber",
     "grabber_state": "close",
-    "timeout": 4
+    "timeout": 1
   },
 
   "05_A_green_move_back": {
@@ -36,9 +36,10 @@
   },
 
   "08_A_green_open_grabber": {
+    "arguments": "------- drop of the first side cup -------",
     "actionType": "grabber",
     "grabber_state": "open",
-    "timeout": 4
+    "timeout": 1
   },
 
   "09_A_green_move_backToOrigin": {
@@ -69,7 +70,7 @@
   "16_A_close_grabber": {
     "actionType": "grabber",
     "grabber_state": "close",
-    "timeout": 4
+    "timeout": 1
   },
 
   "17_0_get_toA_drop_zone": {
@@ -79,9 +80,10 @@
   },
 
   "18_A_green_open_grabber": {
+    "arguments": "------- drop of the second cup on its line -------",
     "actionType": "grabber",
     "grabber_state": "open",
-    "timeout": 4
+    "timeout": 1
   },
 
   "19_A_green_move_backToOrigin": {
@@ -104,7 +106,7 @@
   "22_A_green_open_grabber": {
     "actionType": "grabber",
     "grabber_state": "close",
-    "timeout": 4
+    "timeout": 1
   },
 
   "23_0_turn_to_target": {
@@ -119,9 +121,10 @@
     "timeout": 15
   },
   "25_A_green_open_grabber": {
+    "arguments": "------- drop of the third cup middle of the zone -------",
     "actionType": "grabber",
     "grabber_state": "open",
-    "timeout": 4
+    "timeout": 1
   },
   "26_A_green_move_back": {
     "actionType": "move_backward",
