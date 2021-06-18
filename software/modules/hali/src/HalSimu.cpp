@@ -1,5 +1,6 @@
 #include "HalSimu.h"
 
+#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <thread>
@@ -24,7 +25,7 @@ int HalSimu::getMd25Revision() {
 }
 
 int HalSimu::getBatteryVoltage() {
-    return 120;
+    return std::rand() % 100 + 1;
 }
 
 int HalSimu::getEncoder(MotorIdEnum id_motor) {
