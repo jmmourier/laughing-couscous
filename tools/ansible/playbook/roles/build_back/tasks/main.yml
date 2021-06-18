@@ -2,6 +2,6 @@
 - name: Erase build folder
   shell: "rm -rf {{ PROJECT_PATH }}/software/build/*"
 - name: CMAKE
-  command: "/usr/bin/cmake --no-warn-unused-cli -DCMAKE_TOOLCHAIN_FILE:STRING=/tmp/toolchain.cmake -DProtobuf_DIR:STRING=/tmp/raspberrypi_root/stage/lib/cmake/protobuf -DgRPC_DIR:STRING=/tmp/raspberrypi_root/stage/lib/cmake/grpc -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -H{{ PROJECT_PATH }}/software -B{{ PROJECT_PATH }}/software/build -G 'Unix Makefiles'"
+  command: "/usr/bin/cmake --no-warn-unused-cli -DCMAKE_TOOLCHAIN_FILE:STRING=/build/toolchain.cmake -DProtobuf_DIR:STRING=/build/raspberrypi_root/stage/lib/cmake/protobuf -DgRPC_DIR:STRING=/build/raspberrypi_root/stage/lib/cmake/grpc -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -H{{ PROJECT_PATH }}/software -B{{ PROJECT_PATH }}/software/build -G 'Unix Makefiles'"
 - name: Build couscous_app_exe
   command: "/usr/bin/cmake --build {{ PROJECT_PATH }}/software/build --config Debug --target couscous_app_exe -- -j8"
