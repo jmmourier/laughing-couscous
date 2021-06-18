@@ -6,6 +6,7 @@ services:
     container_name: laughing-couscous
     build:
       context: .
+      target: image_dev
       dockerfile: Dockerfile
       network: host
     environment:
