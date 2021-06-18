@@ -10,10 +10,10 @@
 
 #define TARGET_REACHED_DISTANCE 0.007
 #define TARGET_ANGLE_REACHED_RAD 0.02
-#define MAX_ROTATION 0.75
+#define MAX_ROTATION 0.85
 #define ANGLE_FOR_ROTATION_ONLY_RAD 0.07
 #define MAX_SPEED 0.5
-#define SLOW_MOVE_SPEED 0.1
+#define SLOW_MOVE_SPEED 0.10
 #define SIM_SPEED_FACTOR 2
 Navi::Navi()
     : logger_(LoggerFactory::registerOrGetLogger("Navi", spdlog::level::level_enum::info)) {}

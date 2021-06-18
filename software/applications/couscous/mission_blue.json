@@ -143,7 +143,7 @@
   },
   "45_0": {
     "actionType": "move",
-    "target_x": 0.445,
+    "target_x": 0.430,
     "target_y": 1.2,
     "timeout": 15
   },
@@ -171,7 +171,7 @@
   },
   "53_0_get_to_A": {
     "actionType": "move_forward",
-    "forward_distance": 0.354,
+    "forward_distance": 0.154,
     "timeout": 10
   },
   "54_A_green_open_grabber": {
@@ -191,65 +191,21 @@
     "grabber_state": "open",
     "timeout": 1
   },
-  "60_A_green_move_back": {
-    "actionType": "move_backward",
-    "backward_distance": 0.2,
-    "timeout": 10
-  },
-  "61_0": {
-    "actionType": "move",
-    "target_x": 0.59,
-    "target_y": 0.8,
-    "timeout": 15
-  },
-  "62_0_greedA_turn_to_A": {
-    "actionType": "turn",
-    "angle": 3.14,
-    "timeout": 10
-  },
-  "63_0_get_to_A": {
-    "actionType": "move_forward",
-    "forward_distance": 0.11,
-    "timeout": 10
-  },
-  "64_A_green_open_grabber": {
-    "actionType": "grabber",
-    "grabber_state": "close",
-    "timeout": 1
-  },
-  "65_A_green_move_back": {
-    "actionType": "move_backward",
-    "backward_distance": 0.2,
-    "timeout": 10
-  },
-  "66_0": {
-    "actionType": "move",
-    "target_x": 0.445,
-    "target_y": 0.915,
-    "timeout": 15
-  },
-  "67_0_greedA_turn_to_A": {
-    "actionType": "turn",
-    "angle": 2.36,
-    "timeout": 10
-  },
-  "68_A_green_open_grabber": {
-    "arguments": "------- drop of the sixth cup on its line -------",
-    "actionType": "grabber",
-    "grabber_state": "open",
-    "timeout": 1
-  },
-
   "97_A_green_move_back": {
     "actionType": "move_backward",
     "backward_distance": 0.2,
     "timeout": 10
   },
-
-  "99_0_go_home": {
+  "98_0": {
     "actionType": "move",
-    "target_x": 0.253,
-    "target_y": 0.8,
+    "target_x": 0.670,
+    "target_y": 1.7,
+    "timeout": 15
+  },
+  "99_0": {
+    "actionType": "move",
+    "target_x": 0.2,
+    "target_y": 1.7,
     "timeout": 15
   }
 }
