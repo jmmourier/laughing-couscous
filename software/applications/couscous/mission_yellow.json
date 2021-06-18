@@ -69,7 +69,7 @@
   },
   "25_0_greedA_turn_to_A": {
     "actionType": "turn",
-    "angle": 2.86,
+    "angle": 0.87,
     "timeout": 10
   },
   "26_A_green_open_grabber": {
@@ -128,7 +128,7 @@
   },
   "42_0_greedA_turn_to_A": {
     "actionType": "turn",
-    "angle": 0,
+    "angle": 3.14,
     "timeout": 10
   },
   "43_0_get_to_A": {
@@ -160,7 +160,7 @@
   },
   "51_0": {
     "actionType": "move",
-    "target_x": 2.294,
+    "target_x": 2.194,
     "target_y": 1.5,
     "timeout": 15
   },
