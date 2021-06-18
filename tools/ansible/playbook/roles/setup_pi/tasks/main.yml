@@ -8,7 +8,7 @@
   apt:
     name: nginx
     update_cache: yes
-- name: copy the nginx config file and restart nginx
+- name: Copy the nginx config file
   synchronize:
     src: "{{ PROJECT_PATH }}/tools/ansible/static_site.cfg"
     dest: /etc/nginx/sites-available/static_site.cfg
@@ -29,7 +29,13 @@
   service:
     name: nginx
     state: restarted
-- name: Restart envoy
+- name: Restart grpcwebproxy and start service at boot
   service:
-    name: grpcwebproxy.service
+    name: grpcwebproxy
     state: restarted
+    enabled: yes
+- name: Enable couscous_app.service
+  service:
+    name: couscous_app.service
+    state: stopped
+    enabled: yes
