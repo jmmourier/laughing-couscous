@@ -2,7 +2,7 @@ version: "3.4"
 
 services:
   laughing-couscous:
-    image: capozzid/couscous
+    image: dcapozzi/couscous
     container_name: laughing-couscous
     environment:
       - MISSION_PATH=/workspace/laughing-couscous/software/applications/couscous
