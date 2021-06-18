@@ -5,6 +5,7 @@
 #include <chrono>
 #include <cmath>
 
+#include "Action.h"
 #include "IHali.h"
 #include "IHaliListener.h"
 #include "Posi.h"
@@ -80,27 +81,42 @@ void CouscousManager::onPositionChanged(const PositionOrientation &position_orie
     } else if (nextAction.type == MOVE) {
         std::cout << "[Missi]:move" << nextAction.target_x << " " << nextAction.target_y
                   << std::endl;
-        navi_->setTargetPosition(nextAction.target_x, nextAction.target_y, 0);
+        if (!nextAction.hasActionStarted) {
+            navi_->setTargetPosition(nextAction.target_x, nextAction.target_y, 0);
+        }
     } else if (nextAction.type == GRABBER) {
         std::cout << "[Missi]:grabber  : " << nextAction.grabber_state << std::endl;
         // define how this is read
         IHaliListener::GrabberState grabber_state = (nextAction.grabber_state.compare("open") == 0)
                                                         ? IHaliListener::GrabberState::grabberOpen
                                                         : IHaliListener::GrabberState::grabberClose;
-        hali_->setGrabber(grabber_state);
+        if (hali_->getGrabber() != grabber_state) {
+            hali_->setGrabber(grabber_state);
+        }
     } else if (nextAction.type == TURN) {
         std::cout << "[Missi]:turning " << nextAction.angle << std::endl;
         // TODO this need to be implemented
-        navi_->setTargetOrientation(nextAction.angle);
+        if (!nextAction.hasActionStarted) {
+            navi_->setTargetOrientation(nextAction.angle);
+        }
     } else if (nextAction.type == MOVE_BACKWARD) {
         std::cout << "[Missi]:moving backward: " << nextAction.backward_distance << std::endl;
-        navi_->setBackwardDistance(nextAction.backward_distance);
+        if (!nextAction.hasActionStarted) {
+            navi_->setBackwardDistance(nextAction.backward_distance);
+        }
+    } else if (nextAction.type == MOVE_FORWARD) {
+        std::cout << "[Missi]:moving forward: " << nextAction.forward_distance << std::endl;
+        if (!nextAction.hasActionStarted) {
+            navi_->setForwardDistance(nextAction.forward_distance);
+        }
     } else if (nextAction.type == UNKNOWN) {
         std::cout << "[Missi]:unknow action" << missi_->actionTypeToString(nextAction.type)
                   << std::endl;
         // This is abnormal, let's skip to next action
         missi_->actionHasBeenDone();
     }
+
+    nextAction.hasActionStarted = true;
 }
 
 void CouscousManager::onWebServerPositionRequest(const PositionOrientation &position_orientation) {
@@ -127,7 +143,7 @@ void CouscousManager::onGrabberStateChanged(const GrabberState &graberState) {
     web_server_->setRobotState(RobotState(
         currentState.position_orientation_,
         currentState.battery_,
-        graberState,
+        graberState == GrabberState::grabberOpen,
         currentState.mission_started_at_,
         currentState.mission_ended_at_,
         currentState.current_action_));
@@ -136,7 +152,7 @@ void CouscousManager::onGrabberStateChanged(const GrabberState &graberState) {
 void CouscousManager::onNaviTargetReachedRequest(void) {
     Action current_action = missi_->getCurrentAction();
     if (current_action.type == MOVE || current_action.type == TURN ||
-        current_action.type == MOVE_BACKWARD) {
+        current_action.type == MOVE_BACKWARD || current_action.type == MOVE_FORWARD) {
         missi_->actionHasBeenDone();
     }
 }

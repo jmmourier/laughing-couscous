@@ -62,6 +62,9 @@ void Missi::loadMissionFile() {
             if (action_as_json.contains("backward_distance")) {
                 action_to_add.backward_distance = action_as_json["backward_distance"];
             }
+            if (action_as_json.contains("forward_distance")) {
+                action_to_add.forward_distance = action_as_json["forward_distance"];
+            }
         } catch (const std::exception& e) {
             std::cerr << e.what() << std::endl;
             std::cerr << "Wrong value conversion" << std::endl;
@@ -122,6 +125,7 @@ ActionType Missi::stringToActionType(std::string action_type_as_string) {
     if (!action_type_as_string.compare("move")) return MOVE;
     if (!action_type_as_string.compare("turn")) return TURN;
     if (!action_type_as_string.compare("move_backward")) return MOVE_BACKWARD;
+    if (!action_type_as_string.compare("move_forward")) return MOVE_FORWARD;
     return UNKNOWN;
 }
 
@@ -131,6 +135,7 @@ std::string Missi::actionTypeToString(ActionType action_type) {
     if (action_type == MOVE) return "move";
     if (action_type == TURN) return "turn";
     if (action_type == MOVE_BACKWARD) return "move_backward";
+    if (action_type == MOVE_FORWARD) return "move_forward";
     if (action_type == UNKNOWN) return "unknown";
     return "unknown";
 }

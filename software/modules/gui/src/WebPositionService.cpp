@@ -124,6 +124,9 @@ void WebPositionService::publishToWebServerTargetOrientationListeners(
             case ActionType::MOVE:
                 action_type = web_service::ActionType::MOVE;
                 break;
+            case ActionType::MOVE_FORWARD:
+                action_type = web_service::ActionType::MOVE_FORWARD;
+                break;
             case ActionType::MOVE_BACKWARD:
                 action_type = web_service::ActionType::MOVE_BACKWARD;
                 break;

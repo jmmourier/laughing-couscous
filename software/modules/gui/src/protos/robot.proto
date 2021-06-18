@@ -9,8 +9,9 @@ enum ActionType {
   GRABBER = 1;
   MOVE = 2;
   TURN = 3;
-  MOVE_BACKWARD = 4;
-  UNKNOWN = 5; 
+  MOVE_FORWARD = 4;
+  MOVE_BACKWARD = 5;
+  UNKNOWN = 6; 
 };
 
 message PositionRequest {
