@@ -110,6 +110,7 @@ void WebPositionService::publishToWebServerTargetOrientationListeners(
         robot_data_request.set_is_grabber_open(robot_state_.is_grabber_open_);
         robot_data_request.set_mission_started_at(robot_state_.mission_started_at_);
         robot_data_request.set_mission_ended_at(robot_state_.mission_ended_at_);
+        robot_data_request.set_battery_v(robot_state_.battery_);
 
         web_service::ActionType action_type = web_service::ActionType::UNKNOWN;
 
