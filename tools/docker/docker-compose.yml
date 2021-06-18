@@ -2,13 +2,8 @@ version: "3.4"
 
 services:
   laughing-couscous:
-    image: laughing-couscous
+    image: capozzid/couscous
     container_name: laughing-couscous
-    build:
-      context: .
-      target: image_dev
-      dockerfile: Dockerfile
-      network: host
     environment:
       - MISSION_PATH=/workspace/laughing-couscous/software/applications/couscous
     security_opt:
