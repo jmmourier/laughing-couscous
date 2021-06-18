@@ -210,7 +210,7 @@ const Arena: FunctionComponent<IArena> = ({ onPositionSelected }) => {
           y={0.1}
           fontWeight={"bold"}
           className={`fill-current ${
-            getDiffCount() >= 30 ? "text-red-500" : "text-gray-700"
+            getDiffCount() >= 90 ? "text-red-500" : "text-gray-700"
           }`}
           fontSize={0.1}
           textAnchor={"end"}
