@@ -171,7 +171,7 @@
   },
   "53_0_get_to_A": {
     "actionType": "move_forward",
-    "forward_distance": 0.0354,
+    "forward_distance": 0.354,
     "timeout": 10
   },
   "54_A_green_open_grabber": {
